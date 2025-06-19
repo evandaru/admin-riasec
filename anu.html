@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes Kepribadian RIASEC (Slide Mode)</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Style tambahan untuk body */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Animasi fade-in sederhana */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 text-slate-800 font-sans p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-screen">
+
+    <main class="max-w-2xl mx-auto w-full">
+        <section id="test-section" class="bg-white p-6 sm:p-8 rounded-xl shadow-lg transition-all duration-500">
+            <header class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-slate-900">Tes Kepribadian RIASEC</h1>
+                <p class="mt-1 text-slate-500">Pilih seberapa Anda menyukai aktivitas berikut.</p>
+            </header>
+
+            <div id="question-display" class="my-8 min-h-[150px]">
+                </div>
+
+            <div id="progress-container" class="space-y-2">
+                 <div class="flex justify-between items-center text-sm font-medium text-slate-500">
+                    <p>Progres</p>
+                    <p id="progress-text">Soal 1 dari 18</p>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 5%"></div>
+                </div>
+            </div>
+            
+            <div id="navigation-controls" class="mt-8 pt-6 border-t border-slate-200 grid grid-cols-2 gap-4">
+                <button id="prev-btn" class="w-full bg-slate-200 text-slate-800 font-bold py-3 px-6 rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Sebelumnya
+                </button>
+                <button id="next-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Berikutnya
+                </button>
+                 <button id="submit-btn" class="hidden w-full bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-600 focus:outline-none focus:ring-4 focus:ring-emerald-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed col-start-2">
+                    Lihat Hasil
+                </button>
+            </div>
+        </section>
+
+        <section id="result-section" class="hidden bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+             <div class="text-center">
+                <h2 class="text-2xl font-semibold text-slate-900">Hasil Tes Anda</h2>
+                <p class="mt-2 text-slate-600">Ini adalah tipe kepribadian karir yang paling cocok untuk Anda.</p>
+                <div class="my-6">
+                    <p class="text-lg text-slate-500">Kode Holland Anda adalah:</p>
+                    <p id="result-code" class="text-5xl sm:text-6xl font-bold text-blue-600 tracking-widest my-2"></p>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-4 text-center sm:text-left">Rincian Skor</h3>
+                <div id="score-details" class="space-y-4"></div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-200">
+                <h3 class="text-xl font-semibold mb-4 text-center sm:text-left">Deskripsi Tipe Kepribadian</h3>
+                <div id="result-descriptions" class="space-y-6"></div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                 <button id="reset-btn" class="bg-slate-200 text-slate-800 font-bold py-3 px-6 rounded-lg hover:bg-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-300 transition-all duration-300">
+                    Ulangi Tes
+                </button>
+            </div>
+        </section>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // === DATA (Sama seperti sebelumnya) ===
+    const questions = [
+        { text: "Memperbaiki mesin atau alat elektronik.", type: 'R' }, { text: "Melakukan penelitian ilmiah untuk menemukan fakta baru.", type: 'I' }, { text: "Menulis cerita, puisi, atau naskah drama.", type: 'A' }, { text: "Membantu orang lain menyelesaikan masalah pribadi mereka.", type: 'S' }, { text: "Mempengaruhi atau meyakinkan orang lain untuk suatu tujuan.", type: 'E' }, { text: "Bekerja dengan angka dan data secara terstruktur.", type: 'C' }, { text: "Bekerja di luar ruangan dengan tangan (berkebun, konstruksi).", type: 'R' }, { text: "Menganalisis data atau informasi untuk memecahkan masalah.", type: 'I' }, { text: "Melukis, menggambar, atau membuat patung.", type: 'A' }, { text: "Mengajar atau melatih orang lain.", type: 'S' }, { text: "Memimpin sebuah tim atau proyek.", type: 'E' }, { text: "Mengatur barang atau informasi secara rapi dan sistematis.", type: 'C' }, { text: "Mengoperasikan peralatan atau kendaraan berat.", type: 'R' }, { text: "Membaca buku atau artikel ilmiah.", type: 'I' }, { text: "Bermain alat musik atau bernyanyi.", type: 'A' }, { text: "Menjadi sukarelawan untuk kegiatan sosial.", type: 'S' }, { text: "Memulai bisnis atau usaha sendiri.", type: 'E' }, { text: "Membuat laporan keuangan atau anggaran.", type: 'C' },
+    ];
+    const options = [
+        { text: 'Sangat Tidak Suka', value: 1 }, { text: 'Tidak Suka', value: 2 }, { text: 'Netral', value: 3 }, { text: 'Suka', value: 4 }, { text: 'Sangat Suka', value: 5 }
+    ];
+    const descriptions = {
+        R: { name: "Realistic (The Doer)", desc: "Orang dengan tipe Realistis suka bekerja dengan objek, mesin, peralatan, tanaman, atau hewan. Mereka menikmati pekerjaan praktis yang membutuhkan keterampilan fisik dan mekanis.", color: "bg-orange-500" },
+        I: { name: "Investigative (The Thinker)", desc: "Tipe Investigatif senang mengamati, belajar, menyelidiki, menganalisis, dan memecahkan masalah. Mereka tertarik pada ide-ide dan pemikiran analitis.", color: "bg-sky-500" },
+        A: { name: "Artistic (The Creator)", desc: "Tipe Artistik memiliki kemampuan artistik, inovatif, dan intuitif. Mereka suka bekerja dalam situasi yang tidak terstruktur di mana mereka dapat menggunakan imajinasi dan kreativitas mereka.", color: "bg-purple-500" },
+        S: { name: "Social (The Helper)", desc: "Tipe Sosial senang bekerja dengan orang lain untuk mencerahkan, membantu, melatih, atau menyembuhkan. Mereka terampil dalam berkomunikasi dan berinteraksi dengan orang lain.", color: "bg-emerald-500" },
+        E: { name: "Enterprising (The Persuader)", desc: "Tipe Enterprising suka bekerja dengan orang lain untuk mempengaruhi, membujuk, memimpin, atau mengelola untuk tujuan organisasi atau keuntungan ekonomi. Mereka ambisius dan energik.", color: "bg-red-500" },
+        C: { name: "Conventional (The Organizer)", desc: "Tipe Konvensional suka bekerja dengan data, memiliki kemampuan klerikal atau numerik, dan suka mengerjakan hal-hal secara detail. Mereka menghargai keteraturan dan rutinitas.", color: "bg-yellow-500" }
+    };
+
+    // === STATE MANAGEMENT ===
+    let currentQuestionIndex = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+
+    // === DOM ELEMENTS ===
+    const testSection = document.getElementById('test-section');
+    const resultSection = document.getElementById('result-section');
+    const questionDisplay = document.getElementById('question-display');
+    const progressText = document.getElementById('progress-text');
+    const progressBar = document.getElementById('progress-bar');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    
+    // === FUNCTIONS ===
+
+    function renderCurrentQuestion() {
+        const question = questions[currentQuestionIndex];
+        const answer = userAnswers[currentQuestionIndex];
+        
+        let optionsHTML = '';
+        options.forEach(opt => {
+            const isChecked = answer === opt.value ? 'checked' : '';
+            optionsHTML += `
+                <label class="flex items-center space-x-3 cursor-pointer p-3 rounded-lg hover:bg-slate-100 transition-colors duration-200">
+                    <input type="radio" name="q_option" value="${opt.value}" ${isChecked} class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+                    <span class="text-slate-700">${opt.text}</span>
+                </label>
+            `;
+        });
+
+        const questionHTML = `
+            <div class="fade-in">
+                <p class="font-semibold text-lg sm:text-xl text-center text-slate-800 mb-6">${question.text}</p>
+                <div class="space-y-2">${optionsHTML}</div>
+            </div>
+        `;
+        
+        questionDisplay.innerHTML = questionHTML;
+        updateProgress();
+        updateNavigation();
+        
+        // Tambahkan event listener untuk pilihan radio yang baru dibuat
+        document.querySelectorAll('input[name="q_option"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                userAnswers[currentQuestionIndex] = parseInt(e.target.value, 10);
+                updateNavigation();
+            });
+        });
+    }
+
+    function updateProgress() {
+        progressText.textContent = `Soal ${currentQuestionIndex + 1} dari ${questions.length}`;
+        const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+    }
+
+    function updateNavigation() {
+        // Atur status tombol Previous
+        prevBtn.disabled = currentQuestionIndex === 0;
+
+        // Atur status tombol Next/Submit
+        const isAnswered = userAnswers[currentQuestionIndex] !== null;
+        
+        if (currentQuestionIndex === questions.length - 1) {
+            // Soal terakhir
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+            submitBtn.disabled = !isAnswered;
+        } else {
+            // Bukan soal terakhir
+            nextBtn.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
+            nextBtn.disabled = !isAnswered;
+        }
+    }
+    
+    function calculateAndShowResults() {
+        const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+        const maxScorePerType = (questions.filter(q => q.type === 'R').length) * 5;
+
+        userAnswers.forEach((answer, index) => {
+            if (answer !== null) {
+                const questionType = questions[index].type;
+                scores[questionType] += answer;
+            }
+        });
+
+        // Tampilkan hasil (logika sama seperti sebelumnya)
+        const sortedScores = Object.entries(scores).sort(([,a],[,b]) => b-a);
+        const hollandCode = sortedScores.slice(0, 3).map(entry => entry[0]).join('');
+        
+        document.getElementById('result-code').textContent = hollandCode;
+
+        let scoreHTML = '';
+        sortedScores.forEach(([type, score]) => {
+            const percentage = (score / maxScorePerType) * 100; 
+            const typeInfo = descriptions[type];
+            scoreHTML += `
+                <div class="flex items-center">
+                    <span class="w-28 font-bold text-slate-700">${typeInfo.name}</span>
+                    <div class="flex-1 bg-slate-200 rounded-full h-6 mx-4">
+                        <div class="${typeInfo.color} h-6 rounded-full text-xs font-medium text-white text-center p-1 leading-none" style="width: ${percentage}%">
+                            ${Math.round(percentage)}%
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        document.getElementById('score-details').innerHTML = scoreHTML;
+        
+        let descriptionHTML = '';
+        for(const char of hollandCode) {
+            const typeInfo = descriptions[char];
+            descriptionHTML += `
+                <div class="p-4 rounded-lg border border-slate-200">
+                   <div class="flex items-center mb-2">
+                     <div class="w-4 h-4 rounded-full ${typeInfo.color} mr-3"></div>
+                     <h4 class="text-lg font-bold text-slate-800">${typeInfo.name}</h4>
+                   </div>
+                   <p class="text-slate-600">${typeInfo.desc}</p>
+                </div>
+            `;
+        }
+        document.getElementById('result-descriptions').innerHTML = descriptionHTML;
+        
+        testSection.classList.add('hidden');
+        resultSection.classList.remove('hidden');
+        resultSection.classList.add('fade-in');
+        window.scrollTo(0, 0);
+    }
+    
+    function resetTest() {
+        currentQuestionIndex = 0;
+        userAnswers.fill(null);
+        
+        resultSection.classList.add('hidden');
+        testSection.classList.remove('hidden');
+        testSection.classList.add('fade-in');
+        
+        renderCurrentQuestion();
+    }
+
+    // === EVENT LISTENERS ===
+    nextBtn.addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            renderCurrentQuestion();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            renderCurrentQuestion();
+        }
+    });
+    
+    submitBtn.addEventListener('click', calculateAndShowResults);
+    resetBtn.addEventListener('click', resetTest);
+
+    // === INITIALIZATION ===
+    renderCurrentQuestion();
+});
+</script>
+
+</body>
+</html>

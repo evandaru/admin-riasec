@@ -1,0 +1,4188 @@
+=== FOLDER STRUCTURE ===
+app
+├── abilities
+│   └── main.ts
+├── controllers
+│   ├── admin
+│   │   ├── dashboard_controller.ts
+│   │   ├── hasil_tes_controller.ts
+│   │   ├── pertanyaans_controller.ts
+│   │   └── users_controller.ts
+│   ├── auth
+│   │   └── registers_controller.ts
+│   ├── user
+│   │   ├── dashboard_controller.ts
+│   │   ├── hasil_tes_controller.ts
+│   │   ├── notes_controller.ts
+│   │   ├── profiles_controller.ts
+│   │   └── tests_controller.ts
+│   ├── homepages_controller.ts
+│   └── session_controller.ts
+├── exceptions
+│   └── handler.ts
+├── middleware
+│   ├── admin_middleware.ts
+│   ├── auth_middleware.ts
+│   ├── container_bindings_middleware.ts
+│   ├── guest_middleware.ts
+│   ├── initialize_bouncer_middleware.ts
+│   └── silent_auth_middleware.ts
+├── models
+│   ├── admin.ts
+│   ├── hasil.ts
+│   ├── jawaban.ts
+│   ├── note.ts
+│   ├── riasec_pertanyaan.ts
+│   ├── siswa.ts
+│   └── user.ts
+├── policies
+│   ├── main.ts
+│   ├── note_policy.ts
+│   └── user_policy.ts
+└── validators
+    ├── note.ts
+    └── user.ts
+bin
+├── console.ts
+├── server.ts
+└── test.ts
+config
+├── app.ts
+├── auth.ts
+├── bodyparser.ts
+├── cors.ts
+├── database.ts
+├── hash.ts
+├── inertia.ts
+├── logger.ts
+├── session.ts
+├── shield.ts
+├── static.ts
+└── vite.ts
+database
+├── migrations
+│   ├── 1749892627155_create_users_table.ts
+│   ├── 1749947099577_create_notes_table.ts
+│   ├── 1750237566915_create_admins_table.ts
+│   ├── 1750237567410_create_siswa_table.ts
+│   ├── 1750237567902_create_riasec_pertanyaans_table.ts
+│   ├── 1750237568441_create_hasil_tes_table.ts
+│   └── 1750237568941_create_jawaban_tes_table.ts
+└── seeders
+    ├── aauser_seeder.ts
+    ├── admin_seeder.ts
+    ├── note_seeder.ts
+    ├── riasec_pertanyaan_seeder.ts
+    └── siswa_seeder.ts
+inertia
+├── app
+│   ├── app.tsx
+│   └── ssr.tsx
+├── components
+│   └── button.tsx
+├── css
+│   └── app.css
+├── pages
+│   ├── admin
+│   │   ├── dashboard
+│   │   │   └── index.tsx
+│   │   ├── layouts
+│   │   │   ├── main.tsx
+│   │   │   └── sidebar.tsx
+│   │   └── users
+│   │       ├── create.tsx
+│   │       ├── edit.tsx
+│   │       └── index.tsx
+│   ├── auth
+│   │   ├── login.tsx
+│   │   └── register.tsx
+│   ├── errors
+│   │   ├── not_found.tsx
+│   │   └── server_error.tsx
+│   ├── user
+│   │   ├── dashboard
+│   │   │   └── index.tsx
+│   │   ├── layouts
+│   │   │   ├── main.tsx
+│   │   │   └── sidebar.tsx
+│   │   ├── notes
+│   │   │   ├── edit.tsx
+│   │   │   └── index.tsx
+│   │   └── riasec
+│   │       ├── index.tsx
+│   │       ├── result.tsx
+│   │       └── test.tsx
+│   └── home.tsx
+└── tsconfig.json
+resources
+└── views
+    └── inertia_layout.edge
+start
+├── env.ts
+├── kernel.ts
+└── routes.ts
+tests
+└── bootstrap.ts
+ace.js
+adonisrc.ts
+anu.html
+eslint.config.js
+package-lock.json
+package.json
+semua_kode.txt
+tsconfig.json
+vite.config.ts
+
+
+=== SOURCE FILES ===
+
+// title: adonisrc.ts
+import { defineConfig } from '@adonisjs/core/app'
+
+export default defineConfig({
+  /*
+  |--------------------------------------------------------------------------
+  | Experimental flags
+  |--------------------------------------------------------------------------
+  |
+  | The following features will be enabled by default in the next major release
+  | of AdonisJS. You can opt into them today to avoid any breaking changes
+  | during upgrade.
+  |
+  */
+  experimental: {
+    mergeMultipartFieldsAndFiles: true,
+    shutdownInReverseOrder: true,
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | Commands
+  |--------------------------------------------------------------------------
+  |
+  | List of ace commands to register from packages. The application commands
+  | will be scanned automatically from the "./commands" directory.
+  |
+  */
+  commands: [() => import('@adonisjs/core/commands'), () => import('@adonisjs/lucid/commands'), () => import('@adonisjs/bouncer/commands')],
+
+  /*
+  |--------------------------------------------------------------------------
+  | Service providers
+  |--------------------------------------------------------------------------
+  |
+  | List of service providers to import and register when booting the
+  | application
+  |
+  */
+  providers: [
+    () => import('@adonisjs/core/providers/app_provider'),
+    () => import('@adonisjs/core/providers/hash_provider'),
+    {
+      file: () => import('@adonisjs/core/providers/repl_provider'),
+      environment: ['repl', 'test'],
+    },
+    () => import('@adonisjs/core/providers/vinejs_provider'),
+    () => import('@adonisjs/core/providers/edge_provider'),
+    () => import('@adonisjs/session/session_provider'),
+    () => import('@adonisjs/vite/vite_provider'),
+    () => import('@adonisjs/shield/shield_provider'),
+    () => import('@adonisjs/static/static_provider'),
+    () => import('@adonisjs/cors/cors_provider'),
+    () => import('@adonisjs/lucid/database_provider'),
+    () => import('@adonisjs/auth/auth_provider'),
+    () => import('@adonisjs/inertia/inertia_provider'),
+    () => import('@adonisjs/bouncer/bouncer_provider')
+  ],
+
+  /*
+  |--------------------------------------------------------------------------
+  | Preloads
+  |--------------------------------------------------------------------------
+  |
+  | List of modules to import before starting the application.
+  |
+  */
+  preloads: [() => import('#start/routes'), () => import('#start/kernel')],
+
+  /*
+  |--------------------------------------------------------------------------
+  | Tests
+  |--------------------------------------------------------------------------
+  |
+  | List of test suites to organize tests by their type. Feel free to remove
+  | and add additional suites.
+  |
+  */
+  tests: {
+    suites: [
+      {
+        files: ['tests/unit/**/*.spec(.ts|.js)'],
+        name: 'unit',
+        timeout: 2000,
+      },
+      {
+        files: ['tests/functional/**/*.spec(.ts|.js)'],
+        name: 'functional',
+        timeout: 30000,
+      },
+    ],
+    forceExit: false,
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | Metafiles
+  |--------------------------------------------------------------------------
+  |
+  | A collection of files you want to copy to the build folder when creating
+  | the production build.
+  |
+  */
+  metaFiles: [
+    {
+      pattern: 'resources/views/**/*.edge',
+      reloadServer: false,
+    },
+    {
+      pattern: 'public/**',
+      reloadServer: false,
+    },
+  ],
+
+  assetsBundler: false,
+  hooks: {
+    onBuildStarting: [() => import('@adonisjs/vite/build_hook')],
+  },
+})
+
+// title: app/abilities/main.ts
+/*
+|--------------------------------------------------------------------------
+| Bouncer abilities
+|--------------------------------------------------------------------------
+|
+| You may export multiple abilities from this file and pre-register them
+| when creating the Bouncer instance.
+|
+| Pre-registered policies and abilities can be referenced as a string by their
+| name. Also they are must if want to perform authorization inside Edge
+| templates.
+|
+*/
+
+import { Bouncer } from '@adonisjs/bouncer'
+
+/**
+ * Delete the following ability to start from
+ * scratch
+ */
+export const editUser = Bouncer.ability(() => {
+  return true
+})
+
+// title: app/controllers/admin/dashboard_controller.ts
+// title: app/controllers/admin/dashboard_controller.ts
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class AdminDashboardController {
+  index({ auth, inertia }: HttpContext) {
+    const admin = auth.user!
+    return inertia.render('admin/dashboard/index', {
+      user: admin.serialize(),
+    })
+  }
+}
+
+// title: app/controllers/admin/hasil_tes_controller.ts
+// import type { HttpContext } from '@adonisjs/core/http'
+
+export default class HasilTesController {}
+
+// title: app/controllers/admin/pertanyaans_controller.ts
+// import type { HttpContext } from '@adonisjs/core/http'
+
+export default class PertanyaansController {
+}
+
+// title: app/controllers/admin/users_controller.ts
+// title: app/controllers/admin/users_controller.ts
+import User from '#models/user'
+import { createUserValidator, updateUserValidator } from '#validators/user'
+import type { HttpContext } from '@adonisjs/core/http'
+import vine from '@vinejs/vine'
+
+export default class UsersController {
+  async index({ inertia }: HttpContext) {
+    const users = await User.all()
+    return inertia.render('admin/users/index', { users })
+  }
+
+  async create({ inertia }: HttpContext) {
+    return inertia.render('admin/users/create')
+  }
+
+  async store({ request, response }: HttpContext) {
+    const payload = await request.validateUsing(createUserValidator)
+    await User.create(payload)
+    return response.redirect().toRoute('admin.dashboard')
+  }
+
+  async edit({ params, inertia }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+    return inertia.render('admin/users/edit', { user })
+  }
+
+  async update({ params, request, response }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+    const payload = await request.validateUsing(updateUserValidator)
+
+    if (payload.email && payload.email !== user.email) {
+      await vine.validate({
+        schema: vine.object({
+          email: vine
+            .string()
+            .email()
+            .unique(async (db, value) => {
+              const match = await db
+                .from('users')
+                .where('email', value)
+                .whereNot('id', user.id)
+                .first()
+              return !match
+            }),
+        }),
+        data: { email: payload.email },
+      })
+    }
+
+    user.merge(payload)
+    await user.save()
+
+    return response.redirect().toRoute('admin.dashboard')
+  }
+
+  async destroy({ params, response, bouncer }: HttpContext) {
+    const user = await User.findOrFail(params.id)
+
+    await bouncer.with('UserPolicy').authorize('delete', user)
+    await user.delete()
+    return response.redirect().toRoute('admin.dashboard')
+  }
+}
+
+// title: app/controllers/auth/registers_controller.ts
+// title: app/controllers/auth/register_controller.ts
+import User from '#models/user'
+import { registerUserValidator } from '#validators/user'
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class RegisterController {
+  create({ inertia }: HttpContext) {
+    return inertia.render('auth/register')
+  }
+
+  async store({ request, response, auth }: HttpContext) {
+    const payload = await request.validateUsing(registerUserValidator)
+    const user = await User.create(payload)
+    await auth.use('web').login(user)
+    return response.redirect().toRoute('dashboard')
+  }
+}
+
+// title: app/controllers/homepages_controller.ts
+// title: app/controllers/home_controller.ts
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class HomeController {
+  // Cuma buat ngerender halaman home
+  index({ inertia }: HttpContext) {
+    return inertia.render('home')
+  }
+}
+
+// title: app/controllers/session_controller.ts
+// title: app/controllers/session_controller.ts
+import User from '#models/user'
+import { HttpContext } from '@adonisjs/core/http'
+
+export default class SessionController {
+  public async create({ inertia }: HttpContext) {
+    return inertia.render('auth/login')
+  }
+
+  public async store({ request, auth, response }: HttpContext) {
+    const { email, password } = request.only(['email', 'password'])
+    const user = await User.verifyCredentials(email, password)
+
+    await auth.use('web').login(user)
+
+    if (user.role === 'admin') {
+      return response.redirect().toRoute('admin.dashboard')
+    }
+    return response.redirect().toRoute('dashboard')
+  }
+
+  public async destroy({ auth, response }: HttpContext) {
+    await auth.use('web').logout()
+    return response.redirect().toRoute('auth.login')
+  }
+}
+
+// title: app/controllers/user/dashboard_controller.ts
+// title: app/controllers/user/dashboard_controller.ts
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class DashboardController {
+  index({ auth, inertia }: HttpContext) {
+    const user = auth.user!
+    return inertia.render('user/dashboard/index', {
+      user: user.serialize(),
+    })
+  }
+}
+
+// title: app/controllers/user/hasil_tes_controller.ts
+// import type { HttpContext } from '@adonisjs/core/http'
+
+export default class HasilTesController {
+}
+
+// title: app/controllers/user/notes_controller.ts
+// title: app/controllers/user/notes_controller.ts
+import Note from '#models/note'
+import { createNoteValidator, updateNoteValidator } from '#validators/note'
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class NotesController {
+  async index({ auth, inertia }: HttpContext) {
+    const user = auth.user!
+    // Ambil notes yang berelasi dengan user
+    const notes = await Note.query().where('userId', user.id)
+    return inertia.render('user/notes/index', { notes })
+  }
+
+  async create({ inertia }: HttpContext) {
+    return inertia.render('user/notes/create')
+  }
+
+  async store({ request, response, auth }: HttpContext) {
+    const payload = await request.validateUsing(createNoteValidator)
+    const user = auth.user!
+    await user.related('notes').create(payload)
+
+    return response.redirect().toRoute('notes.index')
+  }
+
+  async edit({ params, inertia, bouncer }: HttpContext) {
+    const note = await Note.findOrFail(params.id)
+    await bouncer.with('NotePolicy').authorize('view', note)
+    return inertia.render('user/notes/edit', { note })
+  }
+
+  async update({ params, request, response, bouncer }: HttpContext) {
+    const note = await Note.findOrFail(params.id)
+    await bouncer.with('NotePolicy').authorize('update', note)
+
+    const payload = await request.validateUsing(updateNoteValidator)
+    note.merge(payload)
+    await note.save()
+
+    return response.redirect().toRoute('notes.index')
+  }
+
+  async destroy({ params, response, bouncer }: HttpContext) {
+    const note = await Note.findOrFail(params.id)
+    await bouncer.with('NotePolicy').authorize('delete', note)
+    await note.delete()
+
+    return response.redirect().toRoute('notes.index')
+  }
+}
+
+// title: app/controllers/user/profiles_controller.ts
+// import type { HttpContext } from '@adonisjs/core/http'
+
+export default class ProfilesController {
+}
+
+// title: app/controllers/user/tests_controller.ts
+// title: app/controllers/user/tests_controller.ts
+import type { HttpContext } from '@adonisjs/core/http'
+import db from '@adonisjs/lucid/services/db'
+import RiasecPertanyaan from '#models/riasec_pertanyaan'
+import HasilTes from '#models/hasil'
+import JawabanTes from '#models/jawaban'
+import Siswa from '#models/siswa'
+
+export default class TestsController {
+  /**
+   * Method ini sekarang jadi penjaga gerbang.
+   * Cek dulu apakah siswa sudah punya hasil tes.
+   */
+  async index({ auth, inertia }: HttpContext) {
+    const admin = auth.user!
+    return inertia.render('user/riasec/index', {
+      user: admin.serialize(),
+    })
+  }
+
+  async start({ auth, inertia, response }: HttpContext) {
+    const user = auth.user!
+    const siswa = await Siswa.findByOrFail('user_id', user.id)
+
+    // Cari hasil tes TERBARU dari siswa ini
+    const lastResult = await HasilTes.query()
+      .where('siswa_id', siswa.id)
+      .orderBy('created_at', 'desc')
+      .first()
+
+    // JIKA SUDAH ADA HASIL, langsung redirect ke halaman hasil
+    if (lastResult) {
+      return response.redirect().toRoute('riasec.results.show', { id: lastResult.id })
+    }
+
+    // JIKA BELUM, tampilkan halaman soal
+    const questions = await RiasecPertanyaan.query().orderBy('nomor_urut', 'asc')
+    return inertia.render('user/riasec/index', { questions })
+  }
+
+  /**
+   * Method ini sekarang akan redirect-back sambil membawa flash data
+   * yang akan ditangkap oleh React untuk menampilkan modal.
+   */
+  async store({ request, auth, response }: HttpContext) {
+    const user = auth.user!
+    const answers: Record<string, number> = request.input('answers')
+    const siswa = await Siswa.findByOrFail('user_id', user.id)
+
+    // Logika transaksi untuk menyimpan tes tetap sama
+    const newHasilTes = await db.transaction(async (trx) => {
+      // ... (semua logika perhitungan skor di sini tidak berubah)
+      const allQuestions = await RiasecPertanyaan.query({ client: trx })
+      const questionsMap = new Map(allQuestions.map((q) => [q.id, q.tipeRiasec]))
+      const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
+      for (const questionId in answers) {
+        const score = answers[questionId]
+        if (score && score >= 4) {
+          const tipe = questionsMap.get(Number(questionId))
+          if (tipe) scores[tipe]++
+        }
+      }
+      const sortedScores = (Object.entries(scores) as [keyof typeof scores, number][]).sort(
+        ([, a], [, b]) => b - a
+      )
+      const hollandCode = sortedScores
+        .slice(0, 3)
+        .map(([key]) => key)
+        .join('')
+      const hasil = await HasilTes.create(
+        {
+          siswaId: siswa.id,
+          skorR: scores.R,
+          skorI: scores.I,
+          skorA: scores.A,
+          skorS: scores.S,
+          skorE: scores.E,
+          skorC: scores.C,
+          kodeHolland: hollandCode,
+        },
+        { client: trx }
+      )
+      const jawabanData = Object.entries(answers).map(([questionId, jawaban]) => ({
+        hasilTesId: hasil.id,
+        pertanyaanId: Number(questionId),
+        jawaban: Number(jawaban),
+      }))
+      await JawabanTes.createMany(jawabanData, { client: trx })
+      return hasil
+    })
+
+    // --- PERUBAHAN UTAMA DI SINI ---
+    // Redirect ke halaman hasil yang baru dibuat, bukan `back()`.
+    // Kita juga kirim "sinyal" `showModal: true` sebagai flash data.
+    // highlight-start
+    return response
+      .redirect()
+      .toRoute('riasec.results.show', { id: newHasilTes.id })
+      .with('showModal', true)
+    // highlight-end
+  }
+
+  /**
+   * Method ini untuk menampilkan halaman hasil tes
+   * jika user sudah pernah mengerjakan.
+   */
+  async showResult({ params, inertia }: HttpContext) {
+    const hasilTes = await HasilTes.query().where('id', params.id).preload('siswa').firstOrFail()
+
+    // Pastikan hanya siswa yang bersangkutan yang bisa melihat hasilnya
+    // Implementasi bouncer/policy di sini jika perlu
+
+    return inertia.render('user/riasec/result', { hasilTes })
+  }
+}
+
+// title: app/exceptions/handler.ts
+import app from '@adonisjs/core/services/app'
+import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
+import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
+
+export default class HttpExceptionHandler extends ExceptionHandler {
+  /**
+   * In debug mode, the exception handler will display verbose errors
+   * with pretty printed stack traces.
+   */
+  protected debug = !app.inProduction
+
+  /**
+   * Status pages are used to display a custom HTML pages for certain error
+   * codes. You might want to enable them in production only, but feel
+   * free to enable them in development as well.
+   */
+  protected renderStatusPages = app.inProduction
+
+  /**
+   * Status pages is a collection of error code range and a callback
+   * to return the HTML contents to send as a response.
+   */
+  protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
+    '404': (error, { inertia }) => inertia.render('errors/not_found', { error }),
+    '500..599': (error, { inertia }) => inertia.render('errors/server_error', { error }),
+  }
+
+  /**
+   * The method is used for handling errors and returning
+   * response to the client
+   */
+  async handle(error: unknown, ctx: HttpContext) {
+    return super.handle(error, ctx)
+  }
+
+  /**
+   * The method is used to report error to the logging service or
+   * the a third party error monitoring service.
+   *
+   * @note You should not attempt to send a response from this method.
+   */
+  async report(error: unknown, ctx: HttpContext) {
+    return super.report(error, ctx)
+  }
+}
+
+// title: app/middleware/admin_middleware.ts
+// title: app/middleware/admin_middleware.ts
+import type { HttpContext } from '@adonisjs/core/http'
+import type { NextFn } from '@adonisjs/core/types/http'
+
+export default class AdminMiddleware {
+  async handle(ctx: HttpContext, next: NextFn) {
+    if (ctx.auth.user?.role !== 'admin') {
+      return ctx.response.redirect().back()
+    }
+    return next()
+  }
+}
+
+// title: app/middleware/auth_middleware.ts
+import type { HttpContext } from '@adonisjs/core/http'
+import type { NextFn } from '@adonisjs/core/types/http'
+import type { Authenticators } from '@adonisjs/auth/types'
+
+/**
+ * Auth middleware is used authenticate HTTP requests and deny
+ * access to unauthenticated users.
+ */
+export default class AuthMiddleware {
+  /**
+   * The URL to redirect to, when authentication fails
+   */
+  redirectTo = '/login'
+
+  async handle(
+    ctx: HttpContext,
+    next: NextFn,
+    options: {
+      guards?: (keyof Authenticators)[]
+    } = {}
+  ) {
+    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
+    return next()
+  }
+}
+
+// title: app/middleware/container_bindings_middleware.ts
+import { Logger } from '@adonisjs/core/logger'
+import { HttpContext } from '@adonisjs/core/http'
+import { NextFn } from '@adonisjs/core/types/http'
+
+/**
+ * The container bindings middleware binds classes to their request
+ * specific value using the container resolver.
+ *
+ * - We bind "HttpContext" class to the "ctx" object
+ * - And bind "Logger" class to the "ctx.logger" object
+ */
+export default class ContainerBindingsMiddleware {
+  handle(ctx: HttpContext, next: NextFn) {
+    ctx.containerResolver.bindValue(HttpContext, ctx)
+    ctx.containerResolver.bindValue(Logger, ctx.logger)
+
+    return next()
+  }
+}
+
+// title: app/middleware/guest_middleware.ts
+// title: app/middleware/guest_middleware.ts
+import type { HttpContext } from '@adonisjs/core/http'
+import type { NextFn } from '@adonisjs/core/types/http'
+
+export default class GuestMiddleware {
+  async handle(ctx: HttpContext, next: NextFn, _options: { guards?: string[] } = {}) {
+    await ctx.auth.check()
+
+    if (ctx.auth.isAuthenticated) {
+      if (ctx.auth.user?.role === 'admin') {
+        return ctx.response.redirect().toRoute('admin.dashboard')
+      }
+      return ctx.response.redirect().toRoute('dashboard')
+    }
+
+    return next()
+  }
+}
+
+// title: app/middleware/initialize_bouncer_middleware.ts
+import { policies } from '#policies/main'
+import * as abilities from '#abilities/main'
+
+import { Bouncer } from '@adonisjs/bouncer'
+import type { HttpContext } from '@adonisjs/core/http'
+import type { NextFn } from '@adonisjs/core/types/http'
+
+/**
+ * Init bouncer middleware is used to create a bouncer instance
+ * during an HTTP request
+ */
+export default class InitializeBouncerMiddleware {
+  async handle(ctx: HttpContext, next: NextFn) {
+    /**
+     * Create bouncer instance for the ongoing HTTP request.
+     * We will pull the user from the HTTP context.
+     */
+    ctx.bouncer = new Bouncer(
+      () => ctx.auth.user || null,
+      abilities,
+      policies
+    ).setContainerResolver(ctx.containerResolver)
+
+    /**
+     * Share bouncer helpers with Edge templates.
+     */
+    if ('view' in ctx) {
+      ctx.view.share(ctx.bouncer.edgeHelpers)
+    }
+
+    return next()
+  }
+}
+
+declare module '@adonisjs/core/http' {
+  export interface HttpContext {
+    bouncer: Bouncer<
+      Exclude<HttpContext['auth']['user'], undefined>,
+      typeof abilities,
+      typeof policies
+    >
+  }
+}
+
+// title: app/middleware/silent_auth_middleware.ts
+import type { HttpContext } from '@adonisjs/core/http'
+import type { NextFn } from '@adonisjs/core/types/http'
+
+/**
+ * Silent auth middleware can be used as a global middleware to silent check
+ * if the user is logged-in or not.
+ *
+ * The request continues as usual, even when the user is not logged-in.
+ */
+export default class SilentAuthMiddleware {
+  async handle(ctx: HttpContext, next: NextFn) {
+    await ctx.auth.check()
+
+    return next()
+  }
+}
+
+// title: app/models/admin.ts
+import { DateTime } from 'luxon'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
+
+export default class Admin extends BaseModel {
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare userId: number
+
+  @column()
+  declare namaLengkap: string
+
+  @column()
+  declare jabatan: string | null
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+
+  // === RELATIONS ===
+
+  // Profil admin ini dimiliki oleh satu User
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
+}
+
+// title: app/models/hasil.ts
+import { DateTime } from 'luxon'
+import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import Siswa from '#models/siswa'
+import JawabanTes from '#models/jawaban'
+
+export default class HasilTes extends BaseModel {
+  public static table = 'hasil_tes'
+
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare siswaId: number
+
+  @column.dateTime()
+  declare tanggalTes: DateTime
+
+  @column()
+  declare skorR: number
+
+  @column()
+  declare skorI: number
+
+  @column()
+  declare skorA: number
+
+  @column()
+  declare skorS: number
+
+  @column()
+  declare skorE: number
+
+  @column()
+  declare skorC: number
+
+  @column()
+  declare kodeHolland: string | null
+
+  @column()
+  declare deskripsiHasil: string | null
+
+  // === RELATIONS ===
+
+  // Hasil tes ini milik satu siswa
+  @belongsTo(() => Siswa)
+  declare siswa: BelongsTo<typeof Siswa>
+
+  // Satu hasil tes terdiri dari banyak jawaban
+  @hasMany(() => JawabanTes)
+  declare jawaban: HasMany<typeof JawabanTes>
+}
+
+// title: app/models/jawaban.ts
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import HasilTes from '#models/hasil'
+import RiasecPertanyaan from '#models/riasec_pertanyaan'
+
+export default class JawabanTes extends BaseModel {
+  public static table = 'jawaban_tes'
+
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare hasilTesId: number
+
+  @column()
+  declare pertanyaanId: number
+
+  @column()
+  declare jawaban: boolean // true untuk Ya/Suka (1), false untuk Tidak/Tidak Suka (0)
+
+  // === RELATIONS ===
+
+  // Jawaban ini adalah bagian dari satu sesi hasil tes
+  @belongsTo(() => HasilTes)
+  declare hasilTes: BelongsTo<typeof HasilTes>
+
+  // Jawaban ini merujuk ke satu pertanyaan spesifik
+  @belongsTo(() => RiasecPertanyaan)
+  declare pertanyaan: BelongsTo<typeof RiasecPertanyaan>
+}
+
+// title: app/models/note.ts
+// title: app/models/note.ts
+import { DateTime } from 'luxon'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import User from '#models/user'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+
+export default class Note extends BaseModel {
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare userId: number
+
+  @column()
+  declare title: string
+
+  @column()
+  declare content: string
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
+}
+
+// title: app/models/riasec_pertanyaan.ts
+import { BaseModel, column } from '@adonisjs/lucid/orm'
+
+export default class RiasecPertanyaan extends BaseModel {
+  // Secara eksplisit memberitahu Lucid nama tabel jika berbeda dari snake_case plural model
+  public static table = 'riasec_pertanyaan'
+
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare teksPertanyaan: string
+
+  @column()
+  declare tipeRiasec: 'R' | 'I' | 'A' | 'S' | 'E' | 'C'
+
+  @column()
+  declare nomorUrut: number | null
+}
+
+// title: app/models/siswa.ts
+import { DateTime } from 'luxon'
+import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
+import HasilTes from '#models/hasil'
+
+export default class Siswa extends BaseModel {
+  public static table = 'siswa'
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare userId: number
+
+  @column()
+  declare namaLengkap: string
+
+  @column()
+  declare nisn: string | null
+
+  @column()
+  declare kelas: string | null
+
+  @column.date()
+  declare tanggalLahir: DateTime | null
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+
+  // === RELATIONS ===
+
+  // Profil siswa ini dimiliki oleh satu User
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
+
+  // Satu siswa bisa memiliki banyak hasil tes
+  @hasMany(() => HasilTes)
+  declare hasilTes: HasMany<typeof HasilTes>
+}
+
+// title: app/models/user.ts
+// title: app/models/user.ts
+import { DateTime } from 'luxon'
+import hash from '@adonisjs/core/services/hash'
+import { compose } from '@adonisjs/core/helpers'
+import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
+import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
+import Note from '#models/note'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+
+const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
+  uids: ['email'],
+  passwordColumnName: 'password',
+})
+
+export default class User extends compose(BaseModel, AuthFinder) {
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare fullName: string | null
+
+  @column()
+  declare email: string
+
+  @column({ serializeAs: null })
+  declare password: string
+
+  @column()
+  declare role: 'siswa' | 'admin'
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+
+  @hasMany(() => Note)
+  declare notes: HasMany<typeof Note>
+}
+
+// title: app/policies/main.ts
+/*
+|--------------------------------------------------------------------------
+| Bouncer policies
+|--------------------------------------------------------------------------
+|
+| You may define a collection of policies inside this file and pre-register
+| them when creating a new bouncer instance.
+|
+| Pre-registered policies and abilities can be referenced as a string by their
+| name. Also they are must if want to perform authorization inside Edge
+| templates.
+|
+*/
+
+export const policies = {
+  UserPolicy: () => import('#policies/user_policy'),
+  NotePolicy: () => import('#policies/note_policy'),
+}
+
+// title: app/policies/note_policy.ts
+// title: app/policies/note_policy.ts
+import User from '#models/user'
+import Note from '#models/note'
+import { BasePolicy } from '@adonisjs/bouncer'
+import { AuthorizerResponse } from '@adonisjs/bouncer/types'
+
+export default class NotePolicy extends BasePolicy {
+  view(user: User, note: Note): AuthorizerResponse {
+    return user.id === note.userId
+  }
+
+  update(user: User, note: Note): AuthorizerResponse {
+    return user.id === note.userId
+  }
+
+  delete(user: User, note: Note): AuthorizerResponse {
+    return user.id === note.userId
+  }
+}
+
+// title: app/policies/user_policy.ts
+// title: app/policies/user_policy.ts
+import User from '#models/user'
+import { BasePolicy } from '@adonisjs/bouncer'
+import { AuthorizerResponse } from '@adonisjs/bouncer/types'
+
+export default class UserPolicy extends BasePolicy {
+  delete(admin: User, userToDelete: User): AuthorizerResponse {
+    return admin.id !== userToDelete.id
+  }
+}
+
+// title: app/validators/note.ts
+// title: app/validators/note.ts
+import vine from '@vinejs/vine'
+
+export const createNoteValidator = vine.compile(
+  vine.object({
+    title: vine.string().trim().minLength(3),
+    content: vine.string().trim().minLength(5),
+  })
+)
+
+export const updateNoteValidator = vine.compile(
+  vine.object({
+    title: vine.string().trim().minLength(3),
+    content: vine.string().trim().minLength(5),
+  })
+)
+
+// title: app/validators/user.ts
+// title: app/validators/user.ts
+import vine from '@vinejs/vine'
+
+export const createUserValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().trim(),
+    email: vine
+      .string()
+      .email()
+      .unique(async (db, value) => {
+        const user = await db.from('users').where('email', value).first()
+        return !user
+      }),
+    password: vine.string().minLength(8),
+    role: vine.enum(['user', 'admin']),
+  })
+)
+
+export const updateUserValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().trim(),
+    email: vine.string().email(),
+    role: vine.enum(['user', 'admin']),
+  })
+)
+
+export const registerUserValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().trim(),
+    email: vine
+      .string()
+      .email()
+      .unique(async (db, value) => {
+        const user = await db.from('users').where('email', value).first()
+        return !user
+      }),
+    password: vine.string().minLength(8).confirmed(),
+  })
+)
+
+// title: bin/console.ts
+/*
+|--------------------------------------------------------------------------
+| Ace entry point
+|--------------------------------------------------------------------------
+|
+| The "console.ts" file is the entrypoint for booting the AdonisJS
+| command-line framework and executing commands.
+|
+| Commands do not boot the application, unless the currently running command
+| has "options.startApp" flag set to true.
+|
+*/
+
+import 'reflect-metadata'
+import { Ignitor, prettyPrintError } from '@adonisjs/core'
+
+/**
+ * URL to the application root. AdonisJS need it to resolve
+ * paths to file and directories for scaffolding commands
+ */
+const APP_ROOT = new URL('../', import.meta.url)
+
+/**
+ * The importer is used to import files in context of the
+ * application.
+ */
+const IMPORTER = (filePath: string) => {
+  if (filePath.startsWith('./') || filePath.startsWith('../')) {
+    return import(new URL(filePath, APP_ROOT).href)
+  }
+  return import(filePath)
+}
+
+new Ignitor(APP_ROOT, { importer: IMPORTER })
+  .tap((app) => {
+    app.booting(async () => {
+      await import('#start/env')
+    })
+    app.listen('SIGTERM', () => app.terminate())
+    app.listenIf(app.managedByPm2, 'SIGINT', () => app.terminate())
+  })
+  .ace()
+  .handle(process.argv.splice(2))
+  .catch((error) => {
+    process.exitCode = 1
+    prettyPrintError(error)
+  })
+
+// title: bin/server.ts
+/*
+|--------------------------------------------------------------------------
+| HTTP server entrypoint
+|--------------------------------------------------------------------------
+|
+| The "server.ts" file is the entrypoint for starting the AdonisJS HTTP
+| server. Either you can run this file directly or use the "serve"
+| command to run this file and monitor file changes
+|
+*/
+
+import 'reflect-metadata'
+import { Ignitor, prettyPrintError } from '@adonisjs/core'
+
+/**
+ * URL to the application root. AdonisJS need it to resolve
+ * paths to file and directories for scaffolding commands
+ */
+const APP_ROOT = new URL('../', import.meta.url)
+
+/**
+ * The importer is used to import files in context of the
+ * application.
+ */
+const IMPORTER = (filePath: string) => {
+  if (filePath.startsWith('./') || filePath.startsWith('../')) {
+    return import(new URL(filePath, APP_ROOT).href)
+  }
+  return import(filePath)
+}
+
+new Ignitor(APP_ROOT, { importer: IMPORTER })
+  .tap((app) => {
+    app.booting(async () => {
+      await import('#start/env')
+    })
+    app.listen('SIGTERM', () => app.terminate())
+    app.listenIf(app.managedByPm2, 'SIGINT', () => app.terminate())
+  })
+  .httpServer()
+  .start()
+  .catch((error) => {
+    process.exitCode = 1
+    prettyPrintError(error)
+  })
+
+// title: bin/test.ts
+/*
+|--------------------------------------------------------------------------
+| Test runner entrypoint
+|--------------------------------------------------------------------------
+|
+| The "test.ts" file is the entrypoint for running tests using Japa.
+|
+| Either you can run this file directly or use the "test"
+| command to run this file and monitor file changes.
+|
+*/
+
+process.env.NODE_ENV = 'test'
+
+import 'reflect-metadata'
+import { Ignitor, prettyPrintError } from '@adonisjs/core'
+import { configure, processCLIArgs, run } from '@japa/runner'
+
+/**
+ * URL to the application root. AdonisJS need it to resolve
+ * paths to file and directories for scaffolding commands
+ */
+const APP_ROOT = new URL('../', import.meta.url)
+
+/**
+ * The importer is used to import files in context of the
+ * application.
+ */
+const IMPORTER = (filePath: string) => {
+  if (filePath.startsWith('./') || filePath.startsWith('../')) {
+    return import(new URL(filePath, APP_ROOT).href)
+  }
+  return import(filePath)
+}
+
+new Ignitor(APP_ROOT, { importer: IMPORTER })
+  .tap((app) => {
+    app.booting(async () => {
+      await import('#start/env')
+    })
+    app.listen('SIGTERM', () => app.terminate())
+    app.listenIf(app.managedByPm2, 'SIGINT', () => app.terminate())
+  })
+  .testRunner()
+  .configure(async (app) => {
+    const { runnerHooks, ...config } = await import('../tests/bootstrap.js')
+
+    processCLIArgs(process.argv.splice(2))
+    configure({
+      ...app.rcFile.tests,
+      ...config,
+      ...{
+        setup: runnerHooks.setup,
+        teardown: runnerHooks.teardown.concat([() => app.terminate()]),
+      },
+    })
+  })
+  .run(() => run())
+  .catch((error) => {
+    process.exitCode = 1
+    prettyPrintError(error)
+  })
+
+// title: config/app.ts
+import env from '#start/env'
+import app from '@adonisjs/core/services/app'
+import { Secret } from '@adonisjs/core/helpers'
+import { defineConfig } from '@adonisjs/core/http'
+
+/**
+ * The app key is used for encrypting cookies, generating signed URLs,
+ * and by the "encryption" module.
+ *
+ * The encryption module will fail to decrypt data if the key is lost or
+ * changed. Therefore it is recommended to keep the app key secure.
+ */
+export const appKey = new Secret(env.get('APP_KEY'))
+
+/**
+ * The configuration settings used by the HTTP server
+ */
+export const http = defineConfig({
+  generateRequestId: true,
+  allowMethodSpoofing: false,
+
+  /**
+   * Enabling async local storage will let you access HTTP context
+   * from anywhere inside your application.
+   */
+  useAsyncLocalStorage: false,
+
+  /**
+   * Manage cookies configuration. The settings for the session id cookie are
+   * defined inside the "config/session.ts" file.
+   */
+  cookie: {
+    domain: '',
+    path: '/',
+    maxAge: '2h',
+    httpOnly: true,
+    secure: app.inProduction,
+    sameSite: 'lax',
+  },
+})
+
+// title: config/auth.ts
+import { defineConfig } from '@adonisjs/auth'
+import { sessionGuard, sessionUserProvider } from '@adonisjs/auth/session'
+import type { InferAuthenticators, InferAuthEvents, Authenticators } from '@adonisjs/auth/types'
+
+const authConfig = defineConfig({
+  default: 'web',
+  guards: {
+    web: sessionGuard({
+      useRememberMeTokens: false,
+      provider: sessionUserProvider({
+        model: () => import('#models/user')
+      }),
+    }),
+  },
+})
+
+export default authConfig
+
+/**
+ * Inferring types from the configured auth
+ * guards.
+ */
+declare module '@adonisjs/auth/types' {
+  export interface Authenticators extends InferAuthenticators<typeof authConfig> {}
+}
+declare module '@adonisjs/core/types' {
+  interface EventsList extends InferAuthEvents<Authenticators> {}
+}
+
+// title: config/bodyparser.ts
+import { defineConfig } from '@adonisjs/core/bodyparser'
+
+const bodyParserConfig = defineConfig({
+  /**
+   * The bodyparser middleware will parse the request body
+   * for the following HTTP methods.
+   */
+  allowedMethods: ['POST', 'PUT', 'PATCH', 'DELETE'],
+
+  /**
+   * Config for the "application/x-www-form-urlencoded"
+   * content-type parser
+   */
+  form: {
+    convertEmptyStringsToNull: true,
+    types: ['application/x-www-form-urlencoded'],
+  },
+
+  /**
+   * Config for the JSON parser
+   */
+  json: {
+    convertEmptyStringsToNull: true,
+    types: [
+      'application/json',
+      'application/json-patch+json',
+      'application/vnd.api+json',
+      'application/csp-report',
+    ],
+  },
+
+  /**
+   * Config for the "multipart/form-data" content-type parser.
+   * File uploads are handled by the multipart parser.
+   */
+  multipart: {
+    /**
+     * Enabling auto process allows bodyparser middleware to
+     * move all uploaded files inside the tmp folder of your
+     * operating system
+     */
+    autoProcess: true,
+    convertEmptyStringsToNull: true,
+    processManually: [],
+
+    /**
+     * Maximum limit of data to parse including all files
+     * and fields
+     */
+    limit: '20mb',
+    types: ['multipart/form-data'],
+  },
+})
+
+export default bodyParserConfig
+
+// title: config/cors.ts
+import { defineConfig } from '@adonisjs/cors'
+
+/**
+ * Configuration options to tweak the CORS policy. The following
+ * options are documented on the official documentation website.
+ *
+ * https://docs.adonisjs.com/guides/security/cors
+ */
+const corsConfig = defineConfig({
+  enabled: true,
+  origin: [],
+  methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+  headers: true,
+  exposeHeaders: [],
+  credentials: true,
+  maxAge: 90,
+})
+
+export default corsConfig
+
+// title: config/database.ts
+import env from '#start/env'
+import { defineConfig } from '@adonisjs/lucid'
+
+const dbConfig = defineConfig({
+  connection: 'mysql',
+  connections: {
+    mysql: {
+      client: 'mysql2',
+      connection: {
+        host: env.get('DB_HOST'),
+        port: env.get('DB_PORT'),
+        user: env.get('DB_USER'),
+        password: env.get('DB_PASSWORD'),
+        database: env.get('DB_DATABASE'),
+      },
+      migrations: {
+        naturalSort: true,
+        paths: ['database/migrations'],
+      },
+    },
+  },
+})
+
+export default dbConfig
+
+// title: config/hash.ts
+import { defineConfig, drivers } from '@adonisjs/core/hash'
+
+const hashConfig = defineConfig({
+  default: 'scrypt',
+
+  list: {
+    scrypt: drivers.scrypt({
+      cost: 16384,
+      blockSize: 8,
+      parallelization: 1,
+      maxMemory: 33554432,
+    }),
+  },
+})
+
+export default hashConfig
+
+/**
+ * Inferring types for the list of hashers you have configured
+ * in your application.
+ */
+declare module '@adonisjs/core/types' {
+  export interface HashersList extends InferHashers<typeof hashConfig> {}
+}
+
+// title: config/inertia.ts
+import { defineConfig } from '@adonisjs/inertia'
+import type { InferSharedProps } from '@adonisjs/inertia/types'
+
+const inertiaConfig = defineConfig({
+  /**
+   * Path to the Edge view that will be used as the root view for Inertia responses
+   */
+  rootView: 'inertia_layout',
+
+  /**
+   * Data that should be shared with all rendered pages
+   */
+  sharedData: {
+    // user: (ctx) => ctx.inertia.always(() => ctx.auth.user),
+  },
+
+  /**
+   * Options for the server-side rendering
+   */
+  ssr: {
+    enabled: true,
+    entrypoint: 'inertia/app/ssr.tsx'
+  }
+})
+
+export default inertiaConfig
+
+declare module '@adonisjs/inertia/types' {
+  export interface SharedProps extends InferSharedProps<typeof inertiaConfig> {}
+}
+
+// title: config/logger.ts
+import env from '#start/env'
+import app from '@adonisjs/core/services/app'
+import { defineConfig, targets } from '@adonisjs/core/logger'
+
+const loggerConfig = defineConfig({
+  default: 'app',
+
+  /**
+   * The loggers object can be used to define multiple loggers.
+   * By default, we configure only one logger (named "app").
+   */
+  loggers: {
+    app: {
+      enabled: true,
+      name: env.get('APP_NAME'),
+      level: env.get('LOG_LEVEL'),
+      transport: {
+        targets: targets()
+          .pushIf(!app.inProduction, targets.pretty())
+          .pushIf(app.inProduction, targets.file({ destination: 1 }))
+          .toArray(),
+      },
+    },
+  },
+})
+
+export default loggerConfig
+
+/**
+ * Inferring types for the list of loggers you have configured
+ * in your application.
+ */
+declare module '@adonisjs/core/types' {
+  export interface LoggersList extends InferLoggers<typeof loggerConfig> {}
+}
+
+// title: config/session.ts
+import env from '#start/env'
+import app from '@adonisjs/core/services/app'
+import { defineConfig, stores } from '@adonisjs/session'
+
+const sessionConfig = defineConfig({
+  enabled: true,
+  cookieName: 'adonis-session',
+
+  /**
+   * When set to true, the session id cookie will be deleted
+   * once the user closes the browser.
+   */
+  clearWithBrowser: false,
+
+  /**
+   * Define how long to keep the session data alive without
+   * any activity.
+   */
+  age: '2h',
+
+  /**
+   * Configuration for session cookie and the
+   * cookie store
+   */
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    secure: app.inProduction,
+    sameSite: 'lax',
+  },
+
+  /**
+   * The store to use. Make sure to validate the environment
+   * variable in order to infer the store name without any
+   * errors.
+   */
+  store: env.get('SESSION_DRIVER'),
+
+  /**
+   * List of configured stores. Refer documentation to see
+   * list of available stores and their config.
+   */
+  stores: {
+    cookie: stores.cookie(),
+  },
+})
+
+export default sessionConfig
+
+// title: config/shield.ts
+import { defineConfig } from '@adonisjs/shield'
+
+const shieldConfig = defineConfig({
+  /**
+   * Configure CSP policies for your app. Refer documentation
+   * to learn more
+   */
+  csp: {
+    enabled: false,
+    directives: {},
+    reportOnly: false,
+  },
+
+  /**
+   * Configure CSRF protection options. Refer documentation
+   * to learn more
+   */
+  csrf: {
+    enabled: true,
+    exceptRoutes: [],
+    enableXsrfCookie: true,
+    methods: ['POST', 'PUT', 'PATCH', 'DELETE'],
+  },
+
+  /**
+   * Control how your website should be embedded inside
+   * iFrames
+   */
+  xFrame: {
+    enabled: true,
+    action: 'DENY',
+  },
+
+  /**
+   * Force browser to always use HTTPS
+   */
+  hsts: {
+    enabled: true,
+    maxAge: '180 days',
+  },
+
+  /**
+   * Disable browsers from sniffing the content type of a
+   * response and always rely on the "content-type" header.
+   */
+  contentTypeSniffing: {
+    enabled: true,
+  },
+})
+
+export default shieldConfig
+
+// title: config/static.ts
+import { defineConfig } from '@adonisjs/static'
+
+/**
+ * Configuration options to tweak the static files middleware.
+ * The complete set of options are documented on the
+ * official documentation website.
+ *
+ * https://docs.adonisjs.com/guides/static-assets
+ */
+const staticServerConfig = defineConfig({
+  enabled: true,
+  etag: true,
+  lastModified: true,
+  dotFiles: 'ignore',
+})
+
+export default staticServerConfig
+
+// title: config/vite.ts
+import { defineConfig } from '@adonisjs/vite'
+
+const viteBackendConfig = defineConfig({
+  /**
+   * The output of vite will be written inside this
+   * directory. The path should be relative from
+   * the application root.
+   */
+  buildDirectory: 'public/assets',
+
+  /**
+   * The path to the manifest file generated by the
+   * "vite build" command.
+   */
+  manifestFile: 'public/assets/.vite/manifest.json',
+
+  /**
+   * Feel free to change the value of the "assetsUrl" to
+   * point to a CDN in production.
+   */
+  assetsUrl: '/assets',
+
+  scriptAttributes: {
+    defer: true,
+  },
+})
+
+export default viteBackendConfig
+
+// title: database/.seeders/aauser_seeder.ts
+// database/seeders/user_seeder.ts
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    await User.createMany([
+      {
+        fullName: 'Admin User',
+        email: 'admin@example.com',
+        password: '12qwaszx',
+        role: 'admin',
+      },
+      {
+        fullName: 'Regular User',
+        email: 'user@example.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'lele',
+        email: 'lele@lele.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'sapi',
+        email: 'sapi@sapi.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+    ])
+  }
+}
+
+// title: database/.seeders/admin_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/database_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/riasec_pertanyaan_seeder.ts
+// title: database/seeders/riasec_pertanyaan_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import RiasecPertanyaan from '#models/riasec_pertanyaan'
+
+export default class extends BaseSeeder {
+  async run() {
+    await RiasecPertanyaan.createMany([
+      // Realistic
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
+        tipeRiasec: 'R',
+        nomorUrut: 1,
+      },
+      {
+        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
+        tipeRiasec: 'R',
+        nomorUrut: 2,
+      },
+      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
+
+      // Investigative
+      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
+      {
+        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
+        tipeRiasec: 'I',
+        nomorUrut: 5,
+      },
+      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
+
+      // Artistic
+      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
+      {
+        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
+        tipeRiasec: 'A',
+        nomorUrut: 8,
+      },
+      {
+        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
+        tipeRiasec: 'A',
+        nomorUrut: 9,
+      },
+
+      // Social
+      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
+      {
+        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
+        tipeRiasec: 'S',
+        nomorUrut: 11,
+      },
+      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
+
+      // Enterprising
+      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
+      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
+      {
+        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
+        tipeRiasec: 'E',
+        nomorUrut: 15,
+      },
+
+      // Conventional
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
+        tipeRiasec: 'C',
+        nomorUrut: 16,
+      },
+      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
+      {
+        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
+        tipeRiasec: 'C',
+        nomorUrut: 18,
+      },
+    ])
+  }
+}
+
+// title: database/.seeders/siswa_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/migrations/1749892627155_create_users_table.ts
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'users'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').notNullable()
+      table.string('full_name').nullable()
+      table.string('email', 254).notNullable().unique()
+      table.string('password').notNullable()
+      table.string('role').notNullable().defaultTo('user')
+
+      table.timestamp('created_at').notNullable()
+      table.timestamp('updated_at').nullable()
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
+
+// title: database/migrations/1749947099577_create_notes_table.ts
+// title: database/migrations/...._create_notes_table.ts
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'notes'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id')
+      table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.string('title').notNullable()
+      table.text('content').notNullable()
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
+
+// title: database/migrations/1750237566915_create_admins_table.ts
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'admins'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').primary()
+      table
+        .integer('user_id')
+        .unsigned()
+        .notNullable()
+        .unique()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE')
+
+      table.string('nama_lengkap', 100).notNullable()
+      table.string('jabatan', 50).nullable()
+
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
+
+// title: database/migrations/1750237567410_create_siswa_table.ts
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'siswa'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').primary()
+      table
+        .integer('user_id')
+        .unsigned()
+        .notNullable()
+        .unique()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE')
+
+      table.string('nama_lengkap', 100).notNullable()
+      table.string('nisn', 20).nullable().unique()
+      table.string('kelas', 20).nullable()
+      table.date('tanggal_lahir').nullable()
+
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
+
+// title: database/migrations/1750237567902_create_riasec_pertanyaans_table.ts
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'riasec_pertanyaan'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').primary()
+      table.text('teks_pertanyaan').notNullable()
+      table.enum('tipe_riasec', ['R', 'I', 'A', 'S', 'E', 'C']).notNullable()
+      table.integer('nomor_urut').nullable()
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
+
+// title: database/migrations/1750237568441_create_hasil_tes_table.ts
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'hasil_tes'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').primary()
+      table
+        .integer('siswa_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('siswa')
+        .onDelete('CASCADE')
+
+      table.timestamp('tanggal_tes').defaultTo(this.now())
+      table.integer('skor_r').notNullable().defaultTo(0)
+      table.integer('skor_i').notNullable().defaultTo(0)
+      table.integer('skor_a').notNullable().defaultTo(0)
+      table.integer('skor_s').notNullable().defaultTo(0)
+      table.integer('skor_e').notNullable().defaultTo(0)
+      table.integer('skor_c').notNullable().defaultTo(0)
+
+      table.string('kode_holland', 3).nullable()
+      table.text('deskripsi_hasil').nullable()
+
+      table.timestamp('created_at')
+      table.timestamp('updated_at')
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
+
+// title: database/migrations/1750237568941_create_jawaban_tes_table.ts
+// title: database/migrations/xxxx_create_jawaban_tes_table.ts
+import { BaseSchema } from '@adonisjs/lucid/schema'
+
+export default class extends BaseSchema {
+  protected tableName = 'jawaban_tes'
+
+  async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id').primary()
+      table
+        .integer('hasil_tes_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('hasil_tes')
+        .onDelete('CASCADE')
+      table
+        .integer('pertanyaan_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('riasec_pertanyaan')
+        .onDelete('CASCADE')
+
+      table.integer('jawaban').notNullable()
+      // highlight-end
+    })
+  }
+
+  async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}
+
+// title: database/seeders/aauser_seeder.ts
+// title: database/seeders/user_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import User from '#models/user'
+import { faker } from '@faker-js/faker'
+
+export default class extends BaseSeeder {
+  async run() {
+    await User.createMany([
+      {
+        fullName: 'Admin Utama',
+        email: 'admin@example.com',
+        password: '12qwaszx',
+        role: 'admin',
+      },
+      {
+        fullName: faker.person.fullName(),
+        email: 'user@example.com',
+        password: '12qwaszx',
+        role: 'siswa', // Role default untuk siswa
+      },
+      {
+        fullName: faker.person.fullName(),
+        email: 'lele@lele.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+    ])
+  }
+}
+
+// title: database/seeders/admin_seeder.ts
+// title: database/seeders/admin_seeder.ts
+import Admin from '#models/admin'
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import { faker } from '@faker-js/faker'
+
+export default class AdminSeeder extends BaseSeeder {
+  logger: any
+  public async run() {
+    const adminUsers = await User.query().where('role', 'admin')
+
+    if (adminUsers.length === 0) {
+      this.logger?.info('❌ Gagal seeding: tidak ada user dengan role "admin".')
+      return
+    }
+
+    const adminData = adminUsers.map((user) => ({
+      userId: user.id,
+      namaLengkap: user.fullName ?? faker.person.fullName(),
+      jabatan: faker.helpers.arrayElement(['Kepala Sekolah', 'Wakil', 'Tata Usaha']),
+    }))
+
+    try {
+      await Admin.createMany(adminData)
+      this.logger?.info(`✅ Berhasil seeding ${adminData.length} data admin.`)
+    } catch (error) {
+      this.logger?.error('❌ Gagal insert ke tabel admin:')
+      console.error(error)
+    }
+  }
+}
+
+// title: database/seeders/note_seeder.ts
+// title: database/seeders/note_seeder.ts
+import Note from '#models/note'
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import { faker } from '@faker-js/faker'
+
+export default class extends BaseSeeder {
+  async run() {
+    const users = await User.all()
+
+    for (const user of users) {
+      await Note.createMany([
+        {
+          userId: user.id,
+          title: faker.lorem.sentence(),
+          content: faker.lorem.paragraphs(2),
+        },
+        {
+          userId: user.id,
+          title: faker.lorem.sentence(),
+          content: faker.lorem.paragraphs(3),
+        },
+      ])
+    }
+  }
+}
+
+// title: database/seeders/riasec_pertanyaan_seeder.ts
+// title: database/seeders/riasec_pertanyaan_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import RiasecPertanyaan from '#models/riasec_pertanyaan'
+
+export default class extends BaseSeeder {
+  async run() {
+    await RiasecPertanyaan.createMany([
+      // Realistic
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
+        tipeRiasec: 'R',
+        nomorUrut: 1,
+      },
+      {
+        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
+        tipeRiasec: 'R',
+        nomorUrut: 2,
+      },
+      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
+
+      // Investigative
+      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
+      {
+        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
+        tipeRiasec: 'I',
+        nomorUrut: 5,
+      },
+      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
+
+      // Artistic
+      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
+      {
+        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
+        tipeRiasec: 'A',
+        nomorUrut: 8,
+      },
+      {
+        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
+        tipeRiasec: 'A',
+        nomorUrut: 9,
+      },
+
+      // Social
+      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
+      {
+        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
+        tipeRiasec: 'S',
+        nomorUrut: 11,
+      },
+      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
+
+      // Enterprising
+      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
+      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
+      {
+        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
+        tipeRiasec: 'E',
+        nomorUrut: 15,
+      },
+
+      // Conventional
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
+        tipeRiasec: 'C',
+        nomorUrut: 16,
+      },
+      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
+      {
+        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
+        tipeRiasec: 'C',
+        nomorUrut: 18,
+      },
+    ])
+  }
+}
+
+// title: database/seeders/siswa_seeder.ts
+// title: database/seeders/siswa_seeder.ts
+import Siswa from '#models/siswa'
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import { faker } from '@faker-js/faker'
+import { DateTime } from 'luxon'
+
+export default class SiswaSeeder extends BaseSeeder {
+  logger: any
+  public async run() {
+    const siswaUsers = await User.query().where('role', 'siswa')
+
+    if (siswaUsers.length === 0) {
+      this.logger?.info('❌ Gagal seeding: tidak ada user dengan role "siswa".')
+      return
+    }
+
+    const usedNisn = new Set<string>()
+    const siswaData = siswaUsers.map((user) => {
+      let nisn: string
+      do {
+        nisn = faker.string.numeric(10)
+      } while (usedNisn.has(nisn))
+      usedNisn.add(nisn)
+
+      return {
+        userId: user.id,
+        namaLengkap: user.fullName ?? faker.person.fullName(),
+        nisn, // jamin unik
+        kelas: `XII ${faker.helpers.arrayElement(['IPA 1', 'IPS 2', 'Bahasa'])}`,
+        tanggalLahir: DateTime.fromJSDate(faker.date.birthdate({ min: 15, max: 18, mode: 'age' })),
+      }
+    })
+
+    try {
+      await Siswa.createMany(siswaData)
+      this.logger?.info(`✅ Berhasil seeding ${siswaData.length} data siswa.`)
+    } catch (error) {
+      this.logger?.error('❌ Gagal insert ke tabel siswa:')
+      console.error(error)
+    }
+  }
+}
+
+// title: inertia/app/app.tsx
+/// <reference path="../../adonisrc.ts" />
+/// <reference path="../../config/inertia.ts" />
+
+import '../css/app.css';
+import { hydrateRoot } from 'react-dom/client'
+import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+
+const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+
+createInertiaApp({
+  progress: { color: '#5468FF' },
+
+  title: (title) => `${title} - ${appName}`,
+
+  resolve: (name) => {
+    return resolvePageComponent(
+      `../pages/${name}.tsx`,
+      import.meta.glob('../pages/**/*.tsx'),
+    )
+  },
+
+  setup({ el, App, props }) {
+    
+    hydrateRoot(el, <App {...props} />)
+    
+  },
+});
+
+// title: inertia/app/ssr.tsx
+import ReactDOMServer from 'react-dom/server'
+import { createInertiaApp } from '@inertiajs/react'
+
+export default function render(page: any) {
+  return createInertiaApp({
+    page,
+    render: ReactDOMServer.renderToString,
+    resolve: (name) => {
+      const pages = import.meta.glob('../pages/**/*.tsx', { eager: true })
+      return pages[`../pages/${name}.tsx`]
+    },
+    setup: ({ App, props }) => <App {...props} />,
+  })
+}
+
+// title: inertia/components/button.tsx
+import { ReactNode, MouseEventHandler } from 'react';
+
+type ButtonProps = {
+  children: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  className?: string;
+};
+
+export default function Button({ children, onClick, className = '' }: ButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80 ${className}`}
+    >
+      {children}
+    </button>
+  );
+}
+
+// title: inertia/pages/admin/dashboard/index.tsx
+import { Link } from '@inertiajs/react'
+import AdminLayout from '../layouts/main'
+
+export default function AdminDashboard({ user }: { user: { fullName: string } }) {
+  return (
+    // Layout dashboard yang proper
+    <div className="p-8 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
+      <div className="mt-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold dark:text-white">Welcome, {user.fullName}!</h2>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">
+          This is the admin control panel. You have super powers here.
+        </p>
+        <div className="mt-6 flex space-x-4">
+          <Link
+            href="/admin/users"
+            as="button"
+            className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          >
+            Manage Users
+          </Link>
+          <Link
+            href="/logout"
+            method="post"
+            as="button"
+            className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+          >
+            Logout
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+AdminDashboard.layout = (page: any) => (
+<AdminLayout children={page} />
+)
+
+// title: inertia/pages/admin/layouts/main.tsx
+// inertia/pages/user/layouts/main.tsx
+
+import { PropsWithChildren } from 'react'
+import Sidebar from './sidebar' // Sidebar-nya tetap sama
+import { Head } from '@inertiajs/react'
+
+export default function AdminLayout({ children }: PropsWithChildren) {
+  return (
+    <>
+      <Head title="User Dashboard" />
+
+      {/* Struktur ini lebih bener. Sidebar dan Main Content itu sibling.
+        Sidebar akan ngatur posisinya sendiri (fixed di mobile, static di desktop).
+      */}
+      <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
+        <Sidebar />
+
+        {/* Di layar kecil (mobile), main content bakal full-width.
+          Di layar medium ke atas (md), kita kasih margin kiri seukuran lebar sidebar (w-64).
+          Ini yang bikin kontennya gak ketimpa sidebar.
+        */}
+        <main className="md:ml-64 p-4 sm:p-6 lg:p-8">
+          {children}
+        </main>
+      </div>
+    </>
+  )
+}
+
+// title: inertia/pages/admin/layouts/sidebar.tsx
+import { useState } from 'react';
+import { Menu, X, Search } from 'lucide-react';
+
+const Sidebar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
+
+  return (
+    <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={toggleSidebar}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+      >
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
+      >
+        {/* Logo */}
+        <a href="#">
+          <img
+            className="w-auto h-6 sm:h-7"
+            src="https://merakiui.com/images/logo.svg"
+            alt="Logo"
+          />
+        </a>
+
+        {/* Search Bar */}
+        <div className="relative mt-6">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+            <Search className="w-5 h-5 text-gray-400" />
+          </span>
+          <input
+            type="text"
+            className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+            placeholder="Search"
+          />
+        </div>
+
+        {/* Navigation */}
+        <div className="flex flex-col justify-between flex-1 mt-6">
+          <nav>
+            <a
+              href="/riasec"
+              className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            >
+              <svg
+                className="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="mx-4 font-medium">RIASEC Test</span>
+            </a>
+          </nav>
+
+          {/* Profile Section */}
+          <a href="#" className="flex items-center px-4 -mx-2">
+            <img
+              className="object-cover mx-2 rounded-full h-9 w-9"
+              src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+              alt="avatar"
+            />
+            <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">
+              John Doe
+            </span>
+          </a>
+        </div>
+      </aside>
+
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 md:hidden z-30"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+    </>
+  );
+};
+
+export default Sidebar;
+
+// title: inertia/pages/admin/users/create.tsx
+// title: inertia/pages/admin/users/create.tsx
+import { Link, useForm, Head } from '@inertiajs/react'
+
+export default function CreateUser() {
+  const { data, setData, post, processing, errors } = useForm({
+    fullName: '',
+    email: '',
+    password: '',
+    role: 'user' as 'user' | 'admin',
+  })
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    post('/admin/users')
+  }
+
+  return (
+    <>
+      <Head title="Create User" />
+      <div className="max-w-2xl mx-auto p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Create New User</h1>
+          <Link href="/admin/users" className="text-indigo-600 hover:underline">
+            &larr; Back to Users
+          </Link>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <form onSubmit={submit} className="space-y-4">
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                value={data.fullName}
+                onChange={(e) => setData('fullName', e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+              {errors.fullName && (
+                <div className="text-xs text-red-500 mt-1">{errors.fullName}</div>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+              {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={data.password}
+                autoComplete="new-password"
+                onChange={(e) => setData('password', e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+              {errors.password && (
+                <div className="text-xs text-red-500 mt-1">{errors.password}</div>
+              )}
+            </div>
+
+            {/* Role */}
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                Role
+              </label>
+              <select
+                id="role"
+                value={data.role}
+                onChange={(e) => setData('role', e.target.value as 'user' | 'admin')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              {errors.role && <div className="text-xs text-red-500 mt-1">{errors.role}</div>}
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={processing}
+                className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 disabled:bg-indigo-400"
+              >
+                {processing ? 'Creating...' : 'Create User'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// title: inertia/pages/admin/users/edit.tsx
+// title: inertia/pages/admin/users/edit.tsx
+import { Link, useForm, Head } from '@inertiajs/react'
+
+interface User {
+  id: number
+  fullName: string
+  email: string
+  role: 'user' | 'admin'
+}
+
+export default function EditUser({ user }: { user: User }) {
+  const { data, setData, put, processing, errors } = useForm({
+    fullName: user.fullName || '',
+    email: user.email || '',
+    role: user.role,
+  })
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    put(`/admin/users/${user.id}`)
+  }
+
+  return (
+    <>
+      <Head title={`Edit User - ${user.fullName}`} />
+      <div className="max-w-2xl mx-auto p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Edit User: {user.fullName}</h1>
+          <Link href="/admin/users" className="text-indigo-600 hover:underline">
+            &larr; Back to Users
+          </Link>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <form onSubmit={submit} className="space-y-4">
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                value={data.fullName}
+                onChange={(e) => setData('fullName', e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+              {errors.fullName && (
+                <div className="text-xs text-red-500 mt-1">{errors.fullName}</div>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+              {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
+            </div>
+
+            {/* Role */}
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                Role
+              </label>
+              <select
+                id="role"
+                value={data.role}
+                onChange={(e) => setData('role', e.target.value as 'user' | 'admin')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              {errors.role && <div className="text-xs text-red-500 mt-1">{errors.role}</div>}
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={processing}
+                className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 disabled:bg-indigo-400"
+              >
+                {processing ? 'Updating...' : 'Update User'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// title: inertia/pages/admin/users/index.tsx
+import { Link } from '@inertiajs/react'
+
+interface User {
+  id: number
+  fullName: string
+  email: string
+  role: 'user' | 'admin'
+}
+
+export default function UsersIndex({ users }: { users: User[] }) {
+  return (
+    <div className="p-8 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Manage Users</h1>
+        <div className="space-x-2">
+          <Link
+            href="/admin/dashboard"
+            className="text-indigo-600 dark:text-indigo-400 hover:underline"
+          >
+            &larr; Back to Dashboard
+          </Link>
+          <Link
+            href="/admin/users/create"
+            className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+          >
+            Create New User
+          </Link>
+        </div>
+      </div>
+
+      {/* Tabel yang proper dengan styling */}
+      <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                ID
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Role
+              </th>
+              <th scope="col" className="relative px-6 py-3">
+                <span className="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {users.map((user) => (
+              <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                  {user.id}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                  {user.fullName}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                  {user.email}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      user.role === 'admin'
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                    }`}
+                  >
+                    {user.role}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                  <Link
+                    href={`/admin/users/${user.id}/edit`}
+                    className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                  >
+                    Edit
+                  </Link>
+                  <Link
+                    href={`/admin/users/${user.id}`}
+                    method="delete"
+                    as="button"
+                    className="text-red-600 dark:text-red-400 hover:underline"
+                    onBefore={() => confirm('Are you sure you want to delete this user?')}
+                  >
+                    Delete
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+UsersIndex.layout = (page: any) => (
+  <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
+    {page}
+  </div>
+)
+
+// title: inertia/pages/auth/login.tsx
+import { useForm, Link } from '@inertiajs/react'
+
+export default function Login() {
+  const { data, setData, post, processing, errors } = useForm({
+    email: '',
+    password: '',
+  })
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    post('/login')
+  }
+
+  return (
+    // Bikin layoutnya full screen dan formnya di tengah
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      {/* Ini card buat form-nya, biar keliatan ngambang */}
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">Login</h1>
+        <form onSubmit={submit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={data.email}
+              onChange={(e) => setData('email', e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="you@example.com"
+            />
+            {errors.email && <div className="mt-1 text-xs text-red-500">{errors.email}</div>}
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Password
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              value={data.password}
+              onChange={(e) => setData('password', e.target.value)}
+              autoComplete="off" // <-- Pake ini biar browsernya nurut
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="••••••••"
+            />
+
+            {errors.password && <div className="mt-1 text-xs text-red-500">{errors.password}</div>}
+          </div>
+
+          <div>
+            {/* Tombol login, ada efek loading pas 'processing' */}
+            <button
+              type="submit"
+              disabled={processing}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+            >
+              {processing ? 'Logging in...' : 'Login'}
+            </button>
+          </div>
+        </form>
+        <div className="text-center text-sm">
+          <Link
+            href="/register"
+            className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+          >
+            Don't have an account? Register
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// title: inertia/pages/auth/register.tsx
+// title: inertia/pages/auth/register.tsx
+import { useForm, Link, Head } from '@inertiajs/react'
+import React from 'react'
+
+export default function Register() {
+  const { data, setData, post, processing, errors } = useForm({
+    fullName: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+  })
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    post('/register')
+  }
+
+  return (
+    <>
+      <Head title="Register" />
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+            Create an Account
+          </h1>
+          <form onSubmit={submit} className="space-y-6">
+            {/* Full Name */}
+            <div>
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                value={data.fullName}
+                onChange={(e) => setData('fullName', e.target.value)}
+                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+              />
+              {errors.fullName && (
+                <div className="mt-1 text-xs text-red-500">{errors.fullName}</div>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+              />
+              {errors.email && <div className="mt-1 text-xs text-red-500">{errors.email}</div>}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={data.password}
+                autoComplete="new-password"
+                onChange={(e) => setData('password', e.target.value)}
+                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+              />
+              {errors.password && (
+                <div className="mt-1 text-xs text-red-500">{errors.password}</div>
+              )}
+            </div>
+
+            {/* Password Confirmation */}
+            <div>
+              <label
+                htmlFor="password_confirmation"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Confirm Password
+              </label>
+              <input
+                id="password_confirmation"
+                type="password"
+                value={data.password_confirmation}
+                autoComplete="new-password"
+                onChange={(e) => setData('password_confirmation', e.target.value)}
+                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+              />
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={processing}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
+              >
+                {processing ? 'Registering...' : 'Register'}
+              </button>
+            </div>
+          </form>
+          <div className="text-center text-sm">
+            <Link
+              href="/login"
+              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            >
+              Already have an account? Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// title: inertia/pages/errors/not_found.tsx
+export default function NotFound() {
+  return (
+    <>
+      <div className="container">
+        <div className="title">Page not found</div>
+
+        <span>This page does not exist.</span>
+      </div>
+    </>
+  )
+}
+
+// title: inertia/pages/errors/server_error.tsx
+export default function ServerError(props: { error: any }) {
+  return (
+    <>
+      <div className="container">
+        <div className="title">Server Error</div>
+
+        <span>{props.error.message}</span>
+      </div>
+    </>
+  )
+}
+
+// title: inertia/pages/home.tsx
+import { Link } from '@inertiajs/react'
+
+export default function Home() {
+  return (
+    // Bikin simpel, bersih, dan to the point
+    <div className="flex flex-col items-center justify-center min-h-screen text-center">
+      <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
+        Welcome to YourApp
+      </h1>
+      <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+        The best place to manage your notes and users.
+      </p>
+      <div>
+        {/* Tombol login yang keren */}
+        <Link
+          href="/login"
+          className="inline-block px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+        >
+          Get Started
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+// title: inertia/pages/user/dashboard/index.tsx
+import { Link } from '@inertiajs/react'
+
+import UserLayout from '../layouts/main'
+
+export default function Dashboard({ user }: { user: { fullName: string } }) {
+  return (
+    // Mirip admin, tapi buat user biasa
+    <div className="p-8 max-w-7xl mx-auto">
+
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">User Dashboard</h1>
+      <div className="mt-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold dark:text-white">Welcome, {user.fullName}!</h2>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">
+          Here you can manage your personal notes.
+        </p>
+        <div className="mt-6 flex space-x-4">
+          <Link
+            href="/notes"
+            as="button"
+            className="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+          >
+            My Notes
+          </Link>
+          <Link
+            href="/logout"
+            method="post"
+            as="button"
+            className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+          >
+            Logout
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+Dashboard.layout = (page: any) => (
+  <UserLayout children={page} />
+)
+
+// title: inertia/pages/user/layouts/main.tsx
+// inertia/pages/user/layouts/main.tsx
+
+import { PropsWithChildren } from 'react'
+import Sidebar from './sidebar' // Sidebar-nya tetap sama
+import { Head } from '@inertiajs/react'
+
+export default function UserLayout({ children }: PropsWithChildren) {
+  return (
+    <>
+      <Head title="User Dashboard" />
+
+      {/* Struktur ini lebih bener. Sidebar dan Main Content itu sibling.
+        Sidebar akan ngatur posisinya sendiri (fixed di mobile, static di desktop).
+      */}
+      <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
+        <Sidebar />
+
+        {/* Di layar kecil (mobile), main content bakal full-width.
+          Di layar medium ke atas (md), kita kasih margin kiri seukuran lebar sidebar (w-64).
+          Ini yang bikin kontennya gak ketimpa sidebar.
+        */}
+        <main className="md:ml-64 p-4 sm:p-6 lg:p-8">
+          {children}
+        </main>
+      </div>
+    </>
+  )
+}
+
+// title: inertia/pages/user/layouts/sidebar.tsx
+import { useState } from 'react';
+import { Menu, X, LayoutDashboard, BookOpen, ClipboardList, GraduationCap, Bell, CalendarDays, Users, Library, CheckCircle, Wallet, LifeBuoy, Phone, Settings, LogOut } from 'lucide-react'; 
+import { Link } from '@inertiajs/react';
+
+const Sidebar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
+
+  // Class untuk link yang disabled
+  const disabledLinkClass = "pointer-events-none opacity-50 cursor-not-allowed";
+
+  return (
+    <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={toggleSidebar}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+      >
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
+      >
+        {/* Logo */}
+        <a href="#">
+          <img
+            className="w-auto h-6 sm:h-7"
+            src="https://merakiui.com/images/logo.svg"
+            alt="Logo"
+          />
+        </a>
+
+        {/* Search Bar (tetep aktif biar bisa nyari) */}
+        {/* <div className="relative mt-6">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+            <Search className="w-5 h-5 text-gray-400" />
+          </span>
+          <input
+            type="text"
+            className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
+            placeholder="Search"
+          />
+        </div> */}
+
+        {/* Navigation */}
+        <div className="flex flex-col justify-between flex-1 mt-6">
+          <nav>
+            {/* Kategori Utama: Dashboard (DISABLED) */}
+            <a
+              href="/dashboard"
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
+            >
+              <LayoutDashboard className="w-5 h-5" />
+              <span className="mx-4 font-medium">Dashboard</span>
+            </a>
+
+            {/* Kategori: Akademik */}
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akademik</p>
+            <a
+              // href="/jadwal" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <CalendarDays className="w-5 h-5" />
+              <span className="mx-4 font-medium">Jadwal Kelas</span>
+            </a>
+            <a
+              // href="/materi" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <BookOpen className="w-5 h-5" />
+              <span className="mx-4 font-medium">Materi Belajar</span>
+            </a>
+            <a
+              // href="/tugas" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <ClipboardList className="w-5 h-5" />
+              <span className="mx-4 font-medium">Tugas & PR</span>
+            </a>
+            <a
+              // href="/nilai" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <GraduationCap className="w-5 h-5" />
+              <span className="mx-4 font-medium">Nilai & Raport</span>
+            </a>
+            {/* RIASEC Test (ENABLED) */}
+            <a
+              href="/riasec"
+              className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+            >
+              <svg
+                className="w-5 h-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="mx-4 font-medium">RIASEC Test</span>
+            </a>
+
+            {/* Kategori: Kehidupan Sekolah (DISABLED) */}
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Kehidupan Sekolah</p>
+            <a
+              // href="/pengumuman" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <Bell className="w-5 h-5" />
+              <span className="mx-4 font-medium">Info Penting</span>
+            </a>
+            <a
+              // href="/kalender" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <CalendarDays className="w-5 h-5" />
+              <span className="mx-4 font-medium">Kalender Sekolah</span>
+            </a>
+            <a
+              // href="/ekskul" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <Users className="w-5 h-5" />
+              <span className="mx-4 font-medium">Ekskul Gaul</span>
+            </a>
+            <a
+              // href="/perpustakaan" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <Library className="w-5 h-5" />
+              <span className="mx-4 font-medium">Perpus Online</span>
+            </a>
+
+            {/* Kategori: Administrasi & Bantuan (DISABLED) */}
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Administrasi & Bantuan</p>
+            <a
+              // href="/absensi" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <CheckCircle className="w-5 h-5" />
+              <span className="mx-4 font-medium">Absensi Kece</span>
+            </a>
+            <a
+              // href="/pembayaran" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <Wallet className="w-5 h-5" />
+              <span className="mx-4 font-medium">Bayar-bayar SPP</span>
+            </a>
+            <a
+              // href="/bantuan" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <LifeBuoy className="w-5 h-5" />
+              <span className="mx-4 font-medium">Tanya-tanya Dong</span>
+            </a>
+            <a
+              // href="/kontak" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
+            >
+              <Phone className="w-5 h-5" />
+              <span className="mx-4 font-medium">Kontak Sekolah</span>
+            </a>
+          </nav>
+
+          {/* Profile Section */}
+          <div className="mt-auto">
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akun</p>
+            {/* Profil Gue (DISABLED) */}
+            <a
+              // href="/profil" // Dihapus href-nya
+              className={`flex items-center px-4 -mx-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md ${disabledLinkClass}`}
+            >
+              <img
+                className="object-cover mx-2 rounded-full h-9 w-9"
+                src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                alt="avatar"
+              />
+              <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">
+                John Doe
+              </span>
+            </a>
+            {/* Settingan (DISABLED) */}
+            <a
+              // href="/settings" // Dihapus href-nya
+              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 mt-2 ${disabledLinkClass}`}
+            >
+              <Settings className="w-5 h-5" />
+              <span className="mx-4 font-medium">Settingan</span>
+            </a>
+            {/* Cabut Dulu (ENABLED) */}
+            <Link
+              href="/logout"
+              method="post"
+              as="button"
+              className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
+            >
+              <LogOut className="w-5 h-5" /> {/* Icon LogOut */}
+              <span className="mx-4 font-medium">Cabut Dulu</span>
+            </Link>
+          </div>
+        </div>
+      </aside>
+
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 md:hidden z-30"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+    </>
+  );
+};
+
+export default Sidebar;
+
+// title: inertia/pages/user/notes/edit.tsx
+// title: inertia/pages/user/notes/edit.tsx
+import { useForm, Link } from '@inertiajs/react'
+
+interface Note {
+  id: number
+  title: string
+  content: string
+}
+
+export default function EditNote({ note }: { note: Note }) {
+  const { data, setData, put, processing, errors } = useForm({
+    title: note.title,
+    content: note.content,
+  })
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    put(`/notes/${note.id}`)
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Edit Note</h1>
+      <Link href="/notes" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+        &larr; Back to Notes
+      </Link>
+
+      <div className="mt-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <form onSubmit={submit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Title
+            </label>
+            <input
+              id="title"
+              type="text"
+              value={data.title}
+              onChange={(e) => setData('title', e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+            {errors.title && <div className="mt-1 text-xs text-red-500">{errors.title}</div>}
+          </div>
+
+          <div>
+            <label
+              htmlFor="content"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Content
+            </label>
+            <textarea
+              id="content"
+              value={data.content}
+              onChange={(e) => setData('content', e.target.value)}
+              rows={8}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+            {errors.content && <div className="mt-1 text-xs text-red-500">{errors.content}</div>}
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={processing}
+              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"
+            >
+              {processing ? 'Saving...' : 'Update Note'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+// title: inertia/pages/user/notes/index.tsx
+// title: inertia/pages/user/notes/index.tsx
+import { Link, useForm } from '@inertiajs/react'
+import UserLayout from '../layouts/main'
+
+interface Note {
+  id: number
+  title: string
+  content: string
+}
+
+export default function NotesIndex({ notes }: { notes: Note[] }) {
+  const { data, setData, post, processing, errors, reset } = useForm({
+    title: '',
+    content: '',
+  })
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    // Kalo berhasil, form-nya kita reset biar kosong lagi
+    post('/notes', {
+      onSuccess: () => reset(),
+    })
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Notes</h1>
+        <Link
+          href="/dashboard"
+          className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
+        >
+          &larr; Back to Dashboard
+        </Link>
+      </div>
+
+      {/* Form buat bikin catatan baru, kita bungkus dalam card */}
+      <div className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+          Create New Note
+        </h2>
+        <form onSubmit={submit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Title
+            </label>
+            <input
+              id="title"
+              type="text"
+              value={data.title}
+              onChange={(e) => setData('title', e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="What's on your mind?"
+            />
+            {errors.title && <div className="mt-1 text-xs text-red-500">{errors.title}</div>}
+          </div>
+          <div>
+            <label
+              htmlFor="content"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Content
+            </label>
+            <textarea
+              id="content"
+              value={data.content}
+              onChange={(e) => setData('content', e.target.value)}
+              rows={4}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="Jot down your thoughts..."
+            />
+            {errors.content && <div className="mt-1 text-xs text-red-500">{errors.content}</div>}
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={processing}
+              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"
+            >
+              {processing ? 'Saving...' : 'Create Note'}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <hr className="my-8 border-gray-200 dark:border-gray-700" />
+
+      {/* Daftar catatan dalam bentuk grid cards, lebih modern! */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {notes.length > 0 ? (
+          notes.map((note) => (
+            <div
+              key={note.id}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col justify-between transition hover:shadow-lg"
+            >
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                  {note.title}
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">
+                  {note.content}
+                </p>
+              </div>
+              <div className="mt-4 flex justify-end space-x-3">
+                <Link
+                  href={`/notes/${note.id}/edit`}
+                  className="text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+                >
+                  Edit
+                </Link>
+                <Link
+                  href={`/notes/${note.id}`}
+                  method="delete"
+                  as="button"
+                  className="text-sm font-medium text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                  onBefore={() => confirm('Are you sure you want to delete this note?')}
+                >
+                  Delete
+                </Link>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="col-span-full text-center text-gray-500 dark:text-gray-400">
+            You haven't created any notes yet.
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+NotesIndex.layout = (page: any) => (
+  <UserLayout children={page} />
+)
+
+// title: inertia/pages/user/riasec/index.tsx
+import { Head, Link } from '@inertiajs/react'
+import UserLayout from '../layouts/main' // Pastiin path ke UserLayout lo bener ya!
+
+// Kalo dashboard lo butuh data dari backend, tambahin di sini
+interface DashboardProps {
+    userName?: string // Contoh: nama user yang login
+    hasCompletedRiasecTest?: boolean // Contoh: udah pernah ngerjain tes RIASEC belum
+}
+
+export default function Dashboard({ userName = 'Pengguna', hasCompletedRiasecTest = false }: DashboardProps) {
+    return (
+        <>
+            <Head title="Dashboard" /> {/* Ini buat judul di tab browser */}
+
+            {/* Ini styling dasar buat halaman dashboardnya, biar cakep */}
+            <div className="bg-slate-100 font-sans p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-screen">
+                <main className="max-w-4xl mx-auto w-full">
+                    <section className="bg-white p-6 sm:p-8 rounded-xl shadow-lg text-center">
+                        <h1 className="text-4xl font-bold text-slate-900 mb-4">Halo, {userName}! 👋</h1>
+                        <p className="text-lg text-slate-700 mb-8">
+                            Selamat datang di dashboard Anda. Di sini Anda bisa memulai tes minat, melihat hasil, atau menjelajahi fitur lainnya.
+                        </p>
+
+                        <div className="space-y-4">
+                            {/* Tombol buat mulai tes RIASEC */}
+                            <Link
+                                href="/riasec-test" // Ini link ke halaman tes RIASEC yang udah lo punya
+                                className="inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300"
+                            >
+                                {hasCompletedRiasecTest ? 'Ulangi Tes Minat RIASEC' : 'Mulai Tes Minat RIASEC'}
+                            </Link>
+
+                            {/* Bagian ini bisa lo tambahin buat fitur lain */}
+                            <p className="text-slate-500 text-sm mt-4">
+                                Atau jelajahi fitur lainnya:
+                            </p>
+                            <div className="flex flex-wrap justify-center gap-4 mt-2">
+                                <Link
+                                    href="/hasil-tes" // Contoh link ke halaman hasil tes (ini harus lo bikin sendiri nanti)
+                                    className="inline-block bg-gray-200 text-gray-800 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300 transition-all duration-200"
+                                >
+                                    Lihat Hasil Tes
+                                </Link>
+                                <Link
+                                    href="/profil" // Contoh link ke halaman profil user (ini juga lo bikin sendiri)
+                                    className="inline-block bg-gray-200 text-gray-800 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300 transition-all duration-200"
+                                >
+                                    Edit Profil
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </>
+    )
+}
+
+// Ini penting! Biar halaman dashboard ini pake UserLayout yang sama kayak tes RIASEC
+Dashboard.layout = (page: any) => <UserLayout children={page} />
+
+// title: inertia/pages/user/riasec/result.tsx
+// title: inertia/pages/user/riasec/result.tsx
+import { Head, usePage } from '@inertiajs/react'
+import { useState, useEffect } from 'react'
+import UserLayout from '../layouts/main'
+
+
+// Definisikan tipe data untuk hasil tes dan props
+interface HasilTes {
+    id: number
+    kodeHolland: string
+    skorR: number
+    skorI: number
+    skorA: number
+    skorS: number
+    skorE: number
+    skorC: number
+    siswa: {
+        namaLengkap: string
+    }
+}
+
+interface ResultPageProps {
+    hasilTes: HasilTes
+    flash: {
+        showModal?: boolean
+    }
+}
+
+// Komponen Modal yang bisa kita pakai ulang
+function ResultModal({ result, onClose }: { result: HasilTes; onClose: () => void }) {
+    // ... (JSX untuk modal sama persis seperti sebelumnya)
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 animate-fade-in">
+            <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full text-center transform transition-all duration-300 scale-95 animate-scale-up">
+                <h2 className="text-2xl font-bold text-slate-800 mb-2">Hasil Tes Kamu!</h2>
+                <p className="text-6xl font-extrabold text-blue-600 my-4">{result.kodeHolland}</p>
+                <p className="text-slate-600 mb-6">Ini adalah 3 tipe kepribadian dominan yang paling menggambarkan dirimu.</p>
+                <div className="grid grid-cols-3 gap-4 text-center mb-8">
+                    <div><p className="font-bold text-lg">Realistic</p><p className="text-2xl">{result.skorR}</p></div>
+                    <div><p className="font-bold text-lg">Investigative</p><p className="text-2xl">{result.skorI}</p></div>
+                    <div><p className="font-bold text-lg">Artistic</p><p className="text-2xl">{result.skorA}</p></div>
+                    <div><p className="font-bold text-lg">Social</p><p className="text-2xl">{result.skorS}</p></div>
+                    <div><p className="font-bold text-lg">Enterprising</p><p className="text-2xl">{result.skorE}</p></div>
+                    <div><p className="font-bold text-lg">Conventional</p><p className="text-2xl">{result.skorC}</p></div>
+                </div>
+                <button
+                    onClick={onClose}
+                    className="w-full bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
+                >
+                    Tutup
+                </button>
+            </div>
+        </div>
+    )
+}
+
+export default function RiasecResultPage() {
+    // Ambil data dari props Inertia
+    const { hasilTes, flash } = usePage<ResultPageProps>().props
+
+    // State untuk mengontrol modal
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    // useEffect akan berjalan sekali saat komponen dimuat.
+    // Dia akan mengecek "sinyal" dari flash message.
+    useEffect(() => {
+        if (flash.showModal) {
+            setIsModalOpen(true)
+        }
+    }, [flash.showModal])
+
+    return (
+        <>
+            <Head title={`Hasil Tes RIASEC - ${hasilTes.kodeHolland}`} />
+
+            {/* Tampilkan modal jika state-nya true */}
+            {isModalOpen && <ResultModal result={hasilTes} onClose={() => setIsModalOpen(false)} />}
+
+            <div className="bg-slate-100 font-sans p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-screen">
+                <main className="max-w-3xl mx-auto w-full">
+                    <section className="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                        <header className="text-center mb-8">
+                            <h1 className="text-3xl font-bold text-slate-900">Hasil Tes RIASEC Anda</h1>
+                            <p className="mt-2 text-slate-600">
+                                Halo, {hasilTes.siswa.namaLengkap}! Ini adalah ringkasan hasil tes kepribadianmu.
+                            </p>
+                        </header>
+
+                        <div className="text-center">
+                            <p className="text-slate-700 text-lg">Kode Holland Kamu:</p>
+                            <p className="text-7xl font-extrabold text-blue-600 my-4">{hasilTes.kodeHolland}</p>
+                            <p className="text-slate-500">Gunakan kode ini untuk melihat rekomendasi karir yang sesuai.</p>
+                        </div>
+
+                        {/* Di sini lo bisa tambahin deskripsi detail atau rekomendasi jurusan/karir */}
+
+                    </section>
+                </main>
+            </div>
+        </>
+    )
+}
+
+RiasecResultPage.layout = (page: any) => <UserLayout children={page} />
+
+// title: inertia/pages/user/riasec/test.tsx
+import { Head, useForm } from '@inertiajs/react'
+import React from 'react'
+import UserLayout from '../layouts/main'
+
+// Tipe data untuk props, tidak ada perubahan di sini
+interface Question {
+    id: number
+    teksPertanyaan: string
+    tipeRiasec: string
+}
+
+interface RiasecTestProps {
+    questions: Question[]
+}
+
+// Data untuk pilihan jawaban skala Likert 5-poin
+// Ini membuat kode lebih bersih dan mudah dikelola
+const answerOptions = [
+    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
+    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
+    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
+    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
+    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
+]
+
+export default function RiasecTest({ questions }: RiasecTestProps) {
+    // Gunakan useForm untuk mengelola semua state form, termasuk 'answers'
+    // Inisialisasi 'answers' sebagai objek kosong.
+    // Tipe datanya sekarang Record<number, number>
+    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
+        answers: {},
+    })
+
+    // Fungsi untuk update jawaban, sekarang menggunakan setData dari useForm
+    const handleAnswer = (questionId: number, answerValue: number) => {
+        setData('answers', {
+            ...data.answers,
+            [questionId]: answerValue,
+        })
+    }
+
+    // Fungsi submit menjadi lebih simpel. useForm otomatis mengirimkan 'data'.
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        post('/riasec/submit')
+    }
+
+    // Logika progress bar tidak perlu diubah, hanya sumber datanya.
+    const answeredCount = Object.keys(data.answers).length
+    const totalQuestions = questions.length
+    const progressPercentage = totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0
+
+    return (
+        <>
+            <Head title="Tes Minat RIASEC" />
+
+            <div className="bg-slate-100 font-sans p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-screen">
+                <main className="max-w-4xl mx-auto w-full">
+                    <section className="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+                        <header className="text-center mb-8">
+                            <h1 className="text-3xl font-bold text-slate-900">Tes Kepribadian RIASEC</h1>
+                            <p className="mt-2 text-slate-600">
+                                Seberapa sukakah Anda dengan pernyataan-pernyataan di bawah ini?
+                            </p>
+                        </header>
+
+                        <div className="mb-8 px-2">
+                            {/* ... Progress Bar tidak berubah ... */}
+                            <div className="flex justify-between items-center text-sm font-medium text-slate-500 mb-2">
+                                <p>Progres</p>
+                                <p>{answeredCount} dari {totalQuestions} terjawab</p>
+                            </div>
+                            <div className="w-full bg-slate-200 rounded-full h-2.5">
+                                <div
+                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                    style={{ width: `${progressPercentage}%` }}
+                                ></div>
+                            </div>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div className="border border-slate-200 rounded-lg">
+                                {questions.map((question, index) => (
+                                    <div
+                                        key={question.id}
+                                        className={`p-5 flex flex-col ${index < totalQuestions - 1 ? 'border-b border-slate-200' : ''}`}
+                                    >
+                                        <p className="flex-1 mb-4 text-slate-800">
+                                            <span className="font-bold text-blue-600 mr-2">{index + 1}.</span>
+                                            {question.teksPertanyaan}
+                                        </p>
+
+                                        {/* Grup Opsi Jawaban Baru */}
+                                        <div className="flex flex-wrap gap-2 justify-center">
+                                            {answerOptions.map((option) => (
+                                                <button
+                                                    key={option.value}
+                                                    type="button"
+                                                    onClick={() => handleAnswer(question.id, option.value)}
+                                                    className={`
+                                                        flex-grow sm:flex-initial w-full sm:w-auto py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
+                                                        ${data.answers[question.id] === option.value
+                                                            ? `${option.color} text-white shadow-md focus:ring-blue-400`
+                                                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-400'
+                                                        }
+                                                    `}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="pt-4 text-center">
+                                {/* ... Tombol Submit dan pesan error tidak berubah ... */}
+                                <button
+                                    type="submit"
+                                    disabled={processing || answeredCount < totalQuestions}
+                                    className="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-10 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 disabled:bg-slate-400 disabled:cursor-not-allowed disabled:shadow-none"
+                                >
+                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
+                                </button>
+                                {answeredCount < totalQuestions && (
+                                    <p className="text-sm text-red-600 mt-3">
+                                        Harap jawab semua {totalQuestions - answeredCount} pertanyaan yang tersisa.
+                                    </p>
+                                )}
+                                {errors.answers && <p className="text-sm text-red-600 mt-3">{errors.answers}</p>}
+                            </div>
+                        </form>
+                    </section>
+                </main>
+            </div>
+        </>
+    )
+}
+
+RiasecTest.layout = (page: any) => <UserLayout children={page} />
+
+// title: start/env.ts
+/*
+|--------------------------------------------------------------------------
+| Environment variables service
+|--------------------------------------------------------------------------
+|
+| The `Env.create` method creates an instance of the Env service. The
+| service validates the environment variables and also cast values
+| to JavaScript data types.
+|
+*/
+
+import { Env } from '@adonisjs/core/env'
+
+export default await Env.create(new URL('../', import.meta.url), {
+  NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
+  PORT: Env.schema.number(),
+  APP_KEY: Env.schema.string(),
+  HOST: Env.schema.string({ format: 'host' }),
+  LOG_LEVEL: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring session package
+  |----------------------------------------------------------
+  */
+  SESSION_DRIVER: Env.schema.enum(['cookie', 'memory'] as const),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring database connection
+  |----------------------------------------------------------
+  */
+  DB_HOST: Env.schema.string({ format: 'host' }),
+  DB_PORT: Env.schema.number(),
+  DB_USER: Env.schema.string(),
+  DB_PASSWORD: Env.schema.string.optional(),
+  DB_DATABASE: Env.schema.string()
+})
+
+// title: start/kernel.ts
+/*
+|--------------------------------------------------------------------------
+| HTTP kernel file
+|--------------------------------------------------------------------------
+|
+| The HTTP kernel file is used to register the middleware with the server
+| or the router.
+|
+*/
+
+import router from '@adonisjs/core/services/router'
+import server from '@adonisjs/core/services/server'
+
+/**
+ * The error handler is used to convert an exception
+ * to an HTTP response.
+ */
+server.errorHandler(() => import('#exceptions/handler'))
+
+/**
+ * The server middleware stack runs middleware on all the HTTP
+ * requests, even if there is no route registered for
+ * the request URL.
+ */
+server.use([
+  () => import('#middleware/container_bindings_middleware'),
+  () => import('@adonisjs/static/static_middleware'),
+  () => import('@adonisjs/cors/cors_middleware'),
+  () => import('@adonisjs/vite/vite_middleware'),
+  () => import('@adonisjs/inertia/inertia_middleware')
+])
+
+/**
+ * The router middleware stack runs middleware on all the HTTP
+ * requests with a registered route.
+ */
+router.use([
+  () => import('@adonisjs/core/bodyparser_middleware'),
+  () => import('@adonisjs/session/session_middleware'),
+  () => import('@adonisjs/shield/shield_middleware'),
+  () => import('@adonisjs/auth/initialize_auth_middleware'),
+  () => import('#middleware/initialize_bouncer_middleware')
+])
+
+/**
+ * Named middleware collection must be explicitly assigned to
+ * the routes or the routes group.
+ */
+export const middleware = router.named({
+  admin: () => import('#middleware/admin_middleware'),
+  guest: () => import('#middleware/guest_middleware'),
+  auth: () => import('#middleware/auth_middleware')
+})
+
+// title: start/routes.ts
+// title: start/routes.ts
+import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
+
+const SessionController = () => import('#controllers/session_controller')
+const HomeController = () => import('#controllers/homepages_controller')
+const RegisterController = () => import('#controllers/auth/registers_controller')
+
+const UserDashboardController = () => import('#controllers/user/dashboard_controller')
+const NotesController = () => import('#controllers/user/notes_controller')
+const TestsController = () => import('#controllers/user/tests_controller')
+
+const AdminDashboardController = () => import('#controllers/admin/dashboard_controller')
+const AdminUsersController = () => import('#controllers/admin/users_controller')
+
+router.get('/', [HomeController, 'index']).as('home')
+
+router
+  .group(() => {
+    router.get('/login', [SessionController, 'create']).as('auth.login')
+    router.post('/login', [SessionController, 'store']).as('auth.store')
+    router.get('/register', [RegisterController, 'create']).as('auth.register')
+    router.post('/register', [RegisterController, 'store']).as('auth.register.store')
+  })
+  .use(middleware.guest())
+
+router.post('/logout', [SessionController, 'destroy']).as('auth.logout')
+
+router
+  .group(() => {
+    router.get('/dashboard', [UserDashboardController, 'index']).as('dashboard')
+    router.resource('notes', NotesController).except(['show'])
+
+    router.get('/riasec', [TestsController, 'index']).as('riasec.index')
+    router.get('/riasec/test', [TestsController, 'start']).as('riasec.start')
+    router.post('/riasec/submit', [TestsController, 'store']).as('riasec.store')
+    router.get('/riasec/result/:id', [TestsController, 'showResult']).as('riasec.results.show')
+  })
+  .use(middleware.auth())
+
+router
+  .group(() => {
+    router.get('/dashboard', [AdminDashboardController, 'index']).as('admin.dashboard')
+    router.resource('users', AdminUsersController).as('admin.users')
+  })
+  .prefix('admin')
+  .use([middleware.auth(), middleware.admin()])
+
+// title: tests/bootstrap.ts
+import { assert } from '@japa/assert'
+import app from '@adonisjs/core/services/app'
+import type { Config } from '@japa/runner/types'
+import { pluginAdonisJS } from '@japa/plugin-adonisjs'
+import testUtils from '@adonisjs/core/services/test_utils'
+
+/**
+ * This file is imported by the "bin/test.ts" entrypoint file
+ */
+
+/**
+ * Configure Japa plugins in the plugins array.
+ * Learn more - https://japa.dev/docs/runner-config#plugins-optional
+ */
+export const plugins: Config['plugins'] = [assert(), pluginAdonisJS(app)]
+
+/**
+ * Configure lifecycle function to run before and after all the
+ * tests.
+ *
+ * The setup functions are executed before all the tests
+ * The teardown functions are executed after all the tests
+ */
+export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
+  setup: [],
+  teardown: [],
+}
+
+/**
+ * Configure suites by tapping into the test suite instance.
+ * Learn more - https://japa.dev/docs/test-suites#lifecycle-hooks
+ */
+export const configureSuite: Config['configureSuite'] = (suite) => {
+  if (['browser', 'functional', 'e2e'].includes(suite.name)) {
+    return suite.setup(() => testUtils.httpServer().start())
+  }
+}
+
+// title: vite.config.ts
+import { defineConfig } from 'vite'
+import { getDirname } from '@adonisjs/core/helpers'
+import inertia from '@adonisjs/inertia/client'
+import react from '@vitejs/plugin-react'
+import adonisjs from '@adonisjs/vite/client'
+
+export default defineConfig({
+  plugins: [inertia({ ssr: { enabled: true, entrypoint: 'inertia/app/ssr.tsx' } }), react(), adonisjs({ entrypoints: ['inertia/app/app.tsx'], reload: ['resources/views/**/*.edge'] })],
+
+  /**
+   * Define aliases for importing modules from
+   * your frontend code
+   */
+  resolve: {
+    alias: {
+      '~/': `${getDirname(import.meta.url)}/inertia/`,
+    },
+  },
+})
