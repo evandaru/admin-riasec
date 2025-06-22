@@ -1,145 +1,96 @@
+import { FormEvent } from 'react'
 import { Head, useForm } from '@inertiajs/react'
-import React, { useState } from 'react'
-import UserLayout from '../layouts/main'
+import UserLayout from '../layouts/main' // Pastikan layout ini sesuai
 
+// Interface untuk properti yang diterima komponen
 interface Question {
     id: number
     teksPertanyaan: string
-    tipeRiasec: string
+    tipeRiasec: 'R' | 'I' | 'A' | 'S' | 'E' | 'C'
 }
 
 interface RiasecTestProps {
     questions: Question[]
 }
 
+// --- PERUBAHAN 1: Opsi jawaban diubah kembali menjadi Ya/Tidak ---
 const answerOptions = [
-    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
-    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
-    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
-    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
-    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
+    { label: 'Ya', value: 1 },
+    { label: 'Tidak', value: 0 },
 ]
 
-export default function RiasecTest({ questions }: RiasecTestProps) {
-    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
-        answers: {},
+export default function RiasecTestCardViewYesNo({ questions }: RiasecTestProps) {
+    // useForm untuk mengelola semua jawaban dalam satu state
+    const { data, setData, post, processing, errors } = useForm({
+        answers: {} as Record<string, number>,
     })
 
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-    const totalQuestions = questions.length
-    const currentQuestion = questions[currentQuestionIndex]
-
-    const handleAnswer = (questionId: number, answerValue: number) => {
+    // Fungsi untuk memperbarui state jawaban ketika radio button dipilih
+    const handleAnswerChange = (questionId: number, value: number) => {
         setData('answers', {
             ...data.answers,
-            [questionId]: answerValue,
+            [questionId]: value,
         })
     }
 
-    const handleNext = () => {
-        if (currentQuestionIndex < totalQuestions - 1) {
-            setCurrentQuestionIndex((prev) => prev + 1)
-        }
-    }
-
-    const handleBack = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex((prev) => prev - 1)
-        }
-    }
-
-    const handleSubmit = (e: React.FormEvent) => {
+    // Fungsi untuk mengirim semua data jawaban ke backend saat form disubmit
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         post('/riasec/submit')
     }
 
-    const progressPercentage =
-        totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0
-
     return (
         <>
-            <Head title="Tes Minat RIASEC" />
+            <Head title="Tes Minat Bakat" />
+            <div className="bg-gray-100 dark:bg-gray-900 p-4 md:p-8 min-h-screen">
+                <div className="max-w-4xl mx-auto">
 
-            <div className="bg-slate-100 p-6 sm:p-10 min-h-screen flex items-center justify-center">
-                <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-6 sm:p-10">
-
-                    {/* Progress */}
-                    <div className="mb-6">
-                        <div className="flex justify-between text-sm text-slate-500 font-medium mb-1">
-                            <span>Pertanyaan {currentQuestionIndex + 1} dari {totalQuestions}</span>
-                            <span>{Math.round(progressPercentage)}%</span>
-                        </div>
-                        <div className="w-full bg-slate-200 rounded-full h-2.5">
-                            <div
-                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                style={{ width: `${progressPercentage}%` }}
-                            ></div>
-                        </div>
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Tes Minat & Karier</h1>
+                        {/* --- PERUBAHAN 2: Instruksi disesuaikan untuk Ya/Tidak --- */}
+                        <p className="mt-2 text-gray-600 dark:text-gray-400">
+                            Jawab 'Ya' jika pernyataan berikut menggambarkan diri Anda, dan 'Tidak' jika tidak.
+                        </p>
                     </div>
 
-                    {/* Pertanyaan */}
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-6">
-                            <p className="text-3xl text-center font-semibold text-slate-800 mb-4">
-                                {currentQuestion.teksPertanyaan}
-                            </p>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* Loop untuk menampilkan semua pertanyaan */}
+                        {questions.map((question, index) => (
+                            <div key={question.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+                                <p className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
+                                    {index + 1}. {question.teksPertanyaan}
+                                </p>
 
-                            <div className="flex flex-wrap gap-3 justify-center">
-                                {answerOptions.map((option) => (
-                                    <button
-                                        key={option.value}
-                                        type="button"
-                                        onClick={() => handleAnswer(currentQuestion.id, option.value)}
-                                        className={`
-                                            flex flex-row px-3 py-2 rounded-lg text-base font-semibold
-                                            transition-all duration-200 focus:outline-none
-                                            ${data.answers[currentQuestion.id] === option.value
-                                                ? `${option.color} text-white shadow-md`
-                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                            }
-                                        `}
-                                    >
-                                        {option.label}
-                                    </button>
-                                ))}
+                                {/* --- PERUBAHAN 3: Tata letak disesuaikan untuk 2 pilihan --- */}
+                                <div className="flex justify-center items-center gap-x-12 pt-4">
+                                    {answerOptions.map((option) => (
+                                        <label key={option.value} className="flex items-center space-x-2 cursor-pointer text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                            <input
+                                                type="radio"
+                                                name={`question-${question.id}`}
+                                                value={option.value}
+                                                checked={data.answers[question.id] === option.value}
+                                                onChange={() => handleAnswerChange(question.id, option.value)}
+                                                className="form-radio h-4 w-4 text-indigo-600 dark:bg-gray-700 dark:border-gray-600 focus:ring-indigo-500"
+                                            />
+                                            <span className="text-lg">{option.label}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                                {errors[`answers.${question.id}`] && <div className="text-red-500 text-sm mt-3 text-center">{errors[`answers.${question.id}`]}</div>}
                             </div>
-                        </div>
+                        ))}
 
-                        {/* Navigasi */}
-                        <div className="flex justify-between mt-6">
+                        <div className="pt-6 text-center">
                             <button
-                                type="button"
-                                onClick={handleBack}
-                                disabled={currentQuestionIndex === 0}
-                                className="px-6 py-2 text-sm font-bold text-slate-600 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                type="submit"
+                                disabled={processing}
+                                className="w-full md:w-auto px-10 py-3 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 disabled:bg-indigo-400 disabled:cursor-not-allowed"
                             >
-                                Sebelumnya
+                                {processing ? 'Memproses...' : 'Selesai & Lihat Hasil'}
                             </button>
-
-                            {currentQuestionIndex < totalQuestions - 1 ? (
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    disabled={!data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    Selanjutnya
-                                </button>
-                            ) : (
-                                <button
-                                    type="submit"
-                                    disabled={processing || !data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
-                                </button>
-                            )}
+                            {errors.answers && <div className="text-red-500 text-sm mt-4">{errors.answers}</div>}
                         </div>
-
-                        {/* Error Message */}
-                        {errors.answers && (
-                            <p className="text-sm text-red-600 mt-3">{errors.answers}</p>
-                        )}
                     </form>
                 </div>
             </div>
@@ -147,4 +98,5 @@ export default function RiasecTest({ questions }: RiasecTestProps) {
     )
 }
 
-RiasecTest.layout = (page: any) => <UserLayout children={page} />
+// Ganti nama komponen agar lebih jelas dan gunakan layout
+RiasecTestCardViewYesNo.layout = (page: any) => <UserLayout children={page} />

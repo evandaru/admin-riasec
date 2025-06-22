@@ -5,9 +5,24 @@ import type { HttpContext } from '@adonisjs/core/http'
 import vine from '@vinejs/vine'
 
 export default class UsersController {
-  async index({ inertia }: HttpContext) {
-    const users = await User.all()
-    return inertia.render('admin/users/index', { users })
+  async index({ inertia, request }: HttpContext) {
+    const page = request.input('page', 1)
+    const limit = 10
+
+    const usersPaginated = await User.query().paginate(page, limit)
+
+    // Format pagination links
+    const paginationLinks = usersPaginated
+      .getUrlsForRange(1, usersPaginated.lastPage)
+      .map((link) => ({
+        page: link.page,
+        url: link.url,
+      }))
+
+    return inertia.render('admin/users/index', {
+      users: usersPaginated.serialize().data, // hanya array user
+      paginationLinks, // array pagination
+    })
   }
 
   async create({ inertia }: HttpContext) {
@@ -15,8 +30,13 @@ export default class UsersController {
   }
 
   async store({ request, response }: HttpContext) {
-    const payload = await request.validateUsing(createUserValidator)
-    await User.create(payload)
+    let payload = await request.validateUsing(createUserValidator)
+    // Map role 'user' to 'siswa' to match allowed enum values
+    const userPayload = {
+      ...payload,
+      role: payload.role === 'user' ? 'siswa' : payload.role,
+    }
+    await User.create(userPayload)
     return response.redirect().toRoute('admin.dashboard')
   }
 
@@ -48,7 +68,13 @@ export default class UsersController {
       })
     }
 
-    user.merge(payload)
+    // Map role 'user' to 'siswa' to match allowed enum values
+    const userPayload = {
+      ...payload,
+      role: payload.role === 'user' ? 'siswa' : payload.role,
+    }
+
+    user.merge(userPayload)
     await user.save()
 
     return response.redirect().toRoute('admin.dashboard')

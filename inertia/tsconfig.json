@@ -8,5 +8,5 @@
       "~/*": ["./*"],
     },
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "components/flash"],
+  "include": ["./**/*.ts", "./**/*.tsx", "components/flash", "pages/user/riasec/.test.tsx"],
 }

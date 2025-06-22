@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beri Rating Program Ekstrakurikuler</title>
+    <!-- Menggunakan Bootstrap 5 untuk tampilan yang rapi -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .program-card {
+            transition: transform 0.2s;
+        }
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        /* Style untuk bintang rating */
+        .rating-stars {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ccc; /* Warna bintang yang belum dipilih */
+        }
+        .rating-stars .star:hover,
+        .rating-stars .star.selected {
+            color: #ffc107; /* Warna bintang saat di-hover atau dipilih */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container my-5">
+        <div class="text-center mb-4">
+            <h1 class="display-5">Beri Ulasan Program Ekstrakurikuler</h1>
+            <p class="lead">Halo, <strong>Van Reichert (Siswa ID: 1)</strong>! Silakan berikan rating untuk program yang pernah kamu ikuti.</p>
+            <p>Pendapatmu sangat berharga untuk membantu teman-teman lain memilih program yang tepat!</p>
+        </div>
+
+        <div class="row g-4" id="program-list">
+            <!-- Program akan dimasukkan di sini oleh JavaScript -->
+        </div>
+
+        <div class="text-center mt-5">
+            <button class="btn btn-primary btn-lg" onclick="submitAllRatings()">Simpan Semua Rating</button>
+        </div>
+    </div>
+
+    <script>
+        // Data program yang disimulasikan (sama seperti di database Anda)
+        const programs = [
+            { id: 1, name: 'Kelas Perbaikan Sepeda', description: 'Belajar memperbaiki sepeda dan menggunakan alat bengkel.' },
+            { id: 3, name: 'Eksperimen Sains Sederhana', description: 'Melakukan eksperimen seperti membuat roket air.' },
+            { id: 5, name: 'Lukis Mural Komunitas', description: 'Menggambar mural di dinding pondok untuk kreativitas.' },
+            { id: 6, name: 'Kelas Menggambar Sketsa', description: 'Belajar teknik menggambar sketsa dan poster.' },
+            { id: 9, name: 'Kegiatan Amal Lingkungan', description: 'Membersihkan lingkungan sekitar pondok.' },
+            { id: 10, name: 'Kelas Mengajar Teman', description: 'Berbagi pengetahuan kepada teman sebaya.' },
+            { id: 14, name: 'Kelas Public Speaking', description: 'Berlatih berbicara di depan umum.' },
+            { id: 15, name: 'Pengelolaan Acara Pondok', description: 'Mengatur acara seperti lomba atau perayaan.' },
+            { id: 18, name: 'Pencatatan Inventaris', description: 'Mengelola daftar peralatan pondok.' }
+        ];
+
+        // Fungsi untuk menampilkan program ke halaman
+        function renderPrograms() {
+            const programListContainer = document.getElementById('program-list');
+            let htmlContent = '';
+
+            programs.forEach(program => {
+                htmlContent += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card program-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">${program.name}</h5>
+                                <p class="card-text text-muted small">${program.description}</p>
+                                
+                                <!-- Sistem Rating Bintang -->
+                                <div class="rating-stars" data-program-id="${program.id}">
+                                    <span class="star" data-value="1">★</span>
+                                    <span class="star" data-value="2">★</span>
+                                    <span class="star" data-value="3">★</span>
+                                    <span class="star" data-value="4">★</span>
+                                    <span class="star" data-value="5">★</span>
+                                </div>
+                                <div id="rating-feedback-${program.id}" class="form-text mt-2">Pilih rating Anda...</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            programListContainer.innerHTML = htmlContent;
+        }
+        
+        // Fungsi untuk menangani event klik pada bintang
+        function handleRating() {
+            const allStarContainers = document.querySelectorAll('.rating-stars');
+
+            allStarContainers.forEach(container => {
+                const stars = container.querySelectorAll('.star');
+                const programId = container.dataset.programId;
+                const feedbackEl = document.getElementById(`rating-feedback-${programId}`);
+
+                stars.forEach(star => {
+                    star.addEventListener('click', () => {
+                        const ratingValue = star.dataset.value;
+                        // Simpan rating di atribut data container
+                        container.dataset.rating = ratingValue; 
+                        
+                        // Update tampilan visual bintang
+                        stars.forEach(s => {
+                            s.classList.toggle('selected', s.dataset.value <= ratingValue);
+                        });
+
+                        feedbackEl.textContent = `Anda memberikan ${ratingValue} bintang!`;
+                    });
+                });
+            });
+        }
+        
+        // Fungsi untuk "mengirim" data ke server (simulasi)
+        function submitAllRatings() {
+            const allStarContainers = document.querySelectorAll('.rating-stars');
+            const collectedRatings = [];
+            const siswaId = 1; // Pura-pura sebagai siswa ID 1 (Van Reichert)
+
+            allStarContainers.forEach(container => {
+                if (container.dataset.rating) { // Hanya kumpulkan yang sudah diberi rating
+                    collectedRatings.push({
+                        siswa_id: siswaId,
+                        program_id: parseInt(container.dataset.programId),
+                        rating: parseInt(container.dataset.rating)
+                    });
+                }
+            });
+
+            if (collectedRatings.length === 0) {
+                alert('Anda belum memberikan rating apapun!');
+                return;
+            }
+
+            // Simulasi pengiriman data ke server
+            console.log("======================================");
+            console.log("MENGIRIM DATA RATING KE SERVER...");
+            console.log("Data yang akan disimpan ke tabel 'user_program_ratings':");
+            console.table(collectedRatings);
+            console.log("======================================");
+
+            alert(`Terima kasih! ${collectedRatings.length} rating Anda telah "disimpan".\nBuka console log (F12) untuk melihat data yang dikirim.`);
+        }
+
+        // Jalankan fungsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPrograms();
+            handleRating();
+        });
+    </script>
+
+</body>
+</html>

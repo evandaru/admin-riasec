@@ -12,7 +12,7 @@ export const createUserValidator = vine.compile(
         return !user
       }),
     password: vine.string().minLength(8),
-    role: vine.enum(['user', 'admin']),
+    role: vine.enum(['user', 'admin', 'siswa']),
   })
 )
 
@@ -20,7 +20,7 @@ export const updateUserValidator = vine.compile(
   vine.object({
     fullName: vine.string().trim(),
     email: vine.string().email(),
-    role: vine.enum(['user', 'admin']),
+    role: vine.enum(['user', 'admin', 'siswa']),
   })
 )
 

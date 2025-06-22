@@ -1,6 +1,6 @@
 // title: inertia/pages/auth/register.tsx
-import { useForm, Link, Head } from '@inertiajs/react'
-import React from 'react'
+import { useForm, Link, Head } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function Register() {
   const { data, setData, post, processing, errors } = useForm({
@@ -8,17 +8,46 @@ export default function Register() {
     email: '',
     password: '',
     password_confirmation: '',
-  })
+  });
+
+  // State for alert feedback
+  const [alert, setAlert] = useState({
+    show: false,
+    type: 'success', // 'success' or 'error'
+    message: '',
+  });
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    post('/register')
+    e.preventDefault();
+    post('/register', {
+      onSuccess: () => {
+        setAlert({
+          show: true,
+          type: 'success',
+          message: 'Registration successful! Redirecting...',
+        });
+        // Auto-dismiss success alert after 3 seconds
+        setTimeout(() => setAlert({ show: false, type: 'success', message: '' }), 3000);
+      },
+      onError: () => {
+        setAlert({
+          show: true,
+          type: 'error',
+          message: 'Registration failed. Please check your details.',
+        });
+      },
+    });
   }
+
+  // Function to close the alert
+  const closeAlert = () => {
+    setAlert({ ...alert, show: false });
+  };
 
   return (
     <>
       <Head title="Register" />
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
         <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
           <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
             Create an Account
@@ -120,7 +149,27 @@ export default function Register() {
             </Link>
           </div>
         </div>
+
+        {/* Floating Alert - Positioned at the bottom of the screen */}
+        {alert.show && (
+          <div
+            className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-md p-4 rounded-md flex justify-between items-center shadow-lg transition-opacity duration-300 ${alert.type === 'success'
+                ? 'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200'
+                : 'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200'
+              }`}
+            role="alert"
+            aria-live="assertive"
+          >
+            <span>{alert.message}</span>
+            <button
+              onClick={closeAlert}
+              className="text-sm font-medium focus:outline-none hover:opacity-75"
+            >
+              ✕
+            </button>
+          </div>
+        )}
       </div>
     </>
-  )
+  );
 }

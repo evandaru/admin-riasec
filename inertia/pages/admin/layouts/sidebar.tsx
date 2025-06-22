@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, LayoutDashboard, BookOpen, ClipboardList, GraduationCap, Bell, CalendarDays, Users, Library, CheckCircle, Wallet, LifeBuoy, Phone, Settings, LogOut, NotebookText, NotebookPen } from 'lucide-react';
+import { Menu, X, LayoutDashboard, BookOpen, ClipboardList, GraduationCap, CalendarDays, Users, Library, CheckCircle, Wallet, LifeBuoy, Phone, Settings, LogOut, NotebookText, NotebookPen } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 
 const Sidebar: React.FC = () => {
@@ -102,7 +102,7 @@ const Sidebar: React.FC = () => {
               <span className="mx-4 font-medium">Daftar Siswa Test</span>
             </a>
             <a
-              href="/kalender" // Dihapus href-nya
+              href="/admin/pertanyaan" // Dihapus href-nya
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 `}
             >
               <NotebookPen className="w-5 h-5" />

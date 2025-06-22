@@ -14,6 +14,10 @@ const AdminDashboardController = () => import('#controllers/admin/dashboard_cont
 const AdminUsersController = () => import('#controllers/admin/users_controller')
 
 const SiswaRiasecsController = () => import('#controllers/admin/riasec/siswa_riasecs_controller')
+const PertanyaanRiasecsController = () =>
+  import('#controllers/admin/riasec/pertanyaan_riasecs_controller')
+
+const RecommendationsController = () => import('#controllers/user/recommendations_controller')
 
 router.get('/', [HomeController, 'index']).as('home')
 
@@ -37,6 +41,8 @@ router
     router.get('/riasec/test', [TestsController, 'start']).as('riasec.start')
     router.post('/riasec/submit', [TestsController, 'store']).as('riasec.store')
     router.get('/riasec/result', [TestsController, 'showMyResult']).as('riasec.result')
+
+    router.get('/recommendations', [RecommendationsController, 'index']).as('recommendations.index')
   })
   .use([middleware.auth(), middleware.isUser()])
 
@@ -45,7 +51,25 @@ router
     router.get('/dashboard', [AdminDashboardController, 'index']).as('admin.dashboard')
     router.resource('users', AdminUsersController).as('admin.users')
 
+    router.get('/siswa-riasec/create', [SiswaRiasecsController, 'create']).as('admin.siswa.create')
+    router.post('/siswa-riasec', [SiswaRiasecsController, 'store']).as('admin.siswa.store')
+
+    router.get('/siswa-riasec/:id/edit', [SiswaRiasecsController, 'edit']).as('admin.siswa.edit')
+
+    // Rute untuk menyimpan perubahan data siswa
+    router.put('/siswa-riasec/:id', [SiswaRiasecsController, 'update']).as('admin.siswa.update')
+
     router.get('/siswa-riasec', [SiswaRiasecsController, 'index']).as('admin.siswaRiasec.index')
+    router.get('/siswa-riasec/:id', [SiswaRiasecsController, 'show']).as('admin.siswaRiasec.show')
+    router
+      .delete('/siswa-riasec/:id', [SiswaRiasecsController, 'destroy'])
+      .as('admin.siswaRiasec.destroy')
+
+    router
+      .post('/siswa-riasec/:id/reset', [SiswaRiasecsController, 'resetTest'])
+      .as('admin.siswaRiasec.reset')
+
+    router.get('/pertanyaan', [PertanyaanRiasecsController, 'index']).as('admin.pertanyaan.index')
   })
   .prefix('admin')
   .use([middleware.auth(), middleware.admin()])
