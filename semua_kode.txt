@@ -1,167 +1,173 @@
 === FOLDER STRUCTURE ===
-app
-├── abilities
-│   └── main.ts
-├── controllers
-│   ├── admin
-│   │   ├── riasec
-│   │   │   ├── pertanyaan_riasecs_controller.ts
-│   │   │   └── siswa_riasecs_controller.ts
-│   │   ├── dashboard_controller.ts
-│   │   ├── hasil_tes_controller.ts
-│   │   └── users_controller.ts
-│   ├── auth
-│   │   └── registers_controller.ts
-│   ├── user
-│   │   ├── dashboard_controller.ts
-│   │   ├── hasil_tes_controller.ts
-│   │   ├── notes_controller.ts
-│   │   ├── profiles_controller.ts
-│   │   ├── recommendations_controller.ts
-│   │   └── tests_controller.ts
-│   ├── homepages_controller.ts
-│   └── session_controller.ts
-├── exceptions
-│   └── handler.ts
-├── middleware
-│   ├── admin_middleware.ts
-│   ├── auth_middleware.ts
-│   ├── container_bindings_middleware.ts
-│   ├── guest_middleware.ts
-│   ├── initialize_bouncer_middleware.ts
-│   ├── is_user_middleware.ts
-│   └── silent_auth_middleware.ts
-├── models
-│   ├── admin.ts
-│   ├── hasil.ts
-│   ├── jawaban.ts
-│   ├── minat_bakat.ts
-│   ├── note.ts
-│   ├── program.ts
-│   ├── program_rating.ts
-│   ├── rekomendasi.ts
-│   ├── riasec_pertanyaan.ts
-│   ├── siswa.ts
-│   └── user.ts
-├── policies
-│   ├── main.ts
-│   ├── note_policy.ts
-│   └── user_policy.ts
-├── services
-│   ├── recommendation_service.ts
-│   └── riasec_service.ts
-└── validators
-    ├── note.ts
-    ├── siswa.ts
-    └── user.ts
-bin
-├── console.ts
-├── server.ts
-└── test.ts
-config
-├── app.ts
-├── auth.ts
-├── bodyparser.ts
-├── cors.ts
-├── database.ts
-├── hash.ts
-├── inertia.ts
-├── logger.ts
-├── session.ts
-├── shield.ts
-├── static.ts
-└── vite.ts
-database
-├── migrations
-│   ├── 1749892627155_create_users_table.ts
-│   ├── 1749947099577_create_notes_table.ts
-│   ├── 1750237566915_create_admins_table.ts
-│   ├── 1750237567410_create_siswa_table.ts
-│   ├── 1750237567902_create_riasec_pertanyaans_table.ts
-│   ├── 1750237568441_create_hasil_tes_table.ts
-│   ├── 1750237568941_create_jawaban_tes_table.ts
-│   ├── 1750388069955_create_programs_table.ts
-│   ├── 1750389796560_create_user_program_ratings_table.ts
-│   ├── 1750411457716_create_rekomendasis_table.ts
-│   └── 1750425662712_create_minat_bakats_table.ts
-└── seeders
-    ├── aauser_seeder.ts
-    ├── admin_seeder.ts
-    ├── minat_bakat_seeder.ts
-    ├── note_seeder.ts
-    ├── program_seeder.ts
-    ├── rekomendasi_seeder.ts
-    ├── riasec_pertanyaan_seeder.ts
-    ├── siswa_seeder.ts
-    └── 'z rating_seeder.ts'
-inertia
+.
 ├── app
-│   ├── app.tsx
-│   └── ssr.tsx
-├── components
-│   └── button.tsx
-├── css
-│   └── app.css
-├── pages
-│   ├── admin
-│   │   ├── dashboard
-│   │   │   └── index.tsx
-│   │   ├── layouts
-│   │   │   ├── main.tsx
-│   │   │   └── sidebar.tsx
-│   │   ├── pertanyaan
-│   │   │   ├── index.tsx
-│   │   │   └── 'index copy.tsx'
-│   │   ├── siswaRiasec
-│   │   │   ├── create.tsx
-│   │   │   ├── edit.tsx
-│   │   │   ├── index.tsx
-│   │   │   └── view.tsx
-│   │   └── users
-│   │       ├── create.tsx
-│   │       ├── edit.tsx
-│   │       └── index.tsx
-│   ├── auth
-│   │   ├── login.tsx
-│   │   └── register.tsx
-│   ├── errors
-│   │   ├── not_found.tsx
-│   │   └── server_error.tsx
-│   ├── user
-│   │   ├── dashboard
-│   │   │   └── index.tsx
-│   │   ├── layouts
-│   │   │   ├── main.tsx
-│   │   │   └── sidebar.tsx
-│   │   ├── notes
-│   │   │   ├── edit.tsx
-│   │   │   └── index.tsx
-│   │   └── riasec
-│   │       ├── index.tsx
-│   │       ├── result.tsx
-│   │       └── test.tsx
-│   └── home.tsx
-└── tsconfig.json
-resources
-└── views
-    └── inertia_layout.edge
-start
-├── env.ts
-├── kernel.ts
-└── routes.ts
-tests
-└── bootstrap.ts
-ace.js
-adonisrc.ts
-anu.html
-anu2.html
-eslint.config.js
-package-lock.json
-package.json
-semua_kode.txt
-tailwind.config.js
-tsconfig.json
-vite.config.ts
+│   ├── abilities
+│   │   └── main.ts
+│   ├── controllers
+│   │   ├── admin
+│   │   │   ├── riasec
+│   │   │   │   ├── pertanyaan_riasecs_controller.ts
+│   │   │   │   └── siswa_riasecs_controller.ts
+│   │   │   ├── dashboard_controller.ts
+│   │   │   ├── hasil_tes_controller.ts
+│   │   │   ├── profiles_controller.ts
+│   │   │   └── users_controller.ts
+│   │   ├── auth
+│   │   │   └── registers_controller.ts
+│   │   ├── user
+│   │   │   ├── dashboard_controller.ts
+│   │   │   ├── hasil_tes_controller.ts
+│   │   │   ├── notes_controller.ts
+│   │   │   ├── profiles_controller.ts
+│   │   │   ├── recommendations_controller.ts
+│   │   │   └── tests_controller.ts
+│   │   ├── homepages_controller.ts
+│   │   └── session_controller.ts
+│   ├── exceptions
+│   │   └── handler.ts
+│   ├── middleware
+│   │   ├── admin_middleware.ts
+│   │   ├── auth_middleware.ts
+│   │   ├── container_bindings_middleware.ts
+│   │   ├── guest_middleware.ts
+│   │   ├── initialize_bouncer_middleware.ts
+│   │   ├── is_user_middleware.ts
+│   │   └── silent_auth_middleware.ts
+│   ├── models
+│   │   ├── admin.ts
+│   │   ├── hasil.ts
+│   │   ├── jawaban.ts
+│   │   ├── minat_bakat.ts
+│   │   ├── note.ts
+│   │   ├── program.ts
+│   │   ├── program_rating.ts
+│   │   ├── rekomendasi.ts
+│   │   ├── riasec_pertanyaan.ts
+│   │   ├── siswa.ts
+│   │   └── user.ts
+│   ├── policies
+│   │   ├── main.ts
+│   │   ├── note_policy.ts
+│   │   └── user_policy.ts
+│   ├── services
+│   │   ├── recommendation_service.ts
+│   │   └── riasec_service.ts
+│   └── validators
+│       ├── note.ts
+│       ├── pertanyaan_riasec.ts
+│       ├── siswa.ts
+│       └── user.ts
+├── bin
+│   ├── console.ts
+│   ├── server.ts
+│   └── test.ts
+├── config
+│   ├── app.ts
+│   ├── auth.ts
+│   ├── bodyparser.ts
+│   ├── cors.ts
+│   ├── database.ts
+│   ├── hash.ts
+│   ├── inertia.ts
+│   ├── logger.ts
+│   ├── session.ts
+│   ├── shield.ts
+│   ├── static.ts
+│   └── vite.ts
+├── database
+│   ├── migrations
+│   │   ├── 1749892627155_create_users_table.ts
+│   │   ├── 1749947099577_create_notes_table.ts
+│   │   ├── 1750237566915_create_admins_table.ts
+│   │   ├── 1750237567410_create_siswa_table.ts
+│   │   ├── 1750237567902_create_riasec_pertanyaans_table.ts
+│   │   ├── 1750237568441_create_hasil_tes_table.ts
+│   │   ├── 1750237568941_create_jawaban_tes_table.ts
+│   │   ├── 1750388069955_create_programs_table.ts
+│   │   ├── 1750389796560_create_user_program_ratings_table.ts
+│   │   ├── 1750411457716_create_rekomendasis_table.ts
+│   │   └── 1750425662712_create_minat_bakats_table.ts
+│   └── seeders
+│       ├── aauser_seeder.ts
+│       ├── admin_seeder.ts
+│       ├── minat_bakat_seeder.ts
+│       ├── note_seeder.ts
+│       ├── program_seeder.ts
+│       ├── rekomendasi_seeder.ts
+│       ├── riasec_pertanyaan_seeder.ts
+│       ├── siswa_seeder.ts
+│       └── 'z rating_seeder.ts'
+├── inertia
+│   ├── app
+│   │   ├── app.tsx
+│   │   └── ssr.tsx
+│   ├── components
+│   │   └── button.tsx
+│   ├── css
+│   │   └── app.css
+│   ├── pages
+│   │   ├── admin
+│   │   │   ├── dashboard
+│   │   │   │   └── index.tsx
+│   │   │   ├── layouts
+│   │   │   │   ├── main.tsx
+│   │   │   │   └── sidebar.tsx
+│   │   │   ├── pertanyaan
+│   │   │   │   ├── create.tsx
+│   │   │   │   ├── edit.tsx
+│   │   │   │   └── index.tsx
+│   │   │   ├── profile
+│   │   │   │   └── index.tsx
+│   │   │   ├── siswaRiasec
+│   │   │   │   ├── create.tsx
+│   │   │   │   ├── edit.tsx
+│   │   │   │   ├── index.tsx
+│   │   │   │   └── view.tsx
+│   │   │   └── users
+│   │   │       ├── create.tsx
+│   │   │       ├── edit.tsx
+│   │   │       └── index.tsx
+│   │   ├── auth
+│   │   │   ├── login.tsx
+│   │   │   └── register.tsx
+│   │   ├── errors
+│   │   │   ├── not_found.tsx
+│   │   │   └── server_error.tsx
+│   │   ├── user
+│   │   │   ├── dashboard
+│   │   │   │   └── index.tsx
+│   │   │   ├── layouts
+│   │   │   │   ├── main.tsx
+│   │   │   │   └── sidebar.tsx
+│   │   │   ├── notes
+│   │   │   │   ├── edit.tsx
+│   │   │   │   └── index.tsx
+│   │   │   └── riasec
+│   │   │       ├── index.tsx
+│   │   │       ├── result.tsx
+│   │   │       └── test.tsx
+│   │   └── home.tsx
+│   └── tsconfig.json
+├── resources
+│   └── views
+│       └── inertia_layout.edge
+├── start
+│   ├── env.ts
+│   ├── kernel.ts
+│   └── routes.ts
+├── tests
+│   └── bootstrap.ts
+├── ace.js
+├── adonisrc.ts
+├── anu.html
+├── anu2.html
+├── eslint.config.js
+├── package-lock.json
+├── package.json
+├── semua_kode.txt
+├── tailwind.config.js
+├── tsconfig.json
+└── vite.config.ts
 
 
 === SOURCE FILES ===
@@ -329,8 +335,48 @@ export default class AdminDashboardController {
 
 export default class HasilTesController {}
 
+// title: app/controllers/admin/profiles_controller.ts
+import type { HttpContext } from '@adonisjs/core/http'
+import { updateAdminProfileValidator } from '#validators/user'
+
+export default class ProfilesController {
+  public async show({ auth, inertia }: HttpContext) {
+    const admin = auth.user!
+    return inertia.render('admin/profile/index', {
+      user: admin.serialize(),
+    })
+  }
+  public async update({ auth, request, response, session }: HttpContext) {
+    const admin = auth.user!
+
+    // Validasi input, dengan menyertakan userId saat ini agar validasi email unik mengabaikannya.
+    const payload = await request.validateUsing(updateAdminProfileValidator, {
+      meta: {
+        userId: admin.id,
+      },
+    })
+
+    // Gabungkan data nama lengkap dan email
+    admin.merge({
+      fullName: payload.fullName,
+      email: payload.email,
+    })
+
+    // Hanya update password jika field diisi
+    if (payload.password) {
+      admin.password = payload.password
+    }
+
+    await admin.save()
+
+    session.flash('success', 'Profil berhasil diperbarui!')
+    return response.redirect().toRoute('admin.profile.show')
+  }
+}
+
 // title: app/controllers/admin/riasec/pertanyaan_riasecs_controller.ts
 import RiasecPertanyaan from '#models/riasec_pertanyaan'
+import { createPertanyaanValidator } from '#validators/pertanyaan_riasec'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class PertanyaanRiasecsController {
@@ -345,54 +391,27 @@ export default class PertanyaanRiasecsController {
 
     return inertia.render('admin/pertanyaan/index', { pertanyaan })
   }
+  create({ inertia }: HttpContext) {
+    return inertia.render('admin/pertanyaan/create')
+  }
+  async store({ request, response, session }: HttpContext) {
+    // Pastikan 'session' ada di sini
+    const payload = await request.validateUsing(createPertanyaanValidator)
 
-  /**
-   * Menampilkan form untuk membuat pertanyaan baru.
-   * GET pertanyaan/create
-   */
-  // create({ inertia }) {
-  //   return inertia.render('pertanyaan/create')
-  // }
+    const lastPertanyaan = await RiasecPertanyaan.query().orderBy('nomor_urut', 'desc').first()
+    const nextNomorUrut = lastPertanyaan ? (lastPertanyaan.nomorUrut || 0) + 1 : 1
 
-  /**
-   * Menyimpan pertanyaan baru ke database.
-   * POST pertanyaan
-   */
-  // store({ request, response }) {
-  //   // Logika untuk menyimpan data
-  // }
+    await RiasecPertanyaan.create({
+      ...payload,
+      nomorUrut: nextNomorUrut,
+    })
 
-  /**
-   * Menampilkan detail satu pertanyaan.
-   * GET pertanyaan/:id
-   */
-  // show({ params }) {
-  //   // Logika untuk menampilkan detail
-  // }
+    // --- TAMBAHKAN BARIS INI ---
+    session.flash('success', 'Pertanyaan sudah berhasil dibuat!')
+    // -------------------------
 
-  /**
-   * Menampilkan form untuk mengedit pertanyaan.
-   * GET pertanyaan/:id/edit
-   */
-  // edit({ params, inertia }) {
-  //   // Logika untuk menampilkan form edit
-  // }
-
-  /**
-   * Mengupdate data pertanyaan di database.
-   * PUT atau PATCH pertanyaan/:id
-   */
-  // update({ params, request, response }) {
-  //   // Logika untuk update data
-  // }
-
-  /**
-   * Menghapus pertanyaan dari database.
-   * DELETE pertanyaan/:id
-   */
-  // destroy({ params, response }) {
-  //   // Logika untuk menghapus data
-  // }
+    return response.redirect().toRoute('admin.pertanyaan.index')
+  }
 }
 
 // title: app/controllers/admin/riasec/siswa_riasecs_controller.ts
@@ -412,30 +431,23 @@ import { Exception } from '@adonisjs/core/exceptions'
  */
 export default class SiswaRiasecsController {
   /**
-   * Display a paginated list of students
+   * Display a list of all students for TanStack Table.
    */
-  async index({ inertia, request, session }: HttpContext) {
-    const page = Math.max(1, Number.parseInt(request.input('page', '1')))
-    const limit = 10
-
+  async index({ inertia, session }: HttpContext) {
     try {
-      const siswaPaginated = await Siswa.query()
+      // Fetch all students instead of paginating
+      const allSiswa = await Siswa.query()
         .preload('user')
         .preload('hasilTes', (query) => query.orderBy('tanggal_tes', 'desc').limit(1))
         .orderBy('nama_lengkap', 'asc')
-        .paginate(page, limit)
 
-      const paginationLinks = siswaPaginated
-        .getUrlsForRange(1, siswaPaginated.lastPage)
-        .map((link) => ({ page: link.page, url: link.url }))
-
+      // Serialize the data to be sent to the view
       return inertia.render('admin/siswaRiasec/index', {
-        siswa: siswaPaginated.serialize().data,
-        paginationLinks,
+        siswa: allSiswa.map((s) => s.serialize()),
       })
     } catch (error) {
       session.flash('error', 'Gagal memuat daftar siswa')
-      return inertia.render('admin/siswaRiasec/index', { siswa: [], paginationLinks: [] })
+      return inertia.render('admin/siswaRiasec/index', { siswa: [] })
     }
   }
 
@@ -1413,6 +1425,43 @@ export default class Note extends BaseModel {
   declare user: BelongsTo<typeof User>
 }
 
+// title: app/models/program_rating.ts
+import { DateTime } from 'luxon'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import Siswa from '#models/siswa'
+import Program from '#models/program'
+
+export default class ProgramRating extends BaseModel {
+  static table = 'user_program_ratings'
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare siswaId: number
+
+  // Foreign key buat tabel 'program'
+  @column()
+  declare programId: number
+
+  // Kolom 'rating' dengan default 0
+  @column()
+  declare rating: number
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+
+  @belongsTo(() => Siswa)
+  declare siswa: BelongsTo<typeof Siswa>
+
+  // Rating ini punya satu program
+  @belongsTo(() => Program)
+  declare program: BelongsTo<typeof Program>
+}
+
 // title: app/models/program.ts
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
@@ -1450,43 +1499,6 @@ export default class Program extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-}
-
-// title: app/models/program_rating.ts
-import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import Siswa from '#models/siswa'
-import Program from '#models/program'
-
-export default class ProgramRating extends BaseModel {
-  static table = 'user_program_ratings'
-  @column({ isPrimary: true })
-  declare id: number
-
-  @column()
-  declare siswaId: number
-
-  // Foreign key buat tabel 'program'
-  @column()
-  declare programId: number
-
-  // Kolom 'rating' dengan default 0
-  @column()
-  declare rating: number
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
-  @belongsTo(() => Siswa)
-  declare siswa: BelongsTo<typeof Siswa>
-
-  // Rating ini punya satu program
-  @belongsTo(() => Program)
-  declare program: BelongsTo<typeof Program>
 }
 
 // title: app/models/rekomendasi.ts
@@ -2237,6 +2249,17 @@ export const updateNoteValidator = vine.compile(
   })
 )
 
+// title: app/validators/pertanyaan_riasec.ts
+// title: app/validators/riasec.ts
+import vine from '@vinejs/vine'
+
+export const createPertanyaanValidator = vine.compile(
+  vine.object({
+    teksPertanyaan: vine.string().trim().minLength(10).maxLength(255),
+    tipeRiasec: vine.enum(['R', 'I', 'A', 'S', 'E', 'C']),
+  })
+)
+
 // title: app/validators/siswa.ts
 // title: app/validators/siswa.ts
 import vine from '@vinejs/vine'
@@ -2325,6 +2348,27 @@ export const registerUserValidator = vine.compile(
         return !user
       }),
     password: vine.string().minLength(8).confirmed(),
+  })
+)
+
+export const updateAdminProfileValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().trim().minLength(3),
+    email: vine
+      .string()
+      .trim()
+      .email()
+      .unique(async (db, value, field) => {
+        // Cek apakah ada email yang sama, KECUALI untuk user ID saat ini
+        const user = await db
+          .from('users')
+          .where('email', value)
+          .whereNot('id', field.meta.userId) // Ambil userId dari meta
+          .first()
+        return !user
+      }),
+    // Password bersifat opsional, tapi jika diisi, harus ada konfirmasinya
+    password: vine.string().minLength(8).confirmed().optional(),
   })
 )
 
@@ -2705,6 +2749,7 @@ const inertiaConfig = defineConfig({
    */
   sharedData: {
     // user: (ctx) => ctx.inertia.always(() => ctx.auth.user),
+    flash: (ctx) => ctx.session.flashMessages,
   },
 
   /**
@@ -2712,8 +2757,8 @@ const inertiaConfig = defineConfig({
    */
   ssr: {
     enabled: true,
-    entrypoint: 'inertia/app/ssr.tsx'
-  }
+    entrypoint: 'inertia/app/ssr.tsx',
+  },
 })
 
 export default inertiaConfig
@@ -2910,226 +2955,6 @@ const viteBackendConfig = defineConfig({
 })
 
 export default viteBackendConfig
-
-// title: database/.seeders/aauser_seeder.ts
-// database/seeders/user_seeder.ts
-import User from '#models/user'
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    await User.createMany([
-      {
-        fullName: 'Admin User',
-        email: 'admin@example.com',
-        password: '12qwaszx',
-        role: 'admin',
-      },
-      {
-        fullName: 'Regular User',
-        email: 'user@example.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-      {
-        fullName: 'lele',
-        email: 'lele@lele.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-      {
-        fullName: 'sapi',
-        email: 'sapi@sapi.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-    ])
-  }
-}
-
-// title: database/.seeders/admin_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
-  }
-}
-
-// title: database/.seeders/database_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
-  }
-}
-
-// title: database/.seeders/riasec_pertanyaan_seeder.ts
-// title: database/seeders/riasec_pertanyaan_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import RiasecPertanyaan from '#models/riasec_pertanyaan'
-
-export default class extends BaseSeeder {
-  async run() {
-    await RiasecPertanyaan.createMany([
-      // Realistic
-      {
-        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
-        tipeRiasec: 'R',
-        nomorUrut: 1,
-      },
-      {
-        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
-        tipeRiasec: 'R',
-        nomorUrut: 2,
-      },
-      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
-
-      // Investigative
-      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
-      {
-        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
-        tipeRiasec: 'I',
-        nomorUrut: 5,
-      },
-      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
-
-      // Artistic
-      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
-      {
-        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
-        tipeRiasec: 'A',
-        nomorUrut: 8,
-      },
-      {
-        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
-        tipeRiasec: 'A',
-        nomorUrut: 9,
-      },
-
-      // Social
-      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
-      {
-        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
-        tipeRiasec: 'S',
-        nomorUrut: 11,
-      },
-      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
-
-      // Enterprising
-      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
-      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
-      {
-        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
-        tipeRiasec: 'E',
-        nomorUrut: 15,
-      },
-
-      // Conventional
-      {
-        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
-        tipeRiasec: 'C',
-        nomorUrut: 16,
-      },
-      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
-      {
-        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
-        tipeRiasec: 'C',
-        nomorUrut: 18,
-      },
-    ])
-  }
-}
-
-// title: database/.seeders/siswa_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
-  }
-}
-
-// title: database/.seeders/z hasil_seeder.ts
-// title: database/seeders/z hasil_tes_seeder.ts (REVISI)
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import HasilTes from '#models/hasil'
-import Siswa from '#models/siswa'
-
-export default class extends BaseSeeder {
-  public async run() {
-    const allSiswa = await Siswa.all()
-    if (allSiswa.length === 0) {
-      console.log('Tidak ada siswa untuk di-seed hasil tesnya.')
-      return
-    }
-
-    // Definisikan Persona/Tipe Minat
-    const personas = [
-      { name: 'Si Praktis', dominant: ['R', 'C'], secondary: ['I', 'E'] }, // Tipe Realistic-Conventional
-      { name: 'Si Peneliti', dominant: ['I', 'C'], secondary: ['R', 'A'] }, // Tipe Investigative-Conventional
-      { name: 'Si Kreatif', dominant: ['A', 'S'], secondary: ['E', 'I'] }, // Tipe Artistic-Social
-      { name: 'Si Sosialita', dominant: ['S', 'E'], secondary: ['A', 'C'] }, // Tipe Social-Enterprising
-      { name: 'Si Pebisnis', dominant: ['E', 'C'], secondary: ['S', 'R'] }, // Tipe Enterprising-Conventional
-      { name: 'Si Campuran Unik', dominant: ['I', 'A', 'S'], secondary: ['R', 'E', 'C'] }, // Tipe I-A-S
-    ]
-
-    const hasilTesData: Partial<HasilTes>[] = []
-
-    for (const [i, siswa] of allSiswa.entries()) {
-      // Pilih persona secara bergiliran untuk memastikan variasi
-      const persona = personas[i % personas.length]
-
-      const scores: { [key: string]: number } = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
-
-      // Beri skor TINGGI untuk tipe dominan
-      persona.dominant.forEach((type) => {
-        scores[type] = Math.floor(Math.random() * 8) + 8 // Skor antara 8-15
-      })
-
-      // Beri skor SEDANG untuk tipe sekunder
-      persona.secondary.forEach((type) => {
-        if (scores[type] === 0) {
-          // Hanya isi jika belum diisi oleh dominan
-          scores[type] = Math.floor(Math.random() * 5) + 3 // Skor antara 3-7
-        }
-      })
-
-      // Beri skor RENDAH untuk sisanya
-      Object.keys(scores).forEach((type) => {
-        if (scores[type] === 0) {
-          scores[type] = Math.floor(Math.random() * 3) + 1 // Skor antara 1-3
-        }
-      })
-
-      // Buat Kode Holland dari 3 skor tertinggi
-      const sortedScores = (Object.entries(scores) as [keyof typeof scores, number][]).sort(
-        ([, a], [, b]) => b - a
-      )
-      const hollandCode = sortedScores
-        .slice(0, 3)
-        .map(([key]) => key)
-        .join('')
-
-      hasilTesData.push({
-        siswaId: siswa.id,
-        skorR: scores.R,
-        skorI: scores.I,
-        skorA: scores.A,
-        skorS: scores.S,
-        skorE: scores.E,
-        skorC: scores.C,
-        kodeHolland: hollandCode,
-      })
-    }
-
-    // Hapus hasil tes lama untuk menghindari duplikat jika seeder dijalankan lagi
-    await HasilTes.truncate()
-    await HasilTes.createMany(hasilTesData)
-    console.log(`Berhasil membuat ${hasilTesData.length} data hasil tes dengan persona.`)
-  }
-}
 
 // title: database/migrations/1749892627155_create_users_table.ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -3468,6 +3293,42 @@ export default class extends BaseSchema {
   }
 }
 
+// title: database/.seeders/aauser_seeder.ts
+// database/seeders/user_seeder.ts
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    await User.createMany([
+      {
+        fullName: 'Admin User',
+        email: 'admin@example.com',
+        password: '12qwaszx',
+        role: 'admin',
+      },
+      {
+        fullName: 'Regular User',
+        email: 'user@example.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'lele',
+        email: 'lele@lele.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'sapi',
+        email: 'sapi@sapi.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+    ])
+  }
+}
+
 // title: database/seeders/aauser_seeder.ts
 // title: database/seeders/user_seeder.ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -3502,6 +3363,15 @@ export default class extends BaseSeeder {
   }
 }
 
+// title: database/.seeders/admin_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
 // title: database/seeders/admin_seeder.ts
 // title: database/seeders/admin_seeder.ts
 import Admin from '#models/admin'
@@ -3532,6 +3402,15 @@ export default class AdminSeeder extends BaseSeeder {
       this.logger?.error('❌ Gagal insert ke tabel admin:')
       console.error(error)
     }
+  }
+}
+
+// title: database/.seeders/database_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
   }
 }
 
@@ -4410,6 +4289,83 @@ Serta menyukai pekerjaan yang terstruktur dan administratif.',
   }
 }
 
+// title: database/.seeders/riasec_pertanyaan_seeder.ts
+// title: database/seeders/riasec_pertanyaan_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import RiasecPertanyaan from '#models/riasec_pertanyaan'
+
+export default class extends BaseSeeder {
+  async run() {
+    await RiasecPertanyaan.createMany([
+      // Realistic
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
+        tipeRiasec: 'R',
+        nomorUrut: 1,
+      },
+      {
+        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
+        tipeRiasec: 'R',
+        nomorUrut: 2,
+      },
+      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
+
+      // Investigative
+      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
+      {
+        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
+        tipeRiasec: 'I',
+        nomorUrut: 5,
+      },
+      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
+
+      // Artistic
+      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
+      {
+        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
+        tipeRiasec: 'A',
+        nomorUrut: 8,
+      },
+      {
+        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
+        tipeRiasec: 'A',
+        nomorUrut: 9,
+      },
+
+      // Social
+      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
+      {
+        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
+        tipeRiasec: 'S',
+        nomorUrut: 11,
+      },
+      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
+
+      // Enterprising
+      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
+      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
+      {
+        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
+        tipeRiasec: 'E',
+        nomorUrut: 15,
+      },
+
+      // Conventional
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
+        tipeRiasec: 'C',
+        nomorUrut: 16,
+      },
+      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
+      {
+        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
+        tipeRiasec: 'C',
+        nomorUrut: 18,
+      },
+    ])
+  }
+}
+
 // title: database/seeders/riasec_pertanyaan_seeder.ts
 // title: database/seeders/riasec_pertanyaan_seeder.ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -4820,6 +4776,15 @@ export default class extends BaseSeeder {
   }
 }
 
+// title: database/.seeders/siswa_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
 // title: database/seeders/siswa_seeder.ts
 // title: database/seeders/siswa_seeder.ts
 import Siswa from '#models/siswa'
@@ -4862,6 +4827,86 @@ export default class SiswaSeeder extends BaseSeeder {
       this.logger?.error('❌ Gagal insert ke tabel siswa:')
       console.error(error)
     }
+  }
+}
+
+// title: database/.seeders/z hasil_seeder.ts
+// title: database/seeders/z hasil_tes_seeder.ts (REVISI)
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import HasilTes from '#models/hasil'
+import Siswa from '#models/siswa'
+
+export default class extends BaseSeeder {
+  public async run() {
+    const allSiswa = await Siswa.all()
+    if (allSiswa.length === 0) {
+      console.log('Tidak ada siswa untuk di-seed hasil tesnya.')
+      return
+    }
+
+    // Definisikan Persona/Tipe Minat
+    const personas = [
+      { name: 'Si Praktis', dominant: ['R', 'C'], secondary: ['I', 'E'] }, // Tipe Realistic-Conventional
+      { name: 'Si Peneliti', dominant: ['I', 'C'], secondary: ['R', 'A'] }, // Tipe Investigative-Conventional
+      { name: 'Si Kreatif', dominant: ['A', 'S'], secondary: ['E', 'I'] }, // Tipe Artistic-Social
+      { name: 'Si Sosialita', dominant: ['S', 'E'], secondary: ['A', 'C'] }, // Tipe Social-Enterprising
+      { name: 'Si Pebisnis', dominant: ['E', 'C'], secondary: ['S', 'R'] }, // Tipe Enterprising-Conventional
+      { name: 'Si Campuran Unik', dominant: ['I', 'A', 'S'], secondary: ['R', 'E', 'C'] }, // Tipe I-A-S
+    ]
+
+    const hasilTesData: Partial<HasilTes>[] = []
+
+    for (const [i, siswa] of allSiswa.entries()) {
+      // Pilih persona secara bergiliran untuk memastikan variasi
+      const persona = personas[i % personas.length]
+
+      const scores: { [key: string]: number } = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
+
+      // Beri skor TINGGI untuk tipe dominan
+      persona.dominant.forEach((type) => {
+        scores[type] = Math.floor(Math.random() * 8) + 8 // Skor antara 8-15
+      })
+
+      // Beri skor SEDANG untuk tipe sekunder
+      persona.secondary.forEach((type) => {
+        if (scores[type] === 0) {
+          // Hanya isi jika belum diisi oleh dominan
+          scores[type] = Math.floor(Math.random() * 5) + 3 // Skor antara 3-7
+        }
+      })
+
+      // Beri skor RENDAH untuk sisanya
+      Object.keys(scores).forEach((type) => {
+        if (scores[type] === 0) {
+          scores[type] = Math.floor(Math.random() * 3) + 1 // Skor antara 1-3
+        }
+      })
+
+      // Buat Kode Holland dari 3 skor tertinggi
+      const sortedScores = (Object.entries(scores) as [keyof typeof scores, number][]).sort(
+        ([, a], [, b]) => b - a
+      )
+      const hollandCode = sortedScores
+        .slice(0, 3)
+        .map(([key]) => key)
+        .join('')
+
+      hasilTesData.push({
+        siswaId: siswa.id,
+        skorR: scores.R,
+        skorI: scores.I,
+        skorA: scores.A,
+        skorS: scores.S,
+        skorE: scores.E,
+        skorC: scores.C,
+        kodeHolland: hollandCode,
+      })
+    }
+
+    // Hapus hasil tes lama untuk menghindari duplikat jika seeder dijalankan lagi
+    await HasilTes.truncate()
+    await HasilTes.createMany(hasilTesData)
+    console.log(`Berhasil membuat ${hasilTesData.length} data hasil tes dengan persona.`)
   }
 }
 
@@ -5055,47 +5100,145 @@ AdminDashboard.layout = (page: any) => (
 )
 
 // title: inertia/pages/admin/layouts/main.tsx
-// inertia/pages/user/layouts/main.tsx
-
-import { PropsWithChildren } from 'react'
-import Sidebar from './sidebar' // Sidebar-nya tetap sama
+// title: inertia/pages/admin/layouts/main.tsx
+import { PropsWithChildren, useState, useEffect } from 'react' // 1. Imports
+import { usePage } from '@inertiajs/react'
+import Sidebar from './sidebar'
 import { Head } from '@inertiajs/react'
+import { CheckCircle, X, XCircle } from 'lucide-react'
 
-export default function AdminLayout({ children }: PropsWithChildren) {
+// Definisikan tipe untuk props halaman
+interface PageProps {
+  children: PropsWithChildren
+  flash?: {
+    success?: string
+    error?: string
+  }
+  [key: string]: unknown
+}
+
+interface AdminLayoutProps extends PropsWithChildren {
+  title?: string
+}
+
+export default function AdminLayout({ children, title }: AdminLayoutProps) {
+  title = title || '' // 1. Set default title if not provided
+
+  const { flash } = usePage<PageProps>().props
+
+  // 2. State & Effect untuk Notifikasi Toast
+  const [toast, setToast] = useState({
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error',
+  })
+
+  useEffect(() => {
+    if (flash?.success) {
+      setToast({ show: true, message: flash.success, type: 'success' })
+    } else if (flash?.error) {
+      setToast({ show: true, message: flash.error, type: 'error' })
+    }
+
+    if (flash?.success || flash?.error) {
+      const timer = setTimeout(() => {
+        setToast((current) => ({ ...current, show: false }))
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [flash])
+
   return (
     <>
-      <Head title="User Dashboard" />
-
-      {/* Struktur ini lebih bener. Sidebar dan Main Content itu sibling.
-        Sidebar akan ngatur posisinya sendiri (fixed di mobile, static di desktop).
-      */}
+      <Head title="Admin Dashboard" />
       <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
         <Sidebar />
+        <main className="md:ml-64 p-4 sm:p-6 lg:p-8">{children}</main>
 
-        {/* Di layar kecil (mobile), main content bakal full-width.
-          Di layar medium ke atas (md), kita kasih margin kiri seukuran lebar sidebar (w-64).
-          Ini yang bikin kontennya gak ketimpa sidebar.
-        */}
-        <main className="md:ml-64 p-4 sm:p-6 lg:p-8">
-          {children}
-        </main>
+        {/* 3. Tambahkan JSX untuk Toast di sini */}
+        <div
+          className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${
+            toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
+          }`}
+        >
+          <div
+            className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${
+              toast.type === 'success'
+                ? 'ring-green-200 dark:ring-green-700'
+                : 'ring-red-200 dark:ring-red-700'
+            }`}
+            role="alert"
+          >
+            <div
+              className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
+                toast.type === 'success'
+                  ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
+                  : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
+              }`}
+            >
+              {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
+            </div>
+            <div className="ms-3 text-sm font-normal">{toast.message}</div>
+            <button
+              type="button"
+              className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+              onClick={() => setToast({ ...toast, show: false })}
+              aria-label="Close"
+            >
+              <span className="sr-only">Close</span>
+              <X size={20} />
+            </button>
+          </div>
+        </div>
       </div>
     </>
   )
 }
 
 // title: inertia/pages/admin/layouts/sidebar.tsx
-import { useState } from 'react';
-import { Menu, X, LayoutDashboard, BookOpen, ClipboardList, GraduationCap, CalendarDays, Users, Library, CheckCircle, Wallet, LifeBuoy, Phone, Settings, LogOut, NotebookText, NotebookPen } from 'lucide-react';
-import { Link } from '@inertiajs/react';
+// title: inertia/pages/admin/layouts/sidebar.tsx
+import { useState } from 'react'
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  BookOpen,
+  ClipboardList,
+  GraduationCap,
+  CalendarDays,
+  Users,
+  Library,
+  CheckCircle,
+  Wallet,
+  LifeBuoy,
+  Phone,
+  Settings,
+  LogOut,
+  NotebookText,
+  NotebookPen,
+} from 'lucide-react'
+import { Link, usePage } from '@inertiajs/react' // 1. Impor usePage
+
+// Definisikan tipe untuk props user yang kita harapkan dari Inertia
+interface User {
+  fullName: string | null
+  email: string
+}
+
+interface PageProps {
+  user: User
+  // Anda bisa tambahkan properti lain yang mungkin ada di props
+  [key: string]: unknown
+}
 
 const Sidebar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { user } = usePage<PageProps>().props // 2. Ambil data user dari props
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+  const toggleSidebar = () => setIsOpen(!isOpen)
 
   // Class untuk link yang disabled
-  const disabledLinkClass = "pointer-events-none opacity-50 cursor-not-allowed";
+  const disabledLinkClass = 'pointer-events-none opacity-50 cursor-not-allowed'
 
   return (
     <>
@@ -5110,11 +5253,12 @@ const Sidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
+        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
       >
         {/* Logo */}
-        <a href="#">
+        <a href="/admin/dashboard">
           <img
             className="w-auto h-6 sm:h-7"
             src="https://merakiui.com/images/logo.svg"
@@ -5122,159 +5266,99 @@ const Sidebar: React.FC = () => {
           />
         </a>
 
-        {/* Search Bar (tetep aktif biar bisa nyari) */}
-        {/* <div className="relative mt-6">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <Search className="w-5 h-5 text-gray-400" />
-          </span>
-          <input
-            type="text"
-            className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-            placeholder="Search"
-          />
-        </div> */}
-
         {/* Navigation */}
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav>
-            {/* Kategori Utama: Dashboard (DISABLED) */}
-            <a
-              href="/dashboard"
+            {/* Kategori Utama: Dashboard */}
+            <Link
+              href="/admin/dashboard" // Ganti 'a' menjadi 'Link' dan href yang benar
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
             >
               <LayoutDashboard className="w-5 h-5" />
               <span className="mx-4 font-medium">Dashboard</span>
-            </a>
+            </Link>
 
             {/* Kategori: Akademik */}
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akademik</p>
             <a
-              // href="/jadwal" // Dihapus href-nya
+              href="#"
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
             >
               <CalendarDays className="w-5 h-5" />
               <span className="mx-4 font-medium">Jadwal Kelas</span>
             </a>
             <a
-              // href="/materi" // Dihapus href-nya
+              href="#"
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
             >
               <BookOpen className="w-5 h-5" />
               <span className="mx-4 font-medium">Materi Belajar</span>
             </a>
-            <a
-              // href="/tugas" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <ClipboardList className="w-5 h-5" />
-              <span className="mx-4 font-medium">Tugas & PR</span>
-            </a>
-            <a
-              href="/admin/users" // Dihapus href-nya
+            <Link
+              href="/admin/users"
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 `}
             >
               <GraduationCap className="w-5 h-5" />
               <span className="mx-4 font-medium">Daftar Users</span>
-            </a>
-            {/* RIASEC Test (ENABLED) */}
+            </Link>
 
-
-            {/* Kategori: Kehidupan Sekolah (DISABLED) */}
-            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Test Riasec</p>
-            <a
-              href="/admin/siswa-riasec" // Dihapus href-nya
+            {/* Kategori: Test Riasec */}
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">
+              Test Riasec
+            </p>
+            <Link
+              href="/admin/siswa-riasec"
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 `}
             >
               <NotebookText className="w-5 h-5" />
               <span className="mx-4 font-medium">Daftar Siswa Test</span>
-            </a>
-            <a
-              href="/admin/pertanyaan" // Dihapus href-nya
+            </Link>
+            <Link
+              href="/admin/pertanyaan"
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 `}
             >
               <NotebookPen className="w-5 h-5" />
               <span className="mx-4 font-medium">Pertanyaan</span>
-            </a>
-            <a
-              // href="/ekskul" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <Users className="w-5 h-5" />
-              <span className="mx-4 font-medium">Ekskul Gaul</span>
-            </a>
-            <a
-              // href="/perpustakaan" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <Library className="w-5 h-5" />
-              <span className="mx-4 font-medium">Perpus Online</span>
-            </a>
-
-            {/* Kategori: Administrasi & Bantuan (DISABLED) */}
-            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Administrasi & Bantuan</p>
-            <a
-              // href="/absensi" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <CheckCircle className="w-5 h-5" />
-              <span className="mx-4 font-medium">Absensi Kece</span>
-            </a>
-            <a
-              // href="/pembayaran" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <Wallet className="w-5 h-5" />
-              <span className="mx-4 font-medium">Bayar-bayar SPP</span>
-            </a>
-            <a
-              // href="/bantuan" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <LifeBuoy className="w-5 h-5" />
-              <span className="mx-4 font-medium">Tanya-tanya Dong</span>
-            </a>
-            <a
-              // href="/kontak" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <Phone className="w-5 h-5" />
-              <span className="mx-4 font-medium">Kontak Sekolah</span>
-            </a>
+            </Link>
           </nav>
 
           {/* Profile Section */}
           <div className="mt-auto">
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akun</p>
-            {/* Profil Gue (DISABLED) */}
-            <a
-              // href="/profil" // Dihapus href-nya
-              className={`flex items-center px-4 -mx-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md ${disabledLinkClass}`}
+            {/* 3. Buat link profil menjadi aktif */}
+            <Link
+              href="/admin/profile"
+              className={`flex items-center px-4 -mx-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md`}
             >
               <img
                 className="object-cover mx-2 rounded-full h-9 w-9"
                 src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
                 alt="avatar"
               />
+              {/* 4. Tampilkan nama user yang login, berikan fallback */}
               <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">
-                John Doe
+                {user?.fullName || 'Admin'}
               </span>
-            </a>
+            </Link>
+
             {/* Settingan (DISABLED) */}
             <a
-              // href="/settings" // Dihapus href-nya
+              href="#"
               className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 mt-2 ${disabledLinkClass}`}
             >
               <Settings className="w-5 h-5" />
               <span className="mx-4 font-medium">Settingan</span>
             </a>
-            {/* Cabut Dulu (ENABLED) */}
+
+            {/* 5. Tambahkan `onBefore` untuk konfirmasi logout */}
             <Link
               href="/logout"
               method="post"
               as="button"
-              className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
+              onBefore={() => confirm('Apakah Anda yakin ingin keluar?')}
+              className="w-full flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
             >
-              <LogOut className="w-5 h-5" /> {/* Icon LogOut */}
+              <LogOut className="w-5 h-5" />
               <span className="mx-4 font-medium">Cabut Dulu</span>
             </Link>
           </div>
@@ -5289,228 +5373,628 @@ const Sidebar: React.FC = () => {
         ></div>
       )}
     </>
-  );
-};
-
-export default Sidebar;
-
-// title: inertia/pages/admin/pertanyaan/index copy.tsx
-import { Link } from '@inertiajs/react'
-import { Pencil, Trash2 } from 'lucide-react'
-import AdminLayout from '../layouts/main' // Asumsi lo punya layout ini
-
-// 1. Definisikan interface untuk data pertanyaan
-interface Pertanyaan {
-    id: number
-    teksPertanyaan: string
-    tipeRiasec: 'R' | 'I' | 'A' | 'S' | 'E' | 'C'
-    nomorUrut: number | null
+  )
 }
 
-// Map tipe RIASEC ke warna badge untuk visualisasi
-const riasecColors: Record<string, string> = {
-    R: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    I: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-    A: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    S: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    E: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-    C: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
-}
+export default Sidebar
 
-export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan[] }) {
-    return (
-        <div className="p-8 max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Pertanyaan RIASEC</h1>
-                <div className="space-x-2">
-                    <Link
-                        href="/admin/dashboard" // Sesuaikan dengan route dashboard lo
-                        className="text-indigo-600 dark:text-indigo-400 hover:underline"
-                    >
-                        &larr; Kembali ke Dashboard
-                    </Link>
-                    <Link
-                        href="/admin/pertanyaan/create" // Sesuaikan dengan route create lo
-                        className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-                    >
-                        Tambah Pertanyaan
-                    </Link>
-                </div>
-            </div>
+// title: inertia/pages/admin/pertanyaan/create.tsx
+// title: inertia/pages/admin/pertanyaan/create.tsx
+import { Link, useForm, Head } from '@inertiajs/react'
+import AdminLayout from '../layouts/main'
 
-            <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-1/12">
-                                No
-                            </th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-1/12">
-                                Tipe
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-8/12">
-                                Teks Pertanyaan
-                            </th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-2/12">
-                                Aksi
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                        {pertanyaan.map((item, index) => (
-                            <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                    {index + 1}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${riasecColors[item.tipeRiasec]}`}>
-                                        {item.tipeRiasec}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-900 dark:text-white">
-                                    {item.teksPertanyaan}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div className="flex items-center justify-end space-x-1">
-                                        <Link
-                                            href={`/admin/pertanyaan/${item.id}/edit`}
-                                            title="Edit Pertanyaan"
-                                            className="p-2 text-gray-500 rounded-full transition-colors hover:text-indigo-600 hover:bg-indigo-100 dark:hover:bg-gray-700"
-                                        >
-                                            <Pencil size={18} />
-                                        </Link>
-                                        <Link
-                                            href={`/admin/pertanyaan/${item.id}`}
-                                            method="delete"
-                                            as="button"
-                                            title="Hapus Pertanyaan"
-                                            className="p-2 text-gray-500 rounded-full transition-colors hover:text-red-600 hover:bg-red-100 dark:hover:bg-gray-700"
-                                            onBefore={() => confirm('Apakah Anda yakin ingin menghapus pertanyaan ini?')}
-                                        >
-                                            <Trash2 size={18} />
-                                        </Link>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+export default function CreatePertanyaan() {
+  const { data, setData, post, processing, errors } = useForm({
+    teksPertanyaan: '',
+    tipeRiasec: 'R' as 'R' | 'I' | 'A' | 'S' | 'E' | 'C', // Default ke 'R'
+  })
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    post('/admin/pertanyaan')
+  }
+
+  return (
+    <>
+      <Head title="Tambah Pertanyaan RIASEC" />
+      <div className="p-8 max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Tambah Pertanyaan Baru
+          </h1>
+          <Link
+            href="/admin/pertanyaan"
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700"
+          >
+            ← Kembali ke Daftar
+          </Link>
         </div>
-    )
+
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+          <form onSubmit={submit} className="space-y-6">
+            {/* Tipe RIASEC */}
+            <div>
+              <label
+                htmlFor="tipeRiasec"
+                className="block  text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Tipe RIASEC <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="tipeRiasec"
+                value={data.tipeRiasec}
+                onChange={(e) => setData('tipeRiasec', e.target.value as typeof data.tipeRiasec)}
+                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              >
+                <option value="R">R - Realistic</option>
+                <option value="I">I - Investigative</option>
+                <option value="A">A - Artistic</option>
+                <option value="S">S - Social</option>
+                <option value="E">E - Enterprising</option>
+                <option value="C">C - Conventional</option>
+              </select>
+              {errors.tipeRiasec && (
+                <div className="text-xs text-red-500 mt-1">{errors.tipeRiasec}</div>
+              )}
+            </div>
+
+            {/* Teks Pertanyaan */}
+            <div>
+              <label
+                htmlFor="teksPertanyaan"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Teks Pertanyaan <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                id="teksPertanyaan"
+                rows={4}
+                value={data.teksPertanyaan}
+                onChange={(e) => setData('teksPertanyaan', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Contoh: Saya suka bekerja dengan peralatan mesin."
+                required
+              />
+              {errors.teksPertanyaan && (
+                <div className="text-xs text-red-500 mt-1">{errors.teksPertanyaan}</div>
+              )}
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                type="submit"
+                disabled={processing}
+                className="inline-flex justify-center px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 transition-colors"
+              >
+                {processing ? 'Menyimpan...' : 'Simpan Pertanyaan'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  )
 }
 
-// Gunakan layout yang sama
-PertanyaanIndex.layout = (page: any) => <AdminLayout children={page} />
+// Menggunakan layout admin yang sudah ada
+CreatePertanyaan.layout = (page: any) => <AdminLayout children={page} />
+
+// title: inertia/pages/admin/pertanyaan/edit.tsx
+import AdminLayout from '../layouts/main'
+
+export default function EditPertanyaan() {
+  return <></>
+}
+
+EditPertanyaan.layout = (page: any) => <AdminLayout children={page} title="Edit Siswa" />
 
 // title: inertia/pages/admin/pertanyaan/index.tsx
 import { Link } from '@inertiajs/react'
-import { Pencil, Trash2 } from 'lucide-react'
-import AdminLayout from '../layouts/main' // Asumsi lo punya layout ini
+import { Pencil, Trash2, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
+import AdminLayout from '../layouts/main'
+import { useMemo, useState, useEffect } from 'react'
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  createColumnHelper,
+  flexRender,
+  SortingState,
+  ColumnDef,
+  ColumnFiltersState, // BARU: Impor tipe untuk filter kolom
+} from '@tanstack/react-table'
 
-// 1. Definisikan interface untuk data pertanyaan
+// --- Data Interface (tidak berubah) ---
 interface Pertanyaan {
-    id: number
-    teksPertanyaan: string
-    tipeRiasec: 'R' | 'I' | 'A' | 'S' | 'E' | 'C'
-    nomorUrut: number | null
+  id: number
+  teksPertanyaan: string
+  tipeRiasec: 'R' | 'I' | 'A' | 'S' | 'E' | 'C'
+  nomorUrut: number | null
 }
 
-// Map tipe RIASEC ke warna badge untuk visualisasi
-const riasecColors: Record<string, string> = {
+// --- Debounced Input for Search (tidak berubah) ---
+function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
+}: {
+  value: string | number
+  onChange: (value: string | number) => void
+  debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+  const [value, setValue] = useState(initialValue)
+  useEffect(() => setValue(initialValue), [initialValue])
+  useEffect(() => {
+    const timeout = setTimeout(() => onChange(value), debounce)
+    return () => clearTimeout(timeout)
+  }, [value])
+  return <input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
+}
+
+// --- Komponen Utama ---
+export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan[] }) {
+  const data = useMemo(() => pertanyaan, [pertanyaan])
+
+  // --- State untuk tabel ---
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [globalFilter, setGlobalFilter] = useState('')
+  // BARU: State untuk menyimpan filter per kolom
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+  const riasecColors: Record<string, string> = {
     R: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
     I: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
     A: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
     S: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
     E: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
     C: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
-}
+  }
 
-export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan[] }) {
-    return (
-        <div className="p-8 max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Pertanyaan RIASEC</h1>
-                <div className="space-x-2">
-                    <Link
-                        href="/admin/dashboard" // Sesuaikan dengan route dashboard lo
-                        className="text-indigo-600 dark:text-indigo-400 hover:underline"
-                    >
-                        &larr; Kembali ke Dashboard
-                    </Link>
-                    <Link
-                        href="/admin/pertanyaan/create" // Sesuaikan dengan route create lo
-                        className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-                    >
-                        Tambah Pertanyaan
-                    </Link>
-                </div>
-            </div>
+  const columnHelper = createColumnHelper<Pertanyaan>()
 
-            <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-1/12">
-                                No
-                            </th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-1/12">
-                                Tipe
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-8/12">
-                                Teks Pertanyaan
-                            </th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider w-2/12">
-                                Aksi
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                        {pertanyaan.map((item, index) => (
-                            <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                    {index + 1}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                    <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${riasecColors[item.tipeRiasec]}`}>
-                                        {item.tipeRiasec}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-normal text-sm text-gray-900 dark:text-white">
-                                    {item.teksPertanyaan}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div className="flex items-center justify-end space-x-1">
-                                        <Link
-                                            href={`/admin/pertanyaan/${item.id}/edit`}
-                                            title="Edit Pertanyaan"
-                                            className="p-2 text-gray-500 rounded-full transition-colors hover:text-indigo-600 hover:bg-indigo-100 dark:hover:bg-gray-700"
-                                        >
-                                            <Pencil size={18} />
-                                        </Link>
-                                        <Link
-                                            href={`/admin/pertanyaan/${item.id}`}
-                                            method="delete"
-                                            as="button"
-                                            title="Hapus Pertanyaan"
-                                            className="p-2 text-gray-500 rounded-full transition-colors hover:text-red-600 hover:bg-red-100 dark:hover:bg-gray-700"
-                                            onBefore={() => confirm('Apakah Anda yakin ingin menghapus pertanyaan ini?')}
-                                        >
-                                            <Trash2 size={18} />
-                                        </Link>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+  const columns = useMemo<ColumnDef<Pertanyaan, any>[]>(
+    () => [
+      // ... Definisi kolom lainnya tidak berubah ...
+      columnHelper.accessor((row, index) => index + 1, {
+        id: 'no',
+        header: '#',
+        size: 50,
+        enableSorting: false,
+      }),
+      columnHelper.accessor('tipeRiasec', {
+        header: 'Tipe',
+        size: 100,
+        cell: (info) => (
+          <div className="text-center">
+            <span
+              className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${riasecColors[info.getValue()]}`}
+            >
+              {info.getValue()}
+            </span>
+          </div>
+        ),
+      }),
+      columnHelper.accessor('teksPertanyaan', {
+        header: 'Teks Pertanyaan',
+        cell: (info) => <div className="whitespace-normal">{info.getValue()}</div>,
+      }),
+      columnHelper.display({
+        id: 'actions',
+        header: 'Aksi',
+        size: 120,
+        cell: ({ row }) => {
+          const item = row.original
+          return (
+            <div className="flex items-center justify-end space-x-1">
+              <Link
+                href={`/admin/pertanyaan/${item.id}/edit`}
+                title="Edit Pertanyaan"
+                className="p-2 text-gray-500 rounded-full transition-colors hover:text-indigo-600 hover:bg-indigo-100 dark:hover:bg-gray-700"
+              >
+                <Pencil size={18} />
+              </Link>
+              <Link
+                href={`/admin/pertanyaan/${item.id}`}
+                method="delete"
+                as="button"
+                title="Hapus Pertanyaan"
+                className="p-2 text-gray-500 rounded-full transition-colors hover:text-red-600 hover:bg-red-100 dark:hover:bg-gray-700"
+                onBefore={() => confirm('Apakah Anda yakin ingin menghapus pertanyaan ini?')}
+              >
+                <Trash2 size={18} />
+              </Link>
             </div>
+          )
+        },
+      }),
+    ],
+    []
+  )
+
+  const table = useReactTable({
+    data,
+    columns,
+    // DIUBAH: Tambahkan state filter kolom
+    state: { sorting, globalFilter, columnFilters },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    // BARU: Tambahkan handler untuk perubahan filter kolom
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(), // Ini yang akan memproses filter
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 10 } },
+  })
+
+  return (
+    <div className="p-8 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          Manajemen Pertanyaan RIASEC
+        </h1>
+        <Link
+          href="/admin/pertanyaan/create"
+          className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+        >
+          Tambah Pertanyaan
+        </Link>
+      </div>
+
+      {/* DIUBAH: Kelompokkan kontrol filter */}
+      <div className="flex items-center gap-4 mb-4">
+        {/* Global Search */}
+        <DebouncedInput
+          value={globalFilter ?? ''}
+          onChange={(value) => setGlobalFilter(String(value))}
+          className="w-full max-w-sm p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          placeholder="Cari semua kolom..."
+        />
+
+        {/* BARU: Filter Dropdown untuk Tipe RIASEC */}
+        <div>
+          <select
+            value={(table.getColumn('tipeRiasec')?.getFilterValue() as string) ?? ''}
+            onChange={(e) => table.getColumn('tipeRiasec')?.setFilterValue(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            <option value="">Semua Tipe</option>
+            {/* Opsi untuk setiap tipe RIASEC */}
+            {['R', 'I', 'A', 'S', 'E', 'C'].map((tipe) => (
+              <option key={tipe} value={tipe}>
+                 {tipe}
+              </option>
+            ))}
+          </select>
         </div>
-    )
+      </div>
+
+      {/* --- Bagian Tabel dan Paginasi (TIDAK BERUBAH) --- */}
+      <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                    style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          className: header.column.getCanSort()
+                            ? 'cursor-pointer select-none flex items-center gap-2'
+                            : '',
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{ asc: <ChevronUp size={16} />, desc: <ChevronDown size={16} /> }[
+                          header.column.getIsSorted() as string
+                        ] ?? (header.column.getCanSort() ? <ChevronsUpDown size={16} /> : null)}
+                      </div>
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-600">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="px-6 py-4 text-sm text-gray-800 dark:text-gray-200">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-6 flex items-center justify-between">
+        {/* ... Kontrol Paginasi ... */}
+        <div className="mt-6 flex items-center justify-between">
+          <div className="text-sm text-gray-900 dark:text-white">
+            Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+            >
+              {'<<'}
+            </button>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+            >
+              {'<'}
+            </button>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+            >
+              {'>'}
+            </button>
+            <button
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+            >
+              {'>>'}
+            </button>
+            <span className="flex items-center gap-1 text-sm text-gray-900 dark:text-white">
+              | Ke halaman:
+              <input
+                type="number"
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0
+                  table.setPageIndex(page)
+                }}
+                className="border p-1 rounded w-16 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              />
+            </span>
+          </div>
+        </div>
+        {/* ... */}
+      </div>
+    </div>
+  )
 }
 
-// Gunakan layout yang sama
 PertanyaanIndex.layout = (page: any) => <AdminLayout children={page} />
+
+// title: inertia/pages/admin/profile/index.tsx
+// title: inertia/pages/admin/profile/index.tsx
+import { Link, useForm, Head, usePage } from '@inertiajs/react'
+import AdminLayout from '../layouts/main'
+import { useState, useEffect } from 'react'
+import { CheckCircle, XCircle, X } from 'lucide-react'
+
+// Definisikan tipe data untuk prop
+interface User {
+  id: number
+  fullName: string | null
+  email: string
+}
+
+interface PageProps {
+  user: User
+  flash?: {
+    success?: string
+    error?: string
+  }
+}
+
+export default function AdminProfile() {
+  const { user, flash } = usePage<PageProps>().props
+
+  const { data, setData, put, processing, errors } = useForm({
+    fullName: user.fullName || '',
+    email: user.email,
+    password: '',
+    password_confirmation: '',
+  })
+
+  // CUKUP SATU STATE untuk notifikasi "toast"
+  const [toast, setToast] = useState({
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error',
+  })
+
+  // useEffect untuk memantau perubahan pada flash message dari backend
+  useEffect(() => {
+    if (flash?.success) {
+      setToast({ show: true, message: flash.success, type: 'success' })
+    } else if (flash?.error) {
+      setToast({ show: true, message: flash.error, type: 'error' })
+    }
+
+    // Otomatis sembunyikan toast setelah 5 detik
+    if (flash?.success || flash?.error) {
+      const timer = setTimeout(() => {
+        setToast((current) => ({ ...current, show: false }))
+      }, 5000)
+      // Cleanup timer jika komponen di-unmount atau flash berubah lagi
+      return () => clearTimeout(timer)
+    }
+  }, [flash])
+
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    put('/admin/profile', {
+      preserveScroll: true,
+      onSuccess: () => {
+        // Kosongkan field password setelah berhasil update
+        setData((currentData) => ({
+          ...currentData,
+          password: '',
+          password_confirmation: '',
+        }))
+      },
+    })
+  }
+
+  return (
+    <>
+      <Head title="My Profile" />
+      <div className="p-4 md:p-8 max-w-2xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            My Profile
+          </h1>
+          <Link
+            href="/admin/dashboard"
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700"
+          >
+            ← Kembali
+          </Link>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-md">
+          <form onSubmit={submit} className="space-y-6">
+            {/* Form fields... (sama seperti kode Anda) */}
+            <div>
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Nama Lengkap <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                value={data.fullName}
+                onChange={(e) => setData('fullName', e.target.value)}
+                className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              />
+              {errors.fullName && (
+                <div className="text-xs text-red-500 mt-1">{errors.fullName}</div>
+              )}
+            </div>
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Email <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              />
+              {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
+            </div>
+            <hr className="border-gray-200 dark:border-gray-700" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Password Baru
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={data.password}
+                  autoComplete="new-password"
+                  onChange={(e) => setData('password', e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  placeholder="Kosongkan jika tidak diubah"
+                />
+                {errors.password && (
+                  <div className="text-xs text-red-500 mt-1">{errors.password}</div>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="password_confirmation"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Konfirmasi Password Baru
+                </label>
+                <input
+                  id="password_confirmation"
+                  type="password"
+                  value={data.password_confirmation}
+                  onChange={(e) => setData('password_confirmation', e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button
+                type="submit"
+                disabled={processing}
+                className="inline-flex justify-center px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 transition-colors"
+              >
+                {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* --- Floating Toast Notification --- */}
+      <div
+        className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${
+          toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
+        }`}
+      >
+        <div
+          className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${
+            toast.type === 'success'
+              ? 'ring-green-200 dark:ring-green-700'
+              : 'ring-red-200 dark:ring-red-700'
+          }`}
+          role="alert"
+        >
+          <div
+            className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
+              toast.type === 'success'
+                ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
+                : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
+            }`}
+          >
+            {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
+          </div>
+          <div className="ms-3 text-sm font-normal">{toast.message}</div>
+          <button
+            type="button"
+            className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+            onClick={() => setToast({ ...toast, show: false })}
+            aria-label="Close"
+          >
+            <span className="sr-only">Close</span>
+            <X size={20} />
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// Menggunakan layout admin yang sudah ada
+AdminProfile.layout = (page: any) => <AdminLayout children={page} />
 
 // title: inertia/pages/admin/siswaRiasec/create.tsx
 import { Link, useForm, Head } from '@inertiajs/react'
@@ -5586,7 +6070,7 @@ export default function CreateSiswa() {
                                 type="text"
                                 value={data.namaLengkap}
                                 onChange={(e) => setData('namaLengkap', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 required
                             />
                             {errors.namaLengkap && (
@@ -5607,7 +6091,7 @@ export default function CreateSiswa() {
                                 type="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 required
                             />
                             {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
@@ -5646,7 +6130,7 @@ export default function CreateSiswa() {
                                 type="password"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 required
                             />
                             {errors.password_confirmation && (
@@ -5667,7 +6151,7 @@ export default function CreateSiswa() {
                                 type="text"
                                 value={data.nisn}
                                 onChange={(e) => setData('nisn', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                             {errors.nisn && <div className="text-xs text-red-500 mt-1">{errors.nisn}</div>}
                         </div>
@@ -5685,7 +6169,7 @@ export default function CreateSiswa() {
                                 type="text"
                                 value={data.kelas}
                                 onChange={(e) => setData('kelas', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 placeholder="Contoh: XII IPA 1"
                             />
                             {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
@@ -5704,7 +6188,7 @@ export default function CreateSiswa() {
                                 type="date"
                                 value={data.tanggalLahir}
                                 onChange={(e) => setData('tanggalLahir', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                             {errors.tanggalLahir && (
                                 <div className="text-xs text-red-500 mt-1">{errors.tanggalLahir}</div>
@@ -5738,180 +6222,182 @@ import { DateTime } from 'luxon'
 
 // Definisikan tipe data untuk prop `siswa`
 interface SiswaData {
-    id: number
-    namaLengkap: string
-    nisn: string | null
-    kelas: string | null
-    tanggalLahir: string | null // Datetime dari Lucid sering datang sebagai string ISO
-    user: {
-        email: string
-    }
+  id: number
+  namaLengkap: string
+  nisn: string | null
+  kelas: string | null
+  tanggalLahir: string | null // Datetime dari Lucid sering datang sebagai string ISO
+  user: {
+    email: string
+  }
 }
 
 export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
-    const { data, setData, put, processing, errors } = useForm({
-        namaLengkap: siswa.namaLengkap,
-        email: siswa.user.email,
-        password: '', // Selalu kosongkan password di awal demi keamanan
-        nisn: siswa.nisn || '',
-        kelas: siswa.kelas || '',
-        tanggalLahir: siswa.tanggalLahir ? DateTime.fromISO(siswa.tanggalLahir).toISODate() : '',
-    })
+  const { data, setData, put, processing, errors } = useForm({
+    namaLengkap: siswa.namaLengkap,
+    email: siswa.user.email,
+    password: '', // Selalu kosongkan password di awal demi keamanan
+    nisn: siswa.nisn || '',
+    kelas: siswa.kelas || '',
+    tanggalLahir: siswa.tanggalLahir ? DateTime.fromISO(siswa.tanggalLahir).toISODate() : '',
+  })
 
-    function submit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        // Gunakan method PUT untuk update, arahkan ke rute update
-        put(`/admin/siswa-riasec/${siswa.id}`)
-    }
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    // Gunakan method PUT untuk update, arahkan ke rute update
+    put(`/admin/siswa-riasec/${siswa.id}`)
+  }
 
-    return (
-        <>
-            <Head title={`Edit Siswa - ${siswa.namaLengkap}`} />
-            <div className="p-8 max-w-4xl mx-auto">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Data Siswa</h1>
-                    <Link
-                        href="/admin/siswa-riasec"
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700"
-                    >
-                        ← Kembali ke Daftar Siswa
-                    </Link>
-                </div>
+  return (
+    <>
+      <Head title={`Edit Siswa - ${siswa.namaLengkap}`} />
+      <div className="p-8 max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Data Siswa</h1>
+          <Link
+            href="/admin/siswa-riasec"
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700"
+          >
+            ← Kembali ke Daftar Siswa
+          </Link>
+        </div>
 
-                <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
-                    {/* Global form error handling can be added here if needed */}
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+          {/* Global form error handling can be added here if needed */}
 
-                    <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Nama Lengkap */}
-                        <div className="md:col-span-2">
-                            <label
-                                htmlFor="namaLengkap"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                Nama Lengkap <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                id="namaLengkap"
-                                type="text"
-                                value={data.namaLengkap}
-                                onChange={(e) => setData('namaLengkap', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                required
-                            />
-                            {errors.namaLengkap && (
-                                <div className="text-xs text-red-500 mt-1">{errors.namaLengkap}</div>
-                            )}
-                        </div>
-
-                        {/* Email */}
-                        <div>
-                            <label
-                                htmlFor="email"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                Email <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                id="email"
-                                type="email"
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                required
-                            />
-                            {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
-                        </div>
-
-                        {/* Password */}
-                        <div>
-                            <label
-                                htmlFor="password"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                Password Baru
-                            </label>
-                            <input
-                                id="password"
-                                type="password"
-                                value={data.password}
-                                autoComplete="new-password"
-                                onChange={(e) => setData('password', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Kosongkan jika tidak diubah"
-                            />
-                            {errors.password && <div className="text-xs text-red-500 mt-1">{errors.password}</div>}
-                        </div>
-
-                        {/* NISN, Kelas, Tanggal Lahir (sama seperti di form create) */}
-                        {/* ... (copy-paste form input untuk nisn, kelas, tanggalLahir dari create.tsx) ... */}
-                        <div>
-                            <label
-                                htmlFor="nisn"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                NISN (Opsional)
-                            </label>
-                            <input
-                                id="nisn"
-                                type="text"
-                                value={data.nisn}
-                                onChange={(e) => setData('nisn', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            />
-                            {errors.nisn && <div className="text-xs text-red-500 mt-1">{errors.nisn}</div>}
-                        </div>
-
-                        <div>
-                            <label
-                                htmlFor="kelas"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                Kelas (Opsional)
-                            </label>
-                            <input
-                                id="kelas"
-                                type="text"
-                                value={data.kelas}
-                                onChange={(e) => setData('kelas', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Contoh: XII IPA 1"
-                            />
-                            {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
-                        </div>
-
-                        <div className="md:col-span-2">
-                            <label
-                                htmlFor="tanggalLahir"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >
-                                Tanggal Lahir (Opsional)
-                            </label>
-                            <input
-                                id="tanggalLahir"
-                                type="date"
-                                value={data.tanggalLahir}
-                                onChange={(e) => setData('tanggalLahir', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            />
-                            {errors.tanggalLahir && (
-                                <div className="text-xs text-red-500 mt-1">{errors.tanggalLahir}</div>
-                            )}
-                        </div>
-
-                        <div className="md:col-span-2 flex justify-end">
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="inline-flex justify-center px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 transition-colors"
-                            >
-                                {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
-                            </button>
-                        </div>
-                    </form>
-                </div>
+          <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Nama Lengkap */}
+            <div className="md:col-span-2">
+              <label
+                htmlFor="namaLengkap"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Nama Lengkap <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="namaLengkap"
+                type="text"
+                value={data.namaLengkap}
+                onChange={(e) => setData('namaLengkap', e.target.value)}
+                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              />
+              {errors.namaLengkap && (
+                <div className="text-xs text-red-500 mt-1">{errors.namaLengkap}</div>
+              )}
             </div>
-        </>
-    )
+
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Email <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              />
+              {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
+            </div>
+
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Password Baru
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={data.password}
+                autoComplete="new-password"
+                onChange={(e) => setData('password', e.target.value)}
+                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Kosongkan jika tidak diubah"
+              />
+              {errors.password && (
+                <div className="text-xs text-red-500 mt-1">{errors.password}</div>
+              )}
+            </div>
+
+            {/* NISN, Kelas, Tanggal Lahir (sama seperti di form create) */}
+            {/* ... (copy-paste form input untuk nisn, kelas, tanggalLahir dari create.tsx) ... */}
+            <div>
+              <label
+                htmlFor="nisn"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                NISN (Opsional)
+              </label>
+              <input
+                id="nisn"
+                type="text"
+                value={data.nisn}
+                onChange={(e) => setData('nisn', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              />
+              {errors.nisn && <div className="text-xs text-red-500 mt-1">{errors.nisn}</div>}
+            </div>
+
+            <div>
+              <label
+                htmlFor="kelas"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Kelas (Opsional)
+              </label>
+              <input
+                id="kelas"
+                type="text"
+                value={data.kelas}
+                onChange={(e) => setData('kelas', e.target.value)}
+                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Contoh: XII IPA 1"
+              />
+              {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
+            </div>
+
+            <div className="md:col-span-2">
+              <label
+                htmlFor="tanggalLahir"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Tanggal Lahir (Opsional)
+              </label>
+              <input
+                id="tanggalLahir"
+                type="date"
+                value={data.tanggalLahir ?? ''}
+                onChange={(e) => setData('tanggalLahir', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              />
+              {errors.tanggalLahir && (
+                <div className="text-xs text-red-500 mt-1">{errors.tanggalLahir}</div>
+              )}
+            </div>
+
+            <div className="md:col-span-2 flex justify-end">
+              <button
+                type="submit"
+                disabled={processing}
+                className="inline-flex justify-center px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 transition-colors"
+              >
+                {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  )
 }
 
 EditSiswa.layout = (page: any) => <AdminLayout children={page} title="Edit Siswa" />
@@ -5919,221 +6405,306 @@ EditSiswa.layout = (page: any) => <AdminLayout children={page} title="Edit Siswa
 // title: inertia/pages/admin/siswaRiasec/index.tsx
 // title: inertia/pages/admin/siswaRiasec/index.tsx
 import { Link } from '@inertiajs/react'
-import { Eye, Pencil, Trash2, RefreshCw } from 'lucide-react'
+import {
+  Eye,
+  Pencil,
+  Trash2,
+  RefreshCw,
+  ChevronUp,
+  ChevronDown,
+  ChevronsUpDown,
+} from 'lucide-react'
 import AdminLayout from '../layouts/main'
+import { useMemo, useState, useEffect } from 'react'
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  createColumnHelper,
+  flexRender,
+  SortingState,
+  ColumnDef,
+} from '@tanstack/react-table'
 
-interface PaginationLink {
-    url: string | null
-    page: number | null
-}
-
+// --- Data Interfaces ---
 interface User {
-    id: number
-    email: string
+  id: number
+  email: string
 }
-
 interface HasilTes {
-    id: number
-    kodeHolland: string | null
-    tanggalTes?: string
-    skorR?: number
-    skorI?: number
-    skorA?: number
-    skorS?: number
-    skorE?: number
-    skorC?: number
-    deskripsiHasil?: string | null
+  id: number
+  kodeHolland: string | null
 }
-
 interface Siswa {
-    id: number
-    namaLengkap: string
-    nisn: string | null
-    kelas: string | null
-    user: User
-    hasilTes: HasilTes[]
+  id: number
+  namaLengkap: string
+  nisn: string | null
+  kelas: string | null
+  user: User
+  hasilTes: HasilTes[]
 }
 
-export default function SiswaIndex({
-    siswa,
-    paginationLinks,
+// --- Debounced Input for Search ---
+function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
 }: {
-    siswa: Siswa[]
-    paginationLinks: PaginationLink[]
-}) {
-    return (
-        <div className="p-8 max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Siswa</h1>
-                <div className="space-x-2">
-                    <Link
-                        href="/admin/siswa-riasec/create"
-                        className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-                    >
-                        Tambah Siswa Baru
-                    </Link>
-                </div>
+  value: string | number
+  onChange: (value: string | number) => void
+  debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+  const [value, setValue] = useState(initialValue)
+  useEffect(() => setValue(initialValue), [initialValue])
+  useEffect(() => {
+    const timeout = setTimeout(() => onChange(value), debounce)
+    return () => clearTimeout(timeout)
+  }, [value])
+  return <input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
+}
+
+export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
+  const data = useMemo(() => siswa, [siswa])
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [globalFilter, setGlobalFilter] = useState('')
+
+  const columnHelper = createColumnHelper<Siswa>()
+
+  const columns = useMemo<ColumnDef<Siswa, any>[]>(
+    () => [
+      columnHelper.accessor((row, index) => index + 1, {
+        id: 'no',
+        header: '#',
+        size: 50,
+      }),
+      columnHelper.accessor('namaLengkap', {
+        header: 'Nama Lengkap',
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor((row) => row.user?.email, {
+        id: 'email',
+        header: 'Email',
+        cell: (info) => info.getValue() || 'N/A',
+      }),
+      columnHelper.accessor('kelas', {
+        header: 'Kelas',
+        cell: (info) => info.getValue() || '-',
+      }),
+      columnHelper.display({
+        id: 'statusTes',
+        header: 'Status Tes',
+        cell: ({ row }) => {
+          const sudahTes = row.original.hasilTes && row.original.hasilTes.length > 0
+          return sudahTes ? (
+            <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+              Sudah Tes
+            </span>
+          ) : (
+            <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+              Belum Tes
+            </span>
+          )
+        },
+      }),
+      columnHelper.display({
+        id: 'kodeHolland',
+        header: 'Hasil (Kode)',
+        cell: ({ row }) => {
+          const hasilTerbaru =
+            row.original.hasilTes && row.original.hasilTes.length > 0
+              ? row.original.hasilTes[0]
+              : null
+          return <span className="font-mono">{hasilTerbaru?.kodeHolland || '-'}</span>
+        },
+      }),
+      columnHelper.display({
+        id: 'actions',
+        header: 'Aksi',
+        cell: ({ row }) => {
+          const item = row.original
+          const sudahTes = item.hasilTes && item.hasilTes.length > 0
+          return (
+            <div className="flex items-center justify-end space-x-1">
+              <Link
+                href={`/admin/siswa-riasec/${item.id}`}
+                title="Lihat Detail"
+                className="p-2 text-gray-500 rounded-full transition-colors hover:text-blue-600 hover:bg-blue-100 dark:hover:bg-gray-700"
+              >
+                <Eye size={18} />
+              </Link>
+              <Link
+                href={`/admin/siswa-riasec/${item.id}/edit`}
+                title="Edit Siswa"
+                className="p-2 text-gray-500 rounded-full transition-colors hover:text-indigo-600 hover:bg-indigo-100 dark:hover:bg-gray-700"
+              >
+                <Pencil size={18} />
+              </Link>
+              <Link
+                href={`/admin/siswa-riasec/${item.id}/reset`}
+                method="post"
+                as="button"
+                title="Reset Tes"
+                className={`p-2 rounded-full transition-colors ${!sudahTes ? 'text-gray-300 dark:text-gray-600' : 'text-gray-500 hover:text-orange-600 hover:bg-orange-100 dark:hover:bg-gray-700'}`}
+                disabled={!sudahTes}
+                onBefore={() => confirm('Yakin ingin mereset tes siswa ini?')}
+              >
+                <RefreshCw size={18} />
+              </Link>
+              <Link
+                href={`/admin/siswa-riasec/${item.id}`}
+                method="delete"
+                as="button"
+                title="Hapus Siswa"
+                className="p-2 text-gray-500 rounded-full transition-colors hover:text-red-600 hover:bg-red-100 dark:hover:bg-gray-700"
+                onBefore={() => confirm('Yakin ingin menghapus data siswa ini?')}
+              >
+                <Trash2 size={18} />
+              </Link>
             </div>
+          )
+        },
+      }),
+    ],
+    []
+  )
 
-            <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                No
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Nama Lengkap
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Email
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Kelas
-                            </th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Status Tes
-                            </th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Hasil (Kode)
-                            </th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                Aksi
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                        {siswa.map((item, index) => {
-                            const sudahTes = item.hasilTes && item.hasilTes.length > 0
-                            const hasilTerbaru = sudahTes ? item.hasilTes[0] : null
+  const table = useReactTable({
+    data,
+    columns,
+    state: { sorting, globalFilter },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 10 } },
+  })
 
-                            return (
-                                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                        {index + 1}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                        {item.namaLengkap}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {item.user?.email || 'N/A'}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                        {item.kelas || '-'}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                        {sudahTes ? (
-                                            <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                                Sudah Tes
-                                            </span>
-                                        ) : (
-                                            <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                                                Belum Tes
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center font-mono">
-                                        {hasilTerbaru?.kodeHolland || '-'}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div className="flex items-center justify-end space-x-1">
-                                            <Link
-                                                href={`/admin/siswa-riasec/${item.id}`}
-                                                title="Lihat Detail"
-                                                className="p-2 text-gray-500 rounded-full transition-colors hover:text-blue-600 hover:bg-blue-100 dark:hover:bg-gray-700"
-                                            >
-                                                <Eye size={18} />
-                                            </Link>
-                                            <Link
-                                                href={`/admin/siswa-riasec/${item.id}/edit`}
-                                                title="Edit Siswa"
-                                                className="p-2 text-gray-500 rounded-full transition-colors hover:text-indigo-600 hover:bg-indigo-100 dark:hover:bg-gray-700"
-                                            >
-                                                <Pencil size={18} />
-                                            </Link>
-                                            {/* Tombol Reset Tes Baru */}
-                                            <Link
-                                                href={`/admin/siswa-riasec/${item.id}/reset`}
-                                                method="post"
-                                                as="button"
-                                                title="Reset Tes"
-                                                className={`p-2 text-gray-500 rounded-full transition-colors hover:text-orange-600 hover:bg-orange-100 dark:hover:bg-gray-700 ${!sudahTes ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                disabled={!sudahTes}
-                                                onBefore={() => confirm('Apakah Anda yakin ingin mereset hasil tes siswa ini? Semua data tes akan dihapus.')}
-                                            >
-                                                <RefreshCw size={18} />
-                                            </Link>
-                                            <Link
-                                                href={`/admin/siswa-riasec/${item.id}`}
-                                                method="delete"
-                                                as="button"
-                                                title="Hapus Siswa"
-                                                className="p-2 text-gray-500 rounded-full transition-colors hover:text-red-600 hover:bg-red-100 dark:hover:bg-gray-700"
-                                                onBefore={() => confirm('Apakah Anda yakin ingin menghapus data siswa ini?')}
-                                            >
-                                                <Trash2 size={18} />
-                                            </Link>
-                                        </div>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
+  return (
+    <div className="p-8 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Siswa</h1>
+        <Link
+          href="/admin/siswa-riasec/create"
+          className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Tambah Siswa Baru
+        </Link>
+      </div>
 
-            {paginationLinks && paginationLinks.length > 3 && (
-                <div className="mt-6 flex justify-center space-x-2">
-                    {(() => {
-                        const currentPage = paginationLinks.find((link) => link.url === null)?.page ?? 1
-                        const prevLink = paginationLinks.find((link) => link.page === currentPage - 1)
-                        const nextLink = paginationLinks.find((link) => link.page === currentPage + 1)
+      <div className="mb-4">
+        <DebouncedInput
+          value={globalFilter ?? ''}
+          onChange={(value) => setGlobalFilter(String(value))}
+          className="w-full max-w-sm p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          placeholder="Cari semua kolom..."
+        />
+      </div>
 
-                        return (
-                            <>
-                                {prevLink && (
-                                    <Link
-                                        href={prevLink.url ? `/admin/siswa${prevLink.url}` : '#'}
-                                        className="px-3 py-1 rounded-md border text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        disabled={!prevLink.url}
-                                    >
-                                        ← Prev
-                                    </Link>
-                                )}
+      <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-700">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                    style={{ width: header.getSize() !== 150 ? header.getSize() : undefined }}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          className: header.column.getCanSort()
+                            ? 'cursor-pointer select-none flex items-center gap-2'
+                            : '',
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          asc: <ChevronUp size={16} />,
+                          desc: <ChevronDown size={16} />,
+                        }[header.column.getIsSorted() as string] ??
+                          (header.column.getCanSort() ? <ChevronsUpDown size={16} /> : null)}
+                      </div>
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-600">
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-                                {paginationLinks.map((anchor) => {
-                                    if (anchor.page === null || anchor.page < 1) return null
-
-                                    return (
-                                        <Link
-                                            key={anchor.page}
-                                            href={anchor.url ? `/admin/siswa-riasec${anchor.url}` : '#'}
-                                            className={`px-3 py-1 rounded-md border text-sm font-medium ${anchor.url === null
-                                                ? 'bg-indigo-600 text-white dark:bg-indigo-500'
-                                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                                                }`}
-                                        >
-                                            {anchor.page}
-                                        </Link>
-                                    )
-                                })}
-
-                                {nextLink && (
-                                    <Link
-                                        href={nextLink.url ? `/admin/siswa-riasec${nextLink.url}` : '#'}
-                                        className="px-3 py-2 rounded-md border text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        disabled={!nextLink.url}
-                                    >
-                                        Next →
-                                    </Link>
-                                )}
-                            </>
-                        )
-                    })()}
-                </div>
-            )}
+      {/* Pagination Controls */}
+      <div className="mt-6 flex items-center justify-between">
+        <div className="text-sm text-gray-900 dark:text-white">
+          Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
         </div>
-    )
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+          >
+            {'<<'}
+          </button>
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+          >
+            {'<'}
+          </button>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+          >
+            {'>'}
+          </button>
+          <button
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
+          >
+            {'>>'}
+          </button>
+          <span className="flex items-center gap-1 text-sm text-gray-900 dark:text-white">
+            | Ke halaman:
+            <input
+              type="number"
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              className="border p-1 rounded w-16 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 SiswaIndex.layout = (page: any) => <AdminLayout children={page} />
@@ -6845,10 +7416,9 @@ export default function Login() {
     password: '',
   });
 
-  // State for alert feedback
   const [alert, setAlert] = useState({
     show: false,
-    type: 'success', // 'success' or 'error'
+    type: 'success', 
     message: '',
   });
 
@@ -6861,7 +7431,6 @@ export default function Login() {
           type: 'success',
           message: 'Login successful! Redirecting...',
         });
-        // Optional: Clear alert after a few seconds
         setTimeout(() => setAlert({ show: false, type: 'success', message: '' }), 3000);
       },
       onError: () => {
@@ -7823,158 +8392,6 @@ NotesIndex.layout = (page: any) => (
   <UserLayout children={page} />
 )
 
-// title: inertia/pages/user/riasec/.test.tsx
-import { Head, useForm } from '@inertiajs/react'
-import React, { useState } from 'react'
-import UserLayout from '../layouts/main'
-
-interface Question {
-    id: number
-    teksPertanyaan: string
-    tipeRiasec: string
-}
-
-interface RiasecTestProps {
-    questions: Question[]
-}
-
-const answerOptions = [
-    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
-    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
-    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
-    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
-    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
-]
-
-export default function RiasecTest({ questions }: RiasecTestProps) {
-    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
-        answers: {},
-    })
-
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-    const totalQuestions = questions.length
-    const currentQuestion = questions[currentQuestionIndex]
-
-    const handleAnswer = (questionId: number, answerValue: number) => {
-        setData('answers', {
-            ...data.answers,
-            [questionId]: answerValue,
-        })
-    }
-
-    const handleNext = () => {
-        if (currentQuestionIndex < totalQuestions - 1) {
-            setCurrentQuestionIndex((prev) => prev + 1)
-        }
-    }
-
-    const handleBack = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex((prev) => prev - 1)
-        }
-    }
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        post('/riasec/submit')
-    }
-
-    const progressPercentage =
-        totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0
-
-    return (
-        <>
-            <Head title="Tes Minat RIASEC" />
-
-            <div className="bg-slate-100 p-6 sm:p-10 min-h-screen flex items-center justify-center">
-                <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-6 sm:p-10">
-
-                    {/* Progress */}
-                    <div className="mb-6">
-                        <div className="flex justify-between text-sm text-slate-500 font-medium mb-1">
-                            <span>Pertanyaan {currentQuestionIndex + 1} dari {totalQuestions}</span>
-                            <span>{Math.round(progressPercentage)}%</span>
-                        </div>
-                        <div className="w-full bg-slate-200 rounded-full h-2.5">
-                            <div
-                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                style={{ width: `${progressPercentage}%` }}
-                            ></div>
-                        </div>
-                    </div>
-
-                    {/* Pertanyaan */}
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-6">
-                            <p className="text-3xl text-center font-semibold text-slate-800 mb-4">
-                                {currentQuestion.teksPertanyaan}
-                            </p>
-
-                            <div className="flex flex-wrap gap-3 justify-center">
-                                {answerOptions.map((option) => (
-                                    <button
-                                        key={option.value}
-                                        type="button"
-                                        onClick={() => handleAnswer(currentQuestion.id, option.value)}
-                                        className={`
-                                            flex flex-row px-3 py-2 rounded-lg text-base font-semibold
-                                            transition-all duration-200 focus:outline-none
-                                            ${data.answers[currentQuestion.id] === option.value
-                                                ? `${option.color} text-white shadow-md`
-                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                            }
-                                        `}
-                                    >
-                                        {option.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Navigasi */}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                type="button"
-                                onClick={handleBack}
-                                disabled={currentQuestionIndex === 0}
-                                className="px-6 py-2 text-sm font-bold text-slate-600 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Sebelumnya
-                            </button>
-
-                            {currentQuestionIndex < totalQuestions - 1 ? (
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    disabled={!data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    Selanjutnya
-                                </button>
-                            ) : (
-                                <button
-                                    type="submit"
-                                    disabled={processing || !data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Error Message */}
-                        {errors.answers && (
-                            <p className="text-sm text-red-600 mt-3">{errors.answers}</p>
-                        )}
-                    </form>
-                </div>
-            </div>
-        </>
-    )
-}
-
-RiasecTest.layout = (page: any) => <UserLayout children={page} />
-
 // title: inertia/pages/user/riasec/index.tsx
 // title: inertia/pages/user/riasec/index.tsx
 import { Head, Link, usePage } from '@inertiajs/react'
@@ -8225,6 +8642,158 @@ export default function RiasecResultPage() {
 
 RiasecResultPage.layout = (page: any) => <UserLayout children={page} />;
 
+// title: inertia/pages/user/riasec/.test.tsx
+import { Head, useForm } from '@inertiajs/react'
+import React, { useState } from 'react'
+import UserLayout from '../layouts/main'
+
+interface Question {
+    id: number
+    teksPertanyaan: string
+    tipeRiasec: string
+}
+
+interface RiasecTestProps {
+    questions: Question[]
+}
+
+const answerOptions = [
+    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
+    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
+    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
+    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
+    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
+]
+
+export default function RiasecTest({ questions }: RiasecTestProps) {
+    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
+        answers: {},
+    })
+
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+    const totalQuestions = questions.length
+    const currentQuestion = questions[currentQuestionIndex]
+
+    const handleAnswer = (questionId: number, answerValue: number) => {
+        setData('answers', {
+            ...data.answers,
+            [questionId]: answerValue,
+        })
+    }
+
+    const handleNext = () => {
+        if (currentQuestionIndex < totalQuestions - 1) {
+            setCurrentQuestionIndex((prev) => prev + 1)
+        }
+    }
+
+    const handleBack = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex((prev) => prev - 1)
+        }
+    }
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        post('/riasec/submit')
+    }
+
+    const progressPercentage =
+        totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0
+
+    return (
+        <>
+            <Head title="Tes Minat RIASEC" />
+
+            <div className="bg-slate-100 p-6 sm:p-10 min-h-screen flex items-center justify-center">
+                <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-6 sm:p-10">
+
+                    {/* Progress */}
+                    <div className="mb-6">
+                        <div className="flex justify-between text-sm text-slate-500 font-medium mb-1">
+                            <span>Pertanyaan {currentQuestionIndex + 1} dari {totalQuestions}</span>
+                            <span>{Math.round(progressPercentage)}%</span>
+                        </div>
+                        <div className="w-full bg-slate-200 rounded-full h-2.5">
+                            <div
+                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                style={{ width: `${progressPercentage}%` }}
+                            ></div>
+                        </div>
+                    </div>
+
+                    {/* Pertanyaan */}
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-6">
+                            <p className="text-3xl text-center font-semibold text-slate-800 mb-4">
+                                {currentQuestion.teksPertanyaan}
+                            </p>
+
+                            <div className="flex flex-wrap gap-3 justify-center">
+                                {answerOptions.map((option) => (
+                                    <button
+                                        key={option.value}
+                                        type="button"
+                                        onClick={() => handleAnswer(currentQuestion.id, option.value)}
+                                        className={`
+                                            flex flex-row px-3 py-2 rounded-lg text-base font-semibold
+                                            transition-all duration-200 focus:outline-none
+                                            ${data.answers[currentQuestion.id] === option.value
+                                                ? `${option.color} text-white shadow-md`
+                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                            }
+                                        `}
+                                    >
+                                        {option.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Navigasi */}
+                        <div className="flex justify-between mt-6">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                disabled={currentQuestionIndex === 0}
+                                className="px-6 py-2 text-sm font-bold text-slate-600 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Sebelumnya
+                            </button>
+
+                            {currentQuestionIndex < totalQuestions - 1 ? (
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    disabled={!data.answers[currentQuestion.id]}
+                                    className="px-6 py-2 text-white font-bold bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Selanjutnya
+                                </button>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    disabled={processing || !data.answers[currentQuestion.id]}
+                                    className="px-6 py-2 text-white font-bold bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Error Message */}
+                        {errors.answers && (
+                            <p className="text-sm text-red-600 mt-3">{errors.answers}</p>
+                        )}
+                    </form>
+                </div>
+            </div>
+        </>
+    )
+}
+
+RiasecTest.layout = (page: any) => <UserLayout children={page} />
+
 // title: inertia/pages/user/riasec/test.tsx
 import { FormEvent } from 'react'
 import { Head, useForm } from '@inertiajs/react'
@@ -8441,6 +9010,8 @@ const TestsController = () => import('#controllers/user/tests_controller')
 const AdminDashboardController = () => import('#controllers/admin/dashboard_controller')
 const AdminUsersController = () => import('#controllers/admin/users_controller')
 
+const ProfilesController = () => import('#controllers/admin/profiles_controller')
+
 const SiswaRiasecsController = () => import('#controllers/admin/riasec/siswa_riasecs_controller')
 const PertanyaanRiasecsController = () =>
   import('#controllers/admin/riasec/pertanyaan_riasecs_controller')
@@ -8498,6 +9069,15 @@ router
       .as('admin.siswaRiasec.reset')
 
     router.get('/pertanyaan', [PertanyaanRiasecsController, 'index']).as('admin.pertanyaan.index')
+
+    
+    router
+      .get('/pertanyaan/create', [PertanyaanRiasecsController, 'create'])
+      .as('admin.pertanyaan.create')
+    router.post('/pertanyaan', [PertanyaanRiasecsController, 'store']).as('admin.pertanyaan.store')
+
+    router.get('/profile', [ProfilesController, 'show']).as('admin.profile.show')
+    router.put('/profile', [ProfilesController, 'update']).as('admin.profile.update')
   })
   .prefix('admin')
   .use([middleware.auth(), middleware.admin()])

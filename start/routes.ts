@@ -13,6 +13,8 @@ const TestsController = () => import('#controllers/user/tests_controller')
 const AdminDashboardController = () => import('#controllers/admin/dashboard_controller')
 const AdminUsersController = () => import('#controllers/admin/users_controller')
 
+const ProfilesController = () => import('#controllers/admin/profiles_controller')
+
 const SiswaRiasecsController = () => import('#controllers/admin/riasec/siswa_riasecs_controller')
 const PertanyaanRiasecsController = () =>
   import('#controllers/admin/riasec/pertanyaan_riasecs_controller')
@@ -70,6 +72,15 @@ router
       .as('admin.siswaRiasec.reset')
 
     router.get('/pertanyaan', [PertanyaanRiasecsController, 'index']).as('admin.pertanyaan.index')
+
+    
+    router
+      .get('/pertanyaan/create', [PertanyaanRiasecsController, 'create'])
+      .as('admin.pertanyaan.create')
+    router.post('/pertanyaan', [PertanyaanRiasecsController, 'store']).as('admin.pertanyaan.store')
+
+    router.get('/profile', [ProfilesController, 'show']).as('admin.profile.show')
+    router.put('/profile', [ProfilesController, 'update']).as('admin.profile.update')
   })
   .prefix('admin')
   .use([middleware.auth(), middleware.admin()])

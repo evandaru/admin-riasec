@@ -7,10 +7,9 @@ export default function Login() {
     password: '',
   });
 
-  // State for alert feedback
   const [alert, setAlert] = useState({
     show: false,
-    type: 'success', // 'success' or 'error'
+    type: 'success', 
     message: '',
   });
 
@@ -23,7 +22,6 @@ export default function Login() {
           type: 'success',
           message: 'Login successful! Redirecting...',
         });
-        // Optional: Clear alert after a few seconds
         setTimeout(() => setAlert({ show: false, type: 'success', message: '' }), 3000);
       },
       onError: () => {

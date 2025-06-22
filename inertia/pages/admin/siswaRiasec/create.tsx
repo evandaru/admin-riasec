@@ -71,7 +71,7 @@ export default function CreateSiswa() {
                                 type="text"
                                 value={data.namaLengkap}
                                 onChange={(e) => setData('namaLengkap', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 required
                             />
                             {errors.namaLengkap && (
@@ -92,7 +92,7 @@ export default function CreateSiswa() {
                                 type="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 required
                             />
                             {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
@@ -131,7 +131,7 @@ export default function CreateSiswa() {
                                 type="password"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 required
                             />
                             {errors.password_confirmation && (
@@ -152,7 +152,7 @@ export default function CreateSiswa() {
                                 type="text"
                                 value={data.nisn}
                                 onChange={(e) => setData('nisn', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                             {errors.nisn && <div className="text-xs text-red-500 mt-1">{errors.nisn}</div>}
                         </div>
@@ -170,7 +170,7 @@ export default function CreateSiswa() {
                                 type="text"
                                 value={data.kelas}
                                 onChange={(e) => setData('kelas', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                 placeholder="Contoh: XII IPA 1"
                             />
                             {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
@@ -189,7 +189,7 @@ export default function CreateSiswa() {
                                 type="date"
                                 value={data.tanggalLahir}
                                 onChange={(e) => setData('tanggalLahir', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                             {errors.tanggalLahir && (
                                 <div className="text-xs text-red-500 mt-1">{errors.tanggalLahir}</div>

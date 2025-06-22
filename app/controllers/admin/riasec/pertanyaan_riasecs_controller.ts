@@ -1,4 +1,5 @@
 import RiasecPertanyaan from '#models/riasec_pertanyaan'
+import { createPertanyaanValidator } from '#validators/pertanyaan_riasec'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class PertanyaanRiasecsController {
@@ -13,52 +14,25 @@ export default class PertanyaanRiasecsController {
 
     return inertia.render('admin/pertanyaan/index', { pertanyaan })
   }
+  create({ inertia }: HttpContext) {
+    return inertia.render('admin/pertanyaan/create')
+  }
+  async store({ request, response, session }: HttpContext) {
+    // Pastikan 'session' ada di sini
+    const payload = await request.validateUsing(createPertanyaanValidator)
 
-  /**
-   * Menampilkan form untuk membuat pertanyaan baru.
-   * GET pertanyaan/create
-   */
-  // create({ inertia }) {
-  //   return inertia.render('pertanyaan/create')
-  // }
+    const lastPertanyaan = await RiasecPertanyaan.query().orderBy('nomor_urut', 'desc').first()
+    const nextNomorUrut = lastPertanyaan ? (lastPertanyaan.nomorUrut || 0) + 1 : 1
 
-  /**
-   * Menyimpan pertanyaan baru ke database.
-   * POST pertanyaan
-   */
-  // store({ request, response }) {
-  //   // Logika untuk menyimpan data
-  // }
+    await RiasecPertanyaan.create({
+      ...payload,
+      nomorUrut: nextNomorUrut,
+    })
 
-  /**
-   * Menampilkan detail satu pertanyaan.
-   * GET pertanyaan/:id
-   */
-  // show({ params }) {
-  //   // Logika untuk menampilkan detail
-  // }
+    // --- TAMBAHKAN BARIS INI ---
+    session.flash('success', 'Pertanyaan sudah berhasil dibuat!')
+    // -------------------------
 
-  /**
-   * Menampilkan form untuk mengedit pertanyaan.
-   * GET pertanyaan/:id/edit
-   */
-  // edit({ params, inertia }) {
-  //   // Logika untuk menampilkan form edit
-  // }
-
-  /**
-   * Mengupdate data pertanyaan di database.
-   * PUT atau PATCH pertanyaan/:id
-   */
-  // update({ params, request, response }) {
-  //   // Logika untuk update data
-  // }
-
-  /**
-   * Menghapus pertanyaan dari database.
-   * DELETE pertanyaan/:id
-   */
-  // destroy({ params, response }) {
-  //   // Logika untuk menghapus data
-  // }
+    return response.redirect().toRoute('admin.pertanyaan.index')
+  }
 }

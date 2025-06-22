@@ -37,3 +37,24 @@ export const registerUserValidator = vine.compile(
     password: vine.string().minLength(8).confirmed(),
   })
 )
+
+export const updateAdminProfileValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().trim().minLength(3),
+    email: vine
+      .string()
+      .trim()
+      .email()
+      .unique(async (db, value, field) => {
+        // Cek apakah ada email yang sama, KECUALI untuk user ID saat ini
+        const user = await db
+          .from('users')
+          .where('email', value)
+          .whereNot('id', field.meta.userId) // Ambil userId dari meta
+          .first()
+        return !user
+      }),
+    // Password bersifat opsional, tapi jika diisi, harus ada konfirmasinya
+    password: vine.string().minLength(8).confirmed().optional(),
+  })
+)
