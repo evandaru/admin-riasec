@@ -1,14 +1,57 @@
-import { useState } from 'react';
-import { Menu, X, LayoutDashboard, BookOpen, ClipboardList, GraduationCap, Bell, CalendarDays, Users, Library, CheckCircle, Wallet, LifeBuoy, Phone, Settings, LogOut } from 'lucide-react'; 
-import { Link } from '@inertiajs/react';
+import { useState } from 'react'
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  BookOpen,
+  ClipboardList,
+  GraduationCap,
+  Bell,
+  CalendarDays,
+  Users,
+  Library,
+  CheckCircle,
+  Wallet,
+  LifeBuoy,
+  Phone,
+  Settings,
+  LogOut,
+} from 'lucide-react'
+import { Link, usePage } from '@inertiajs/react'
+import Avatar from '~/components/avatar'
+
+// Definisikan tipe untuk props user
+interface User {
+  fullName: string | null
+  email: string
+}
+
+interface PageProps {
+  user: User
+  url: string
+  [key: string]: unknown
+}
 
 const Sidebar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { user, url } = usePage<PageProps>().props
+  const toggleSidebar = () => setIsOpen(!isOpen)
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+  const disabledLinkClass = 'pointer-events-none opacity-50 cursor-not-allowed'
 
-  // Class untuk link yang disabled
-  const disabledLinkClass = "pointer-events-none opacity-50 cursor-not-allowed";
+  const isActive = (href: string) => {
+    if (!url) {
+      console.warn('URL is undefined in usePage().props')
+      return false
+    }
+    return url.startsWith(href)
+  }
+
+  const linkBaseClass =
+    'flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700'
+
+  // Simpan nama user dalam variabel agar lebih bersih
+  const userName = user?.fullName || 'User Gaul'
 
   return (
     <>
@@ -23,76 +66,60 @@ const Sidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
+        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
       >
         {/* Logo */}
-        <a href="#">
+        <Link href="/dashboard">
           <img
             className="w-auto h-6 sm:h-7"
             src="https://merakiui.com/images/logo.svg"
             alt="Logo"
           />
-        </a>
-
-        {/* Search Bar (tetep aktif biar bisa nyari) */}
-        {/* <div className="relative mt-6">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <Search className="w-5 h-5 text-gray-400" />
-          </span>
-          <input
-            type="text"
-            className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-            placeholder="Search"
-          />
-        </div> */}
+        </Link>
 
         {/* Navigation */}
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav>
-            {/* Kategori Utama: Dashboard (DISABLED) */}
-            <a
+            {/* Dashboard */}
+            <Link
               href="/dashboard"
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
+              className={`${linkBaseClass} ${
+                isActive('/dashboard')
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                  : ''
+              }`}
             >
               <LayoutDashboard className="w-5 h-5" />
               <span className="mx-4 font-medium">Dashboard</span>
-            </a>
+            </Link>
 
             {/* Kategori: Akademik */}
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akademik</p>
-            <a
-              // href="/jadwal" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <CalendarDays className="w-5 h-5" />
               <span className="mx-4 font-medium">Jadwal Kelas</span>
             </a>
-            <a
-              // href="/materi" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <BookOpen className="w-5 h-5" />
               <span className="mx-4 font-medium">Materi Belajar</span>
             </a>
-            <a
-              // href="/tugas" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <ClipboardList className="w-5 h-5" />
               <span className="mx-4 font-medium">Tugas & PR</span>
             </a>
-            <a
-              // href="/nilai" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <GraduationCap className="w-5 h-5" />
               <span className="mx-4 font-medium">Nilai & Raport</span>
             </a>
-            {/* RIASEC Test (ENABLED) */}
-            <a
+            <Link
               href="/riasec"
-              className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+              className={`${linkBaseClass} ${
+                isActive('/riasec')
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                  : ''
+              }`}
             >
               <svg
                 className="w-5 h-5"
@@ -109,104 +136,54 @@ const Sidebar: React.FC = () => {
                 />
               </svg>
               <span className="mx-4 font-medium">RIASEC Test</span>
-            </a>
+            </Link>
 
-            {/* Kategori: Kehidupan Sekolah (DISABLED) */}
-            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Kehidupan Sekolah</p>
-            <a
-              // href="/pengumuman" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            {/* Kategori: Kehidupan Sekolah */}
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">
+              Kehidupan Sekolah
+            </p>
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <Bell className="w-5 h-5" />
               <span className="mx-4 font-medium">Info Penting</span>
             </a>
-            <a
-              // href="/kalender" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <CalendarDays className="w-5 h-5" />
               <span className="mx-4 font-medium">Kalender Sekolah</span>
             </a>
-            <a
-              // href="/ekskul" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <Users className="w-5 h-5" />
               <span className="mx-4 font-medium">Ekskul Gaul</span>
             </a>
-            <a
-              // href="/perpustakaan" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <Library className="w-5 h-5" />
               <span className="mx-4 font-medium">Perpus Online</span>
-            </a>
-
-            {/* Kategori: Administrasi & Bantuan (DISABLED) */}
-            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Administrasi & Bantuan</p>
-            <a
-              // href="/absensi" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <CheckCircle className="w-5 h-5" />
-              <span className="mx-4 font-medium">Absensi Kece</span>
-            </a>
-            <a
-              // href="/pembayaran" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <Wallet className="w-5 h-5" />
-              <span className="mx-4 font-medium">Bayar-bayar SPP</span>
-            </a>
-            <a
-              // href="/bantuan" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <LifeBuoy className="w-5 h-5" />
-              <span className="mx-4 font-medium">Tanya-tanya Dong</span>
-            </a>
-            <a
-              // href="/kontak" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
-              <Phone className="w-5 h-5" />
-              <span className="mx-4 font-medium">Kontak Sekolah</span>
             </a>
           </nav>
 
           {/* Profile Section */}
           <div className="mt-auto">
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akun</p>
-            {/* Profil Gue (DISABLED) */}
-            <a
-              // href="/profil" // Dihapus href-nya
-              className={`flex items-center px-4 -mx-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md ${disabledLinkClass}`}
+            <Link
+              href="/profile"
+              className={`${linkBaseClass} -mx-2 ${
+                isActive('/profile') ? 'bg-gray-100 dark:bg-gray-800' : ''
+              }`}
             >
-              <img
-                className="object-cover mx-2 rounded-full h-9 w-9"
-                src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                alt="avatar"
-              />
-              <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">
-                John Doe
-              </span>
-            </a>
-            {/* Settingan (DISABLED) */}
-            <a
-              // href="/settings" // Dihapus href-nya
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 mt-2 ${disabledLinkClass}`}
-            >
+              <Avatar name={userName} className="h-9 w-9 mx-2" />
+              <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">{userName}</span>
+            </Link>
+            <a href="#" className={`${linkBaseClass} mt-2 ${disabledLinkClass}`}>
               <Settings className="w-5 h-5" />
               <span className="mx-4 font-medium">Settingan</span>
             </a>
-            {/* Cabut Dulu (ENABLED) */}
             <Link
               href="/logout"
               method="post"
               as="button"
-              className="flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
+              onBefore={() => confirm('Apakah lu yakin mau cabut?')}
+              className="w-full flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
             >
-              <LogOut className="w-5 h-5" /> {/* Icon LogOut */}
+              <LogOut className="w-5 h-5" />
               <span className="mx-4 font-medium">Cabut Dulu</span>
             </Link>
           </div>
@@ -221,7 +198,7 @@ const Sidebar: React.FC = () => {
         ></div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

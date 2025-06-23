@@ -7,15 +7,22 @@ export default class PertanyaanRiasecsController {
    * Menampilkan daftar semua pertanyaan RIASEC.
    * Data diurutkan berdasarkan tipe RIASEC, lalu nomor urut.
    */
-  async index({ inertia }: HttpContext) {
+  async index({ inertia, request, auth }: HttpContext) {
     const pertanyaan = await RiasecPertanyaan.query()
       .orderBy('tipeRiasec', 'asc')
       .orderBy('nomorUrut', 'asc')
 
-    return inertia.render('admin/pertanyaan/index', { pertanyaan })
+    return inertia.render('admin/pertanyaan/index', {
+      pertanyaan,
+      url: request.url(),
+      user: auth.user!.serialize(),
+    })
   }
-  create({ inertia }: HttpContext) {
-    return inertia.render('admin/pertanyaan/create')
+  create({ inertia, request, auth }: HttpContext) {
+    return inertia.render('admin/pertanyaan/create', {
+      url: request.url(),
+      user: auth.user!.serialize(),
+    })
   }
   async store({ request, response, session }: HttpContext) {
     // Pastikan 'session' ada di sini
@@ -31,6 +38,36 @@ export default class PertanyaanRiasecsController {
 
     // --- TAMBAHKAN BARIS INI ---
     session.flash('success', 'Pertanyaan sudah berhasil dibuat!')
+    // -------------------------
+
+    return response.redirect().toRoute('admin.pertanyaan.index')
+  }
+
+  async edit({ inertia, params, request }: HttpContext) {
+    const pertanyaan = await RiasecPertanyaan.findOrFail(params.id)
+    return inertia.render('admin/pertanyaan/edit', { pertanyaan, url: request.url() })
+  }
+
+  async update({ request, response, session, params }: HttpContext) {
+    const pertanyaan = await RiasecPertanyaan.findOrFail(params.id)
+    const payload = await request.validateUsing(createPertanyaanValidator)
+
+    pertanyaan.merge(payload)
+    await pertanyaan.save()
+
+    // --- TAMBAHKAN BARIS INI ---
+    session.flash('success', 'Pertanyaan sudah berhasil diperbarui!')
+    // -------------------------
+
+    return response.redirect().toRoute('admin.pertanyaan.index')
+  }
+
+  async destroy({ params, response, session }: HttpContext) {
+    const pertanyaan = await RiasecPertanyaan.findOrFail(params.id)
+    await pertanyaan.delete()
+
+    // --- TAMBAHKAN BARIS INI ---
+    session.flash('success', 'Pertanyaan sudah berhasil dihapus!')
     // -------------------------
 
     return response.redirect().toRoute('admin.pertanyaan.index')

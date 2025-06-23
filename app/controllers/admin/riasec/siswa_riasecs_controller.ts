@@ -8,6 +8,7 @@ import { createSiswaValidator, updateSiswaValidator } from '#validators/siswa'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { Exception } from '@adonisjs/core/exceptions'
+import { re } from 'mathjs'
 
 /**
  * Controller for managing RIASEC students
@@ -16,7 +17,7 @@ export default class SiswaRiasecsController {
   /**
    * Display a list of all students for TanStack Table.
    */
-  async index({ inertia, session }: HttpContext) {
+  async index({ inertia, session, request }: HttpContext) {
     try {
       // Fetch all students instead of paginating
       const allSiswa = await Siswa.query()
@@ -27,18 +28,24 @@ export default class SiswaRiasecsController {
       // Serialize the data to be sent to the view
       return inertia.render('admin/siswaRiasec/index', {
         siswa: allSiswa.map((s) => s.serialize()),
+        url: request.url(), // Tambahin URL
+        user: request.ctx?.auth?.user?.serialize() || null, // Tambahin user
       })
     } catch (error) {
       session.flash('error', 'Gagal memuat daftar siswa')
-      return inertia.render('admin/siswaRiasec/index', { siswa: [] })
+      return inertia.render('admin/siswaRiasec/index', {
+        siswa: [],
+        url: request.url(), // Tambahin URL di error case juga
+        user: request.ctx?.auth?.user?.serialize() || null, // Tambahin user
+      })
     }
   }
 
   /**
    * Show the student creation form
    */
-  async create({ inertia }: HttpContext) {
-    return inertia.render('admin/siswaRiasec/create')
+  async create({ inertia, request }: HttpContext) {
+    return inertia.render('admin/siswaRiasec/create', { url: request.url() })
   }
 
   /**
@@ -83,7 +90,7 @@ export default class SiswaRiasecsController {
   /**
    * Display a single student's details with test results
    */
-  async show({ inertia, params, session }: HttpContext) {
+  async show({ inertia, params, session, request }: HttpContext) {
     try {
       const siswa = await Siswa.query()
         .where('id', params.id)
@@ -108,6 +115,7 @@ export default class SiswaRiasecsController {
         hasilTes: hasilTes ? hasilTes.serialize() : null,
         recommendedPrograms,
         recommendedInterests,
+        url: request.url(),
       })
     } catch (error) {
       session.flash('error', 'Siswa tidak ditemukan')
@@ -118,12 +126,13 @@ export default class SiswaRiasecsController {
   /**
    * Show the student edit form
    */
-  async edit({ params, inertia, session }: HttpContext) {
+  async edit({ params, inertia, session, request }: HttpContext) {
     try {
       const siswa = await Siswa.query().where('id', params.id).preload('user').firstOrFail()
 
       return inertia.render('admin/siswaRiasec/edit', {
         siswa: siswa.serialize(),
+        url: request.url(),
       })
     } catch (error) {
       session.flash('error', 'Siswa tidak ditemukan')

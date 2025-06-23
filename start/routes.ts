@@ -21,6 +21,8 @@ const PertanyaanRiasecsController = () =>
 
 const RecommendationsController = () => import('#controllers/user/recommendations_controller')
 
+const UserProfilesController = () => import('#controllers/user/profiles_controller')
+
 router.get('/', [HomeController, 'index']).as('home')
 
 router
@@ -45,8 +47,17 @@ router
     router.get('/riasec/result', [TestsController, 'showMyResult']).as('riasec.result')
 
     router.get('/recommendations', [RecommendationsController, 'index']).as('recommendations.index')
+
+    router.get('/profile', [UserProfilesController, 'show']).as('user.profile.show')
+    router.put('/profile', [UserProfilesController, 'update']).as('user.profile.update')
   })
   .use([middleware.auth(), middleware.isUser()])
+
+// ╭─────────────────────────────────╮
+// │                                 │
+// │    🔥 iki admin kang            │
+// │                                 │
+// ╰─────────────────────────────────╯
 
 router
   .group(() => {
@@ -58,7 +69,6 @@ router
 
     router.get('/siswa-riasec/:id/edit', [SiswaRiasecsController, 'edit']).as('admin.siswa.edit')
 
-    // Rute untuk menyimpan perubahan data siswa
     router.put('/siswa-riasec/:id', [SiswaRiasecsController, 'update']).as('admin.siswa.update')
 
     router.get('/siswa-riasec', [SiswaRiasecsController, 'index']).as('admin.siswaRiasec.index')
@@ -73,11 +83,21 @@ router
 
     router.get('/pertanyaan', [PertanyaanRiasecsController, 'index']).as('admin.pertanyaan.index')
 
-    
     router
       .get('/pertanyaan/create', [PertanyaanRiasecsController, 'create'])
       .as('admin.pertanyaan.create')
     router.post('/pertanyaan', [PertanyaanRiasecsController, 'store']).as('admin.pertanyaan.store')
+
+    router
+      .get('/pertanyaan/:id/edit', [PertanyaanRiasecsController, 'edit'])
+      .as('admin.pertanyaan.edit')
+    router
+      .put('/pertanyaan/:id', [PertanyaanRiasecsController, 'update'])
+      .as('admin.pertanyaan.update')
+
+    router
+      .delete('/pertanyaan/:id', [PertanyaanRiasecsController, 'destroy'])
+      .as('admin.pertanyaan.destroy')
 
     router.get('/profile', [ProfilesController, 'show']).as('admin.profile.show')
     router.put('/profile', [ProfilesController, 'update']).as('admin.profile.update')

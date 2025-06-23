@@ -7,3 +7,10 @@ export const createPertanyaanValidator = vine.compile(
     tipeRiasec: vine.enum(['R', 'I', 'A', 'S', 'E', 'C']),
   })
 )
+
+export const updatePertanyaanValidator = vine.compile(
+  vine.object({
+    teksPertanyaan: vine.string().trim().minLength(10).maxLength(255),
+    tipeRiasec: vine.enum(['R', 'I', 'A', 'S', 'E', 'C']),
+  })
+)

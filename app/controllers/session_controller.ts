@@ -19,8 +19,9 @@ export default class SessionController {
     return response.redirect().toRoute('dashboard')
   }
 
-  public async destroy({ auth, response }: HttpContext) {
+  public async destroy({ auth, response, session }: HttpContext) {
     await auth.use('web').logout()
+    session.flash('success', 'Lo udah cabut, bro! Sampai ketemu lagi.') // Tambah flash message
     return response.redirect().toRoute('auth.login')
   }
 }

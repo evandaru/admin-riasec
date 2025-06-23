@@ -1,43 +1,43 @@
-import { useForm, Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useForm, Link } from '@inertiajs/react'
+import { useState } from 'react'
 
 export default function Login() {
   const { data, setData, post, processing, errors } = useForm({
     email: '',
     password: '',
-  });
+  })
 
   const [alert, setAlert] = useState({
     show: false,
-    type: 'success', 
+    type: 'success',
     message: '',
-  });
+  })
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    e.preventDefault()
     post('/login', {
       onSuccess: () => {
         setAlert({
           show: true,
           type: 'success',
           message: 'Login successful! Redirecting...',
-        });
-        setTimeout(() => setAlert({ show: false, type: 'success', message: '' }), 3000);
+        })
+        setTimeout(() => setAlert({ show: false, type: 'success', message: '' }), 3000)
       },
       onError: () => {
         setAlert({
           show: true,
           type: 'error',
           message: 'Login failed. Please check your credentials.',
-        });
+        })
       },
-    });
+    })
   }
 
   // Function to close the alert
   const closeAlert = () => {
-    setAlert({ ...alert, show: false });
-  };
+    setAlert({ ...alert, show: false })
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -57,7 +57,7 @@ export default function Login() {
               type="email"
               value={data.email}
               onChange={(e) => setData('email', e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 text-gray-900 dark:text-white block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="you@example.com"
             />
             {errors.email && <div className="mt-1 text-xs text-red-500">{errors.email}</div>}
@@ -76,7 +76,7 @@ export default function Login() {
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               autoComplete="off"
-              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block text-gray-900 dark:text-white w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="••••••••"
             />
             {errors.password && <div className="mt-1 text-xs text-red-500">{errors.password}</div>}
@@ -105,10 +105,11 @@ export default function Login() {
       {/* Floating Alert - Positioned at the bottom of the screen */}
       {alert.show && (
         <div
-          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-md p-4 rounded-md flex justify-between items-center shadow-lg transition-opacity duration-300 ${alert.type === 'success'
+          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-md p-4 rounded-md flex justify-between items-center shadow-lg transition-opacity duration-300 ${
+            alert.type === 'success'
               ? 'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200'
               : 'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200'
-            }`}
+          }`}
         >
           <span>{alert.message}</span>
           <button
@@ -120,5 +121,5 @@ export default function Login() {
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -1,27 +1,19 @@
-// title: inertia/pages/admin/layouts/sidebar.tsx
 import { useState } from 'react'
 import {
   Menu,
   X,
   LayoutDashboard,
   BookOpen,
-  ClipboardList,
-  GraduationCap,
   CalendarDays,
-  Users,
-  Library,
-  CheckCircle,
-  Wallet,
-  LifeBuoy,
-  Phone,
-  Settings,
-  LogOut,
   NotebookText,
   NotebookPen,
+  Settings,
+  LogOut,
 } from 'lucide-react'
-import { Link, usePage } from '@inertiajs/react' // 1. Impor usePage
+import { Link, usePage } from '@inertiajs/react'
+import Avatar from '~/components/avatar'
 
-// Definisikan tipe untuk props user yang kita harapkan dari Inertia
+// Definisikan tipe untuk props user
 interface User {
   fullName: string | null
   email: string
@@ -29,18 +21,30 @@ interface User {
 
 interface PageProps {
   user: User
-  // Anda bisa tambahkan properti lain yang mungkin ada di props
+  url: string
   [key: string]: unknown
 }
 
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const { user } = usePage<PageProps>().props // 2. Ambil data user dari props
-
+  const { user, url } = usePage<PageProps>().props
   const toggleSidebar = () => setIsOpen(!isOpen)
 
-  // Class untuk link yang disabled
   const disabledLinkClass = 'pointer-events-none opacity-50 cursor-not-allowed'
+
+  const isActive = (href: string) => {
+    if (!url) {
+      console.warn('URL is undefined in usePage().props')
+      return false
+    }
+    return url.startsWith(href)
+  }
+
+  const linkBaseClass =
+    'flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700'
+
+  // Simpan nama user dalam variabel agar lebih bersih
+  const userName = user?.fullName || 'Admin'
 
   return (
     <>
@@ -60,64 +64,61 @@ const Sidebar: React.FC = () => {
         } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
       >
         {/* Logo */}
-        <a href="/admin/dashboard">
+        <Link href="/admin/dashboard">
           <img
             className="w-auto h-6 sm:h-7"
             src="https://merakiui.com/images/logo.svg"
             alt="Logo"
           />
-        </a>
+        </Link>
 
         {/* Navigation */}
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav>
-            {/* Kategori Utama: Dashboard */}
+            {/* ... (semua link navigasi lainnya tetap sama) ... */}
             <Link
-              href="/admin/dashboard" // Ganti 'a' menjadi 'Link' dan href yang benar
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700`}
+              href="/admin/dashboard"
+              className={`${linkBaseClass} ${
+                isActive('/admin/dashboard')
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                  : ''
+              }`}
             >
               <LayoutDashboard className="w-5 h-5" />
               <span className="mx-4 font-medium">Dashboard</span>
             </Link>
 
-            {/* Kategori: Akademik */}
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akademik</p>
-            <a
-              href="#"
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <CalendarDays className="w-5 h-5" />
               <span className="mx-4 font-medium">Jadwal Kelas</span>
             </a>
-            <a
-              href="#"
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
               <BookOpen className="w-5 h-5" />
               <span className="mx-4 font-medium">Materi Belajar</span>
             </a>
-            <Link
-              href="/admin/users"
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 `}
-            >
-              <GraduationCap className="w-5 h-5" />
-              <span className="mx-4 font-medium">Daftar Users</span>
-            </Link>
 
-            {/* Kategori: Test Riasec */}
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">
               Test Riasec
             </p>
             <Link
               href="/admin/siswa-riasec"
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 `}
+              className={`${linkBaseClass} ${
+                isActive('/admin/siswa-riasec')
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                  : ''
+              }`}
             >
               <NotebookText className="w-5 h-5" />
               <span className="mx-4 font-medium">Daftar Siswa Test</span>
             </Link>
             <Link
               href="/admin/pertanyaan"
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 `}
+              className={`${linkBaseClass} ${
+                isActive('/admin/pertanyaan')
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                  : ''
+              }`}
             >
               <NotebookPen className="w-5 h-5" />
               <span className="mx-4 font-medium">Pertanyaan</span>
@@ -127,32 +128,25 @@ const Sidebar: React.FC = () => {
           {/* Profile Section */}
           <div className="mt-auto">
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akun</p>
-            {/* 3. Buat link profil menjadi aktif */}
+
+            {/* 2. GANTI BAGIAN INI DARI <img> MENJADI <Avatar> */}
             <Link
               href="/admin/profile"
-              className={`flex items-center px-4 -mx-2 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md`}
+              className={`${linkBaseClass} -mx-2 ${
+                isActive('/admin/profile') ? 'bg-gray-100 dark:bg-gray-800' : ''
+              }`}
             >
-              <img
-                className="object-cover mx-2 rounded-full h-9 w-9"
-                src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-                alt="avatar"
-              />
-              {/* 4. Tampilkan nama user yang login, berikan fallback */}
-              <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">
-                {user?.fullName || 'Admin'}
-              </span>
+              <Avatar name={userName} className="h-9 w-9 mx-2" />
+              <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">{userName}</span>
             </Link>
 
             {/* Settingan (DISABLED) */}
-            <a
-              href="#"
-              className={`flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700 mt-2 ${disabledLinkClass}`}
-            >
+            <a href="#" className={`${linkBaseClass} mt-2 ${disabledLinkClass}`}>
               <Settings className="w-5 h-5" />
               <span className="mx-4 font-medium">Settingan</span>
             </a>
 
-            {/* 5. Tambahkan `onBefore` untuk konfirmasi logout */}
+            {/* Logout */}
             <Link
               href="/logout"
               method="post"

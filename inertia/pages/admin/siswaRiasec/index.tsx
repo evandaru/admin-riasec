@@ -21,6 +21,7 @@ import {
   flexRender,
   SortingState,
   ColumnDef,
+  SortingFn, // <-- TAMBAHKAN INI
 } from '@tanstack/react-table'
 
 // --- Data Interfaces ---
@@ -61,6 +62,24 @@ function DebouncedInput({
   return <input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
 }
 
+// --- Fungsi Sorting Kustom ---
+const statusTesSortingFn: SortingFn<Siswa> = (rowA, rowB) => {
+  const statusA = rowA.original.hasilTes.length > 0
+  const statusB = rowB.original.hasilTes.length > 0
+  // Mengurutkan boolean, `true` (sudah tes) akan muncul sebelum `false` (belum tes) saat ascending
+  return statusA === statusB ? 0 : statusA ? -1 : 1
+}
+
+const kodeHollandSortingFn: SortingFn<Siswa> = (rowA, rowB) => {
+  const kodeA = rowA.original.hasilTes[0]?.kodeHolland
+  const kodeB = rowB.original.hasilTes[0]?.kodeHolland
+
+  if (kodeA && !kodeB) return -1
+  if (!kodeA && kodeB) return 1
+  if (!kodeA && !kodeB) return 0
+  return (kodeA || '').localeCompare(kodeB || '')
+}
+
 export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
   const data = useMemo(() => siswa, [siswa])
   const [sorting, setSorting] = useState<SortingState>([])
@@ -91,6 +110,8 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.display({
         id: 'statusTes',
         header: 'Status Tes',
+        enableSorting: true, // Aktifkan sorting
+        sortingFn: statusTesSortingFn, // Gunakan fungsi kustom
         cell: ({ row }) => {
           const sudahTes = row.original.hasilTes && row.original.hasilTes.length > 0
           return sudahTes ? (
@@ -107,6 +128,8 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.display({
         id: 'kodeHolland',
         header: 'Hasil (Kode)',
+        enableSorting: true, // Aktifkan sorting
+        sortingFn: kodeHollandSortingFn, // Gunakan fungsi kustom
         cell: ({ row }) => {
           const hasilTerbaru =
             row.original.hasilTes && row.original.hasilTes.length > 0

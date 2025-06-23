@@ -1,5 +1,6 @@
 // title: app/validators/user.ts
 import vine from '@vinejs/vine'
+import { DateTime } from 'luxon'
 
 export const createUserValidator = vine.compile(
   vine.object({
@@ -56,5 +57,31 @@ export const updateAdminProfileValidator = vine.compile(
       }),
     // Password bersifat opsional, tapi jika diisi, harus ada konfirmasinya
     password: vine.string().minLength(8).confirmed().optional(),
+  })
+)
+
+export const updateUserProfileValidator = vine.compile(
+  vine.object({
+    fullName: vine.string().trim().minLength(3),
+    email: vine
+      .string()
+      .trim()
+      .email()
+      .unique(async (db, value, field) => {
+        const user = await db
+          .from('users')
+          .where('email', value)
+          .whereNot('id', field.meta.userId)
+          .first()
+        return !user
+      }),
+    password: vine.string().minLength(8).confirmed().optional(),
+    // Tambahan field untuk data Siswa
+    nisn: vine.string().trim().nullable(),
+    kelas: vine.string().trim().nullable(),
+    tanggalLahir: vine
+      .date({ formats: ['YYYY-MM-DD'] })
+      .nullable()
+      .transform((value) => (value ? DateTime.fromJSDate(value) : null)),
   })
 )
