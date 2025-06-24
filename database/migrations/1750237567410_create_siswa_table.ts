@@ -17,8 +17,11 @@ export default class extends BaseSchema {
 
       table.string('nama_lengkap', 100).notNullable()
       table.string('nisn', 20).nullable().unique()
+      table.string('jenjang', 255).nullable()
       table.string('kelas', 20).nullable()
       table.date('tanggal_lahir').nullable()
+      table.string('alamat', 255).nullable()
+      table.string('telepon', 20).nullable()
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

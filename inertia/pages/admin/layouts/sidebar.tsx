@@ -67,7 +67,7 @@ const Sidebar: React.FC = () => {
         <Link href="/admin/dashboard">
           <img
             className="w-auto h-6 sm:h-7"
-            src="https://merakiui.com/images/logo.svg"
+            src="/public/logo.png"
             alt="Logo"
           />
         </Link>

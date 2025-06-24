@@ -49,30 +49,28 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
   return (
     <>
       <Head title="Admin Dashboard" />
+      <link rel="icon" href="/public/logo.png"></link>
       <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
         <Sidebar />
         <main className="md:ml-64 p-4 sm:p-6 lg:p-8">{children}</main>
 
         {/* 3. Tambahkan JSX untuk Toast di sini */}
         <div
-          className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${
-            toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
-          }`}
+          className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
+            }`}
         >
           <div
-            className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${
-              toast.type === 'success'
+            className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${toast.type === 'success'
                 ? 'ring-green-200 dark:ring-green-700'
                 : 'ring-red-200 dark:ring-red-700'
-            }`}
+              }`}
             role="alert"
           >
             <div
-              className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
-                toast.type === 'success'
+              className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${toast.type === 'success'
                   ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
                   : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
-              }`}
+                }`}
             >
               {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
             </div>

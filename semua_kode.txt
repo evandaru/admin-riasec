@@ -1,176 +1,182 @@
 === FOLDER STRUCTURE ===
-.
+app
+├── abilities
+│   └── main.ts
+├── controllers
+│   ├── admin
+│   │   ├── riasec
+│   │   │   ├── pertanyaan_riasecs_controller.ts
+│   │   │   └── siswa_riasecs_controller.ts
+│   │   ├── dashboard_controller.ts
+│   │   ├── hasil_tes_controller.ts
+│   │   ├── profiles_controller.ts
+│   │   └── users_controller.ts
+│   ├── auth
+│   │   └── registers_controller.ts
+│   ├── user
+│   │   ├── dashboard_controller.ts
+│   │   ├── hasil_tes_controller.ts
+│   │   ├── notes_controller.ts
+│   │   ├── profiles_controller.ts
+│   │   ├── recommendations_controller.ts
+│   │   └── tests_controller.ts
+│   ├── homepages_controller.ts
+│   └── session_controller.ts
+├── exceptions
+│   └── handler.ts
+├── middleware
+│   ├── admin_middleware.ts
+│   ├── auth_middleware.ts
+│   ├── container_bindings_middleware.ts
+│   ├── guest_middleware.ts
+│   ├── initialize_bouncer_middleware.ts
+│   ├── is_user_middleware.ts
+│   └── silent_auth_middleware.ts
+├── models
+│   ├── admin.ts
+│   ├── hasil.ts
+│   ├── jawaban.ts
+│   ├── minat_bakat.ts
+│   ├── note.ts
+│   ├── program.ts
+│   ├── program_rating.ts
+│   ├── rekomendasi.ts
+│   ├── riasec_pertanyaan.ts
+│   ├── siswa.ts
+│   └── user.ts
+├── policies
+│   ├── main.ts
+│   ├── note_policy.ts
+│   └── user_policy.ts
+├── services
+│   ├── recommendation_service.ts
+│   └── riasec_service.ts
+└── validators
+    ├── note.ts
+    ├── pertanyaan_riasec.ts
+    ├── siswa.ts
+    └── user.ts
+bin
+├── console.ts
+├── server.ts
+└── test.ts
+config
+├── app.ts
+├── auth.ts
+├── bodyparser.ts
+├── cors.ts
+├── database.ts
+├── hash.ts
+├── inertia.ts
+├── logger.ts
+├── session.ts
+├── shield.ts
+├── static.ts
+└── vite.ts
+database
+├── migrations
+│   ├── 1749892627155_create_users_table.ts
+│   ├── 1749947099577_create_notes_table.ts
+│   ├── 1750237566915_create_admins_table.ts
+│   ├── 1750237567410_create_siswa_table.ts
+│   ├── 1750237567902_create_riasec_pertanyaans_table.ts
+│   ├── 1750237568441_create_hasil_tes_table.ts
+│   ├── 1750237568941_create_jawaban_tes_table.ts
+│   ├── 1750388069955_create_programs_table.ts
+│   ├── 1750389796560_create_user_program_ratings_table.ts
+│   ├── 1750411457716_create_rekomendasis_table.ts
+│   └── 1750425662712_create_minat_bakats_table.ts
+└── seeders
+    ├── aauser_seeder.ts
+    ├── admin_seeder.ts
+    ├── minat_bakat_seeder.ts
+    ├── note_seeder.ts
+    ├── program_seeder.ts
+    ├── rekomendasi_seeder.ts
+    ├── riasec_pertanyaan_seeder.ts
+    ├── siswa_seeder.ts
+    └── 'z rating_seeder.ts'
+inertia
 ├── app
-│   ├── abilities
-│   │   └── main.ts
-│   ├── controllers
-│   │   ├── admin
-│   │   │   ├── riasec
-│   │   │   │   ├── pertanyaan_riasecs_controller.ts
-│   │   │   │   └── siswa_riasecs_controller.ts
-│   │   │   ├── dashboard_controller.ts
-│   │   │   ├── hasil_tes_controller.ts
-│   │   │   ├── profiles_controller.ts
-│   │   │   └── users_controller.ts
-│   │   ├── auth
-│   │   │   └── registers_controller.ts
-│   │   ├── user
-│   │   │   ├── dashboard_controller.ts
-│   │   │   ├── hasil_tes_controller.ts
-│   │   │   ├── notes_controller.ts
-│   │   │   ├── profiles_controller.ts
-│   │   │   ├── recommendations_controller.ts
-│   │   │   └── tests_controller.ts
-│   │   ├── homepages_controller.ts
-│   │   └── session_controller.ts
-│   ├── exceptions
-│   │   └── handler.ts
-│   ├── middleware
-│   │   ├── admin_middleware.ts
-│   │   ├── auth_middleware.ts
-│   │   ├── container_bindings_middleware.ts
-│   │   ├── guest_middleware.ts
-│   │   ├── initialize_bouncer_middleware.ts
-│   │   ├── is_user_middleware.ts
-│   │   └── silent_auth_middleware.ts
-│   ├── models
-│   │   ├── admin.ts
-│   │   ├── hasil.ts
-│   │   ├── jawaban.ts
-│   │   ├── minat_bakat.ts
-│   │   ├── note.ts
-│   │   ├── program.ts
-│   │   ├── program_rating.ts
-│   │   ├── rekomendasi.ts
-│   │   ├── riasec_pertanyaan.ts
-│   │   ├── siswa.ts
-│   │   └── user.ts
-│   ├── policies
-│   │   ├── main.ts
-│   │   ├── note_policy.ts
-│   │   └── user_policy.ts
-│   ├── services
-│   │   ├── recommendation_service.ts
-│   │   └── riasec_service.ts
-│   └── validators
-│       ├── note.ts
-│       ├── pertanyaan_riasec.ts
-│       ├── siswa.ts
-│       └── user.ts
-├── bin
-│   ├── console.ts
-│   ├── server.ts
-│   └── test.ts
-├── config
-│   ├── app.ts
-│   ├── auth.ts
-│   ├── bodyparser.ts
-│   ├── cors.ts
-│   ├── database.ts
-│   ├── hash.ts
-│   ├── inertia.ts
-│   ├── logger.ts
-│   ├── session.ts
-│   ├── shield.ts
-│   ├── static.ts
-│   └── vite.ts
-├── database
-│   ├── migrations
-│   │   ├── 1749892627155_create_users_table.ts
-│   │   ├── 1749947099577_create_notes_table.ts
-│   │   ├── 1750237566915_create_admins_table.ts
-│   │   ├── 1750237567410_create_siswa_table.ts
-│   │   ├── 1750237567902_create_riasec_pertanyaans_table.ts
-│   │   ├── 1750237568441_create_hasil_tes_table.ts
-│   │   ├── 1750237568941_create_jawaban_tes_table.ts
-│   │   ├── 1750388069955_create_programs_table.ts
-│   │   ├── 1750389796560_create_user_program_ratings_table.ts
-│   │   ├── 1750411457716_create_rekomendasis_table.ts
-│   │   └── 1750425662712_create_minat_bakats_table.ts
-│   └── seeders
-│       ├── aauser_seeder.ts
-│       ├── admin_seeder.ts
-│       ├── minat_bakat_seeder.ts
-│       ├── note_seeder.ts
-│       ├── program_seeder.ts
-│       ├── rekomendasi_seeder.ts
-│       ├── riasec_pertanyaan_seeder.ts
-│       ├── siswa_seeder.ts
-│       └── 'z rating_seeder.ts'
-├── inertia
-│   ├── app
-│   │   ├── app.tsx
-│   │   └── ssr.tsx
-│   ├── components
-│   │   ├── avatar.tsx
-│   │   └── button.tsx
-│   ├── css
-│   │   └── app.css
-│   ├── pages
-│   │   ├── admin
-│   │   │   ├── dashboard
-│   │   │   │   └── index.tsx
-│   │   │   ├── layouts
-│   │   │   │   ├── main.tsx
-│   │   │   │   └── sidebar.tsx
-│   │   │   ├── pertanyaan
-│   │   │   │   ├── create.tsx
-│   │   │   │   ├── edit.tsx
-│   │   │   │   └── index.tsx
-│   │   │   ├── profile
-│   │   │   │   └── index.tsx
-│   │   │   ├── siswaRiasec
-│   │   │   │   ├── create.tsx
-│   │   │   │   ├── edit.tsx
-│   │   │   │   ├── index.tsx
-│   │   │   │   └── view.tsx
-│   │   │   └── users
-│   │   │       ├── create.tsx
-│   │   │       ├── edit.tsx
-│   │   │       └── index.tsx
-│   │   ├── auth
-│   │   │   ├── login.tsx
-│   │   │   └── register.tsx
-│   │   ├── errors
-│   │   │   ├── not_found.tsx
-│   │   │   └── server_error.tsx
-│   │   ├── user
-│   │   │   ├── dashboard
-│   │   │   │   └── index.tsx
-│   │   │   ├── layouts
-│   │   │   │   ├── main.tsx
-│   │   │   │   └── sidebar.tsx
-│   │   │   ├── notes
-│   │   │   │   ├── edit.tsx
-│   │   │   │   └── index.tsx
-│   │   │   ├── profile
-│   │   │   │   └── index.tsx
-│   │   │   └── riasec
-│   │   │       ├── index.tsx
-│   │   │       ├── result.tsx
-│   │   │       └── test.tsx
-│   │   └── home.tsx
-│   └── tsconfig.json
-├── resources
-│   └── views
-│       └── inertia_layout.edge
-├── start
-│   ├── env.ts
-│   ├── kernel.ts
-│   └── routes.ts
-├── tests
-│   └── bootstrap.ts
-├── ace.js
-├── adonisrc.ts
-├── anu.html
-├── anu2.html
-├── eslint.config.js
-├── package-lock.json
-├── package.json
-├── semua_kode.txt
-├── tailwind.config.js
-├── tsconfig.json
-└── vite.config.ts
+│   ├── app.tsx
+│   └── ssr.tsx
+├── assets
+├── components
+│   ├── avatar.tsx
+│   └── button.tsx
+├── css
+│   └── app.css
+├── pages
+│   ├── admin
+│   │   ├── dashboard
+│   │   │   └── index.tsx
+│   │   ├── layouts
+│   │   │   ├── main.tsx
+│   │   │   └── sidebar.tsx
+│   │   ├── pertanyaan
+│   │   │   ├── create.tsx
+│   │   │   ├── edit.tsx
+│   │   │   └── index.tsx
+│   │   ├── profile
+│   │   │   └── index.tsx
+│   │   ├── siswaRiasec
+│   │   │   ├── create.tsx
+│   │   │   ├── edit.tsx
+│   │   │   ├── index.tsx
+│   │   │   └── view.tsx
+│   │   └── users
+│   │       ├── create.tsx
+│   │       ├── edit.tsx
+│   │       └── index.tsx
+│   ├── auth
+│   │   ├── login.tsx
+│   │   └── register.tsx
+│   ├── errors
+│   │   ├── not_found.tsx
+│   │   └── server_error.tsx
+│   ├── user
+│   │   ├── dashboard
+│   │   │   └── index.tsx
+│   │   ├── layouts
+│   │   │   ├── main.tsx
+│   │   │   └── sidebar.tsx
+│   │   ├── notes
+│   │   │   ├── edit.tsx
+│   │   │   └── index.tsx
+│   │   ├── profile
+│   │   │   └── index.tsx
+│   │   └── riasec
+│   │       ├── index.tsx
+│   │       ├── result.tsx
+│   │       └── test.tsx
+│   └── home.tsx
+└── tsconfig.json
+public
+├── ikn.png
+└── logo.png
+resources
+└── views
+    └── inertia_layout.edge
+start
+├── env.ts
+├── kernel.ts
+└── routes.ts
+tests
+└── bootstrap.ts
+ace.js
+adonisrc.ts
+akwokwao.md
+anu.html
+anu2.html
+eslint.config.js
+lore.html
+package-lock.json
+package.json
+semua_kode.txt
+tailwind.config.js
+tsconfig.json
+usecase.md
+vite.config.ts
 
 
 === SOURCE FILES ===
@@ -203,7 +209,11 @@ export default defineConfig({
   | will be scanned automatically from the "./commands" directory.
   |
   */
-  commands: [() => import('@adonisjs/core/commands'), () => import('@adonisjs/lucid/commands'), () => import('@adonisjs/bouncer/commands')],
+  commands: [
+    () => import('@adonisjs/core/commands'),
+    () => import('@adonisjs/lucid/commands'),
+    () => import('@adonisjs/bouncer/commands'),
+  ],
 
   /*
   |--------------------------------------------------------------------------
@@ -231,7 +241,7 @@ export default defineConfig({
     () => import('@adonisjs/lucid/database_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('@adonisjs/inertia/inertia_provider'),
-    () => import('@adonisjs/bouncer/bouncer_provider')
+    () => import('@adonisjs/bouncer/bouncer_provider'),
   ],
 
   /*
@@ -576,6 +586,7 @@ export default class SiswaRiasecsController {
           userId: user.id,
           namaLengkap: payload.namaLengkap,
           nisn: payload.nisn,
+          jenjang: payload.jenjang,
           kelas: payload.kelas,
           tanggalLahir: payload.tanggalLahir,
         },
@@ -674,6 +685,7 @@ export default class SiswaRiasecsController {
       siswa.merge({
         namaLengkap: payload.namaLengkap,
         nisn: payload.nisn,
+        jenjang: payload.jenjang,
         kelas: payload.kelas,
         tanggalLahir: payload.tanggalLahir,
       })
@@ -1596,43 +1608,6 @@ export default class Note extends BaseModel {
   declare user: BelongsTo<typeof User>
 }
 
-// title: app/models/program_rating.ts
-import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import Siswa from '#models/siswa'
-import Program from '#models/program'
-
-export default class ProgramRating extends BaseModel {
-  static table = 'user_program_ratings'
-  @column({ isPrimary: true })
-  declare id: number
-
-  @column()
-  declare siswaId: number
-
-  // Foreign key buat tabel 'program'
-  @column()
-  declare programId: number
-
-  // Kolom 'rating' dengan default 0
-  @column()
-  declare rating: number
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
-  @belongsTo(() => Siswa)
-  declare siswa: BelongsTo<typeof Siswa>
-
-  // Rating ini punya satu program
-  @belongsTo(() => Program)
-  declare program: BelongsTo<typeof Program>
-}
-
 // title: app/models/program.ts
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
@@ -1670,6 +1645,43 @@ export default class Program extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+}
+
+// title: app/models/program_rating.ts
+import { DateTime } from 'luxon'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import Siswa from '#models/siswa'
+import Program from '#models/program'
+
+export default class ProgramRating extends BaseModel {
+  static table = 'user_program_ratings'
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare siswaId: number
+
+  // Foreign key buat tabel 'program'
+  @column()
+  declare programId: number
+
+  // Kolom 'rating' dengan default 0
+  @column()
+  declare rating: number
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+
+  @belongsTo(() => Siswa)
+  declare siswa: BelongsTo<typeof Siswa>
+
+  // Rating ini punya satu program
+  @belongsTo(() => Program)
+  declare program: BelongsTo<typeof Program>
 }
 
 // title: app/models/rekomendasi.ts
@@ -1752,7 +1764,16 @@ export default class Siswa extends BaseModel {
   declare nisn: string | null
 
   @column()
+  declare jenjang: string | null
+
+  @column()
   declare kelas: string | null
+
+  @column()
+  declare alamat: string | null
+
+  @column()
+  declare telepon: string | null
 
   @column.date()
   declare tanggalLahir: DateTime | null
@@ -2456,7 +2477,15 @@ export const createSiswaValidator = vine.compile(
       }),
     password: vine.string().minLength(8).confirmed(),
     nisn: vine.string().trim().nullable(), // Use max instead of maxLength
+    jenjang: vine.string().trim().nullable(), // Use max instead of maxLength
     kelas: vine.string().trim().nullable(), // Use max for string length validation
+    alamat: vine.string().trim().maxLength(255).nullable(),
+    telepon: vine
+      .string()
+      .trim()
+      .maxLength(20)
+      .regex(/^(08[0-9]{8,11})$/) // Validasi nomor telepon Indonesia
+      .nullable(),
     tanggalLahir: vine
       .date({ formats: ['YYYY-MM-DD'] })
       .nullable()
@@ -2481,6 +2510,14 @@ export const updateSiswaValidator = vine.compile(
     password: vine.string().minLength(8).nullable(),
     nisn: vine.string().trim().nullable(),
     kelas: vine.string().trim().nullable(),
+    jenjang: vine.string().trim().nullable(),
+    alamat: vine.string().trim().maxLength(255).nullable(),
+    telepon: vine
+      .string()
+      .trim()
+      .maxLength(20)
+      .regex(/^(08[0-9]{8,11})$/) // Validasi nomor telepon Indonesia
+      .nullable(),
     tanggalLahir: vine
       .date({ formats: ['YYYY-MM-DD'] })
       .nullable()
@@ -2790,7 +2827,7 @@ const authConfig = defineConfig({
     web: sessionGuard({
       useRememberMeTokens: false,
       provider: sessionUserProvider({
-        model: () => import('#models/user')
+        model: () => import('#models/user'),
       }),
     }),
   },
@@ -3163,6 +3200,226 @@ const viteBackendConfig = defineConfig({
 
 export default viteBackendConfig
 
+// title: database/.seeders/aauser_seeder.ts
+// database/seeders/user_seeder.ts
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    await User.createMany([
+      {
+        fullName: 'Admin User',
+        email: 'admin@example.com',
+        password: '12qwaszx',
+        role: 'admin',
+      },
+      {
+        fullName: 'Regular User',
+        email: 'user@example.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'lele',
+        email: 'lele@lele.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'sapi',
+        email: 'sapi@sapi.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+    ])
+  }
+}
+
+// title: database/.seeders/admin_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/database_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/riasec_pertanyaan_seeder.ts
+// title: database/seeders/riasec_pertanyaan_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import RiasecPertanyaan from '#models/riasec_pertanyaan'
+
+export default class extends BaseSeeder {
+  async run() {
+    await RiasecPertanyaan.createMany([
+      // Realistic
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
+        tipeRiasec: 'R',
+        nomorUrut: 1,
+      },
+      {
+        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
+        tipeRiasec: 'R',
+        nomorUrut: 2,
+      },
+      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
+
+      // Investigative
+      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
+      {
+        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
+        tipeRiasec: 'I',
+        nomorUrut: 5,
+      },
+      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
+
+      // Artistic
+      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
+      {
+        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
+        tipeRiasec: 'A',
+        nomorUrut: 8,
+      },
+      {
+        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
+        tipeRiasec: 'A',
+        nomorUrut: 9,
+      },
+
+      // Social
+      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
+      {
+        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
+        tipeRiasec: 'S',
+        nomorUrut: 11,
+      },
+      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
+
+      // Enterprising
+      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
+      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
+      {
+        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
+        tipeRiasec: 'E',
+        nomorUrut: 15,
+      },
+
+      // Conventional
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
+        tipeRiasec: 'C',
+        nomorUrut: 16,
+      },
+      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
+      {
+        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
+        tipeRiasec: 'C',
+        nomorUrut: 18,
+      },
+    ])
+  }
+}
+
+// title: database/.seeders/siswa_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/z hasil_seeder.ts
+// title: database/seeders/z hasil_tes_seeder.ts (REVISI)
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import HasilTes from '#models/hasil'
+import Siswa from '#models/siswa'
+
+export default class extends BaseSeeder {
+  public async run() {
+    const allSiswa = await Siswa.all()
+    if (allSiswa.length === 0) {
+      console.log('Tidak ada siswa untuk di-seed hasil tesnya.')
+      return
+    }
+
+    // Definisikan Persona/Tipe Minat
+    const personas = [
+      { name: 'Si Praktis', dominant: ['R', 'C'], secondary: ['I', 'E'] }, // Tipe Realistic-Conventional
+      { name: 'Si Peneliti', dominant: ['I', 'C'], secondary: ['R', 'A'] }, // Tipe Investigative-Conventional
+      { name: 'Si Kreatif', dominant: ['A', 'S'], secondary: ['E', 'I'] }, // Tipe Artistic-Social
+      { name: 'Si Sosialita', dominant: ['S', 'E'], secondary: ['A', 'C'] }, // Tipe Social-Enterprising
+      { name: 'Si Pebisnis', dominant: ['E', 'C'], secondary: ['S', 'R'] }, // Tipe Enterprising-Conventional
+      { name: 'Si Campuran Unik', dominant: ['I', 'A', 'S'], secondary: ['R', 'E', 'C'] }, // Tipe I-A-S
+    ]
+
+    const hasilTesData: Partial<HasilTes>[] = []
+
+    for (const [i, siswa] of allSiswa.entries()) {
+      // Pilih persona secara bergiliran untuk memastikan variasi
+      const persona = personas[i % personas.length]
+
+      const scores: { [key: string]: number } = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
+
+      // Beri skor TINGGI untuk tipe dominan
+      persona.dominant.forEach((type) => {
+        scores[type] = Math.floor(Math.random() * 8) + 8 // Skor antara 8-15
+      })
+
+      // Beri skor SEDANG untuk tipe sekunder
+      persona.secondary.forEach((type) => {
+        if (scores[type] === 0) {
+          // Hanya isi jika belum diisi oleh dominan
+          scores[type] = Math.floor(Math.random() * 5) + 3 // Skor antara 3-7
+        }
+      })
+
+      // Beri skor RENDAH untuk sisanya
+      Object.keys(scores).forEach((type) => {
+        if (scores[type] === 0) {
+          scores[type] = Math.floor(Math.random() * 3) + 1 // Skor antara 1-3
+        }
+      })
+
+      // Buat Kode Holland dari 3 skor tertinggi
+      const sortedScores = (Object.entries(scores) as [keyof typeof scores, number][]).sort(
+        ([, a], [, b]) => b - a
+      )
+      const hollandCode = sortedScores
+        .slice(0, 3)
+        .map(([key]) => key)
+        .join('')
+
+      hasilTesData.push({
+        siswaId: siswa.id,
+        skorR: scores.R,
+        skorI: scores.I,
+        skorA: scores.A,
+        skorS: scores.S,
+        skorE: scores.E,
+        skorC: scores.C,
+        kodeHolland: hollandCode,
+      })
+    }
+
+    // Hapus hasil tes lama untuk menghindari duplikat jika seeder dijalankan lagi
+    await HasilTes.truncate()
+    await HasilTes.createMany(hasilTesData)
+    console.log(`Berhasil membuat ${hasilTesData.length} data hasil tes dengan persona.`)
+  }
+}
+
 // title: database/migrations/1749892627155_create_users_table.ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
@@ -3261,8 +3518,11 @@ export default class extends BaseSchema {
 
       table.string('nama_lengkap', 100).notNullable()
       table.string('nisn', 20).nullable().unique()
+      table.string('jenjang', 255).nullable()
       table.string('kelas', 20).nullable()
       table.date('tanggal_lahir').nullable()
+      table.string('alamat', 255).nullable()
+      table.string('telepon', 20).nullable()
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
@@ -3500,42 +3760,6 @@ export default class extends BaseSchema {
   }
 }
 
-// title: database/.seeders/aauser_seeder.ts
-// database/seeders/user_seeder.ts
-import User from '#models/user'
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    await User.createMany([
-      {
-        fullName: 'Admin User',
-        email: 'admin@example.com',
-        password: '12qwaszx',
-        role: 'admin',
-      },
-      {
-        fullName: 'Regular User',
-        email: 'user@example.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-      {
-        fullName: 'lele',
-        email: 'lele@lele.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-      {
-        fullName: 'sapi',
-        email: 'sapi@sapi.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-    ])
-  }
-}
-
 // title: database/seeders/aauser_seeder.ts
 // title: database/seeders/user_seeder.ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -3559,7 +3783,7 @@ export default class extends BaseSeeder {
     })
 
     // Membuat 100 user dengan role siswa
-    const students = Array.from({ length: 1000 }, () => ({
+    const students = Array.from({ length: 10 }, () => ({
       fullName: faker.person.fullName(),
       email: faker.internet.email(),
       password: '12qwaszx',
@@ -3567,15 +3791,6 @@ export default class extends BaseSeeder {
     }))
 
     await User.createMany(students)
-  }
-}
-
-// title: database/.seeders/admin_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
   }
 }
 
@@ -3609,15 +3824,6 @@ export default class AdminSeeder extends BaseSeeder {
       this.logger?.error('❌ Gagal insert ke tabel admin:')
       console.error(error)
     }
-  }
-}
-
-// title: database/.seeders/database_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
   }
 }
 
@@ -4496,83 +4702,6 @@ Serta menyukai pekerjaan yang terstruktur dan administratif.',
   }
 }
 
-// title: database/.seeders/riasec_pertanyaan_seeder.ts
-// title: database/seeders/riasec_pertanyaan_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import RiasecPertanyaan from '#models/riasec_pertanyaan'
-
-export default class extends BaseSeeder {
-  async run() {
-    await RiasecPertanyaan.createMany([
-      // Realistic
-      {
-        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
-        tipeRiasec: 'R',
-        nomorUrut: 1,
-      },
-      {
-        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
-        tipeRiasec: 'R',
-        nomorUrut: 2,
-      },
-      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
-
-      // Investigative
-      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
-      {
-        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
-        tipeRiasec: 'I',
-        nomorUrut: 5,
-      },
-      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
-
-      // Artistic
-      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
-      {
-        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
-        tipeRiasec: 'A',
-        nomorUrut: 8,
-      },
-      {
-        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
-        tipeRiasec: 'A',
-        nomorUrut: 9,
-      },
-
-      // Social
-      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
-      {
-        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
-        tipeRiasec: 'S',
-        nomorUrut: 11,
-      },
-      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
-
-      // Enterprising
-      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
-      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
-      {
-        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
-        tipeRiasec: 'E',
-        nomorUrut: 15,
-      },
-
-      // Conventional
-      {
-        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
-        tipeRiasec: 'C',
-        nomorUrut: 16,
-      },
-      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
-      {
-        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
-        tipeRiasec: 'C',
-        nomorUrut: 18,
-      },
-    ])
-  }
-}
-
 // title: database/seeders/riasec_pertanyaan_seeder.ts
 // title: database/seeders/riasec_pertanyaan_seeder.ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -4983,15 +5112,6 @@ export default class extends BaseSeeder {
   }
 }
 
-// title: database/.seeders/siswa_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
-  }
-}
-
 // title: database/seeders/siswa_seeder.ts
 // title: database/seeders/siswa_seeder.ts
 import Siswa from '#models/siswa'
@@ -5022,8 +5142,11 @@ export default class SiswaSeeder extends BaseSeeder {
         userId: user.id,
         namaLengkap: user.fullName ?? faker.person.fullName(),
         nisn, // jamin unik
-        kelas: `XII ${faker.helpers.arrayElement(['IPA 1', 'IPS 2', 'Bahasa'])}`,
+        jenjang: `${faker.helpers.arrayElement(['MA', 'MTS'])}`,
+        kelas: `${faker.helpers.arrayElement(['1', '2', '3'])}`,
         tanggalLahir: DateTime.fromJSDate(faker.date.birthdate({ min: 15, max: 18, mode: 'age' })),
+        alamat: faker.location.streetAddress(),
+        telepon: '08' + faker.string.numeric(9),
       }
     })
 
@@ -5034,86 +5157,6 @@ export default class SiswaSeeder extends BaseSeeder {
       this.logger?.error('❌ Gagal insert ke tabel siswa:')
       console.error(error)
     }
-  }
-}
-
-// title: database/.seeders/z hasil_seeder.ts
-// title: database/seeders/z hasil_tes_seeder.ts (REVISI)
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import HasilTes from '#models/hasil'
-import Siswa from '#models/siswa'
-
-export default class extends BaseSeeder {
-  public async run() {
-    const allSiswa = await Siswa.all()
-    if (allSiswa.length === 0) {
-      console.log('Tidak ada siswa untuk di-seed hasil tesnya.')
-      return
-    }
-
-    // Definisikan Persona/Tipe Minat
-    const personas = [
-      { name: 'Si Praktis', dominant: ['R', 'C'], secondary: ['I', 'E'] }, // Tipe Realistic-Conventional
-      { name: 'Si Peneliti', dominant: ['I', 'C'], secondary: ['R', 'A'] }, // Tipe Investigative-Conventional
-      { name: 'Si Kreatif', dominant: ['A', 'S'], secondary: ['E', 'I'] }, // Tipe Artistic-Social
-      { name: 'Si Sosialita', dominant: ['S', 'E'], secondary: ['A', 'C'] }, // Tipe Social-Enterprising
-      { name: 'Si Pebisnis', dominant: ['E', 'C'], secondary: ['S', 'R'] }, // Tipe Enterprising-Conventional
-      { name: 'Si Campuran Unik', dominant: ['I', 'A', 'S'], secondary: ['R', 'E', 'C'] }, // Tipe I-A-S
-    ]
-
-    const hasilTesData: Partial<HasilTes>[] = []
-
-    for (const [i, siswa] of allSiswa.entries()) {
-      // Pilih persona secara bergiliran untuk memastikan variasi
-      const persona = personas[i % personas.length]
-
-      const scores: { [key: string]: number } = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
-
-      // Beri skor TINGGI untuk tipe dominan
-      persona.dominant.forEach((type) => {
-        scores[type] = Math.floor(Math.random() * 8) + 8 // Skor antara 8-15
-      })
-
-      // Beri skor SEDANG untuk tipe sekunder
-      persona.secondary.forEach((type) => {
-        if (scores[type] === 0) {
-          // Hanya isi jika belum diisi oleh dominan
-          scores[type] = Math.floor(Math.random() * 5) + 3 // Skor antara 3-7
-        }
-      })
-
-      // Beri skor RENDAH untuk sisanya
-      Object.keys(scores).forEach((type) => {
-        if (scores[type] === 0) {
-          scores[type] = Math.floor(Math.random() * 3) + 1 // Skor antara 1-3
-        }
-      })
-
-      // Buat Kode Holland dari 3 skor tertinggi
-      const sortedScores = (Object.entries(scores) as [keyof typeof scores, number][]).sort(
-        ([, a], [, b]) => b - a
-      )
-      const hollandCode = sortedScores
-        .slice(0, 3)
-        .map(([key]) => key)
-        .join('')
-
-      hasilTesData.push({
-        siswaId: siswa.id,
-        skorR: scores.R,
-        skorI: scores.I,
-        skorA: scores.A,
-        skorS: scores.S,
-        skorE: scores.E,
-        skorC: scores.C,
-        kodeHolland: hollandCode,
-      })
-    }
-
-    // Hapus hasil tes lama untuk menghindari duplikat jika seeder dijalankan lagi
-    await HasilTes.truncate()
-    await HasilTes.createMany(hasilTesData)
-    console.log(`Berhasil membuat ${hasilTesData.length} data hasil tes dengan persona.`)
   }
 }
 
@@ -5209,7 +5252,7 @@ import { hydrateRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+const appName = import.meta.env.VITE_APP_NAME || 'Riasec App';
 
 createInertiaApp({
   progress: { color: '#5468FF' },
@@ -5533,30 +5576,28 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
   return (
     <>
       <Head title="Admin Dashboard" />
+      <link rel="icon" href="/public/logo.png"></link>
       <div className="bg-gray-100 dark:bg-gray-800 min-h-screen">
         <Sidebar />
         <main className="md:ml-64 p-4 sm:p-6 lg:p-8">{children}</main>
 
         {/* 3. Tambahkan JSX untuk Toast di sini */}
         <div
-          className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${
-            toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
-          }`}
+          className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
+            }`}
         >
           <div
-            className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${
-              toast.type === 'success'
+            className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${toast.type === 'success'
                 ? 'ring-green-200 dark:ring-green-700'
                 : 'ring-red-200 dark:ring-red-700'
-            }`}
+              }`}
             role="alert"
           >
             <div
-              className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
-                toast.type === 'success'
+              className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${toast.type === 'success'
                   ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
                   : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
-              }`}
+                }`}
             >
               {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
             </div>
@@ -5647,7 +5688,7 @@ const Sidebar: React.FC = () => {
         <Link href="/admin/dashboard">
           <img
             className="w-auto h-6 sm:h-7"
-            src="https://merakiui.com/images/logo.svg"
+            src="/public/logo.png"
             alt="Logo"
           />
         </Link>
@@ -6702,6 +6743,9 @@ interface SiswaData {
   id: number
   namaLengkap: string
   nisn: string | null
+  alamat: string | null
+  telephone: string | null
+  jenjang: string | null
   kelas: string | null
   tanggalLahir: string | null // Datetime dari Lucid sering datang sebagai string ISO
   user: {
@@ -6715,6 +6759,9 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
     email: siswa.user.email,
     password: '', // Selalu kosongkan password di awal demi keamanan
     nisn: siswa.nisn || '',
+    jenjang: siswa.jenjang || '',
+    alamat: siswa.alamat || '',
+    telephone: siswa.telephone || '',
     kelas: siswa.kelas || '',
     tanggalLahir: siswa.tanggalLahir ? DateTime.fromISO(siswa.tanggalLahir).toISODate() : '',
   })
@@ -6781,6 +6828,63 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
                 required
               />
               {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
+            </div>
+
+            {/* alamat */}
+            <div>
+              <label
+                htmlFor="alamat"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                alamat
+              </label>
+              <input
+                id="alamat"
+                type="alamat"
+                value={data.alamat}
+                onChange={(e) => setData('alamat', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+
+              />
+              {errors.alamat && <div className="text-xs text-red-500 mt-1">{errors.alamat}</div>}
+            </div>
+
+            {/* Jenjang */}
+            <div>
+              <label
+                htmlFor="jenjang"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                jenjang
+              </label>
+              <input
+                id="jenjang"
+                type="jenjang"
+                value={data.jenjang}
+                onChange={(e) => setData('jenjang', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+
+              />
+              {errors.jenjang && <div className="text-xs text-red-500 mt-1">{errors.jenjang}</div>}
+            </div>
+
+            {/* telephone */}
+            <div>
+              <label
+                htmlFor="telephone"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                telephone
+              </label>
+              <input
+                id="telephone"
+                type="telephone"
+                value={data.telephone}
+                onChange={(e) => setData('telephone', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+
+              />
+              {errors.telephone && <div className="text-xs text-red-500 mt-1">{errors.telephone}</div>}
             </div>
 
             {/* Password */}
@@ -6920,6 +7024,7 @@ interface Siswa {
   namaLengkap: string
   nisn: string | null
   kelas: string | null
+  jenjang: string | null
   user: User
   hasilTes: HasilTes[]
 }
@@ -6987,6 +7092,10 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       }),
       columnHelper.accessor('kelas', {
         header: 'Kelas',
+        cell: (info) => info.getValue() || '-',
+      }),
+      columnHelper.accessor('jenjang', {
+        header: 'jenjang',
         cell: (info) => info.getValue() || '-',
       }),
       columnHelper.display({
@@ -8237,14 +8346,16 @@ export default function ServerError(props: { error: any }) {
 }
 
 // title: inertia/pages/home.tsx
-import { Link } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
+
 
 // Komponen Ikon (ditempatkan di sini agar mudah digunakan)
 
 export default function Home() {
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-
+      <Head title="HomePage" />
+      <link rel="icon" href="/public/logo.png"></link>
       {/* 1. Bagian Hero */}
       <section className="relative flex items-center justify-center min-h-screen px-4 text-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-blue-900/30">
         <div className="z-10">
@@ -8550,6 +8661,7 @@ export default function UserLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Head title="User Dashboard" />
+      <link rel="icon" href="/public/logo.png"></link>
 
       {/* Struktur ini lebih bener. Sidebar dan Main Content itu sibling.
         Sidebar akan ngatur posisinya sendiri (fixed di mobile, static di desktop).
@@ -8582,10 +8694,6 @@ import {
   CalendarDays,
   Users,
   Library,
-  CheckCircle,
-  Wallet,
-  LifeBuoy,
-  Phone,
   Settings,
   LogOut,
 } from 'lucide-react'
@@ -8638,15 +8746,14 @@ const Sidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
+        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
       >
         {/* Logo */}
         <Link href="/dashboard">
           <img
             className="w-auto h-6 sm:h-7"
-            src="https://merakiui.com/images/logo.svg"
+            src="/public/logo.png"
             alt="Logo"
           />
         </Link>
@@ -8657,11 +8764,10 @@ const Sidebar: React.FC = () => {
             {/* Dashboard */}
             <Link
               href="/dashboard"
-              className={`${linkBaseClass} ${
-                isActive('/dashboard')
-                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
-                  : ''
-              }`}
+              className={`${linkBaseClass} ${isActive('/dashboard')
+                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                : ''
+                }`}
             >
               <LayoutDashboard className="w-5 h-5" />
               <span className="mx-4 font-medium">Dashboard</span>
@@ -8687,11 +8793,10 @@ const Sidebar: React.FC = () => {
             </a>
             <Link
               href="/riasec"
-              className={`${linkBaseClass} ${
-                isActive('/riasec')
-                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
-                  : ''
-              }`}
+              className={`${linkBaseClass} ${isActive('/riasec')
+                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                : ''
+                }`}
             >
               <svg
                 className="w-5 h-5"
@@ -8737,9 +8842,8 @@ const Sidebar: React.FC = () => {
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akun</p>
             <Link
               href="/profile"
-              className={`${linkBaseClass} -mx-2 ${
-                isActive('/profile') ? 'bg-gray-100 dark:bg-gray-800' : ''
-              }`}
+              className={`${linkBaseClass} -mx-2 ${isActive('/profile') ? 'bg-gray-100 dark:bg-gray-800' : ''
+                }`}
             >
               <Avatar name={userName} className="h-9 w-9 mx-2" />
               <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">{userName}</span>
@@ -9305,6 +9409,158 @@ export default function UserProfile() {
 }
 
 UserProfile.layout = (page: any) => <UserLayout children={page} />
+
+// title: inertia/pages/user/riasec/.test.tsx
+import { Head, useForm } from '@inertiajs/react'
+import React, { useState } from 'react'
+import UserLayout from '../layouts/main'
+
+interface Question {
+    id: number
+    teksPertanyaan: string
+    tipeRiasec: string
+}
+
+interface RiasecTestProps {
+    questions: Question[]
+}
+
+const answerOptions = [
+    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
+    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
+    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
+    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
+    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
+]
+
+export default function RiasecTest({ questions }: RiasecTestProps) {
+    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
+        answers: {},
+    })
+
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+    const totalQuestions = questions.length
+    const currentQuestion = questions[currentQuestionIndex]
+
+    const handleAnswer = (questionId: number, answerValue: number) => {
+        setData('answers', {
+            ...data.answers,
+            [questionId]: answerValue,
+        })
+    }
+
+    const handleNext = () => {
+        if (currentQuestionIndex < totalQuestions - 1) {
+            setCurrentQuestionIndex((prev) => prev + 1)
+        }
+    }
+
+    const handleBack = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex((prev) => prev - 1)
+        }
+    }
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        post('/riasec/submit')
+    }
+
+    const progressPercentage =
+        totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0
+
+    return (
+        <>
+            <Head title="Tes Minat RIASEC" />
+
+            <div className="bg-slate-100 p-6 sm:p-10 min-h-screen flex items-center justify-center">
+                <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-6 sm:p-10">
+
+                    {/* Progress */}
+                    <div className="mb-6">
+                        <div className="flex justify-between text-sm text-slate-500 font-medium mb-1">
+                            <span>Pertanyaan {currentQuestionIndex + 1} dari {totalQuestions}</span>
+                            <span>{Math.round(progressPercentage)}%</span>
+                        </div>
+                        <div className="w-full bg-slate-200 rounded-full h-2.5">
+                            <div
+                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                style={{ width: `${progressPercentage}%` }}
+                            ></div>
+                        </div>
+                    </div>
+
+                    {/* Pertanyaan */}
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-6">
+                            <p className="text-3xl text-center font-semibold text-slate-800 mb-4">
+                                {currentQuestion.teksPertanyaan}
+                            </p>
+
+                            <div className="flex flex-wrap gap-3 justify-center">
+                                {answerOptions.map((option) => (
+                                    <button
+                                        key={option.value}
+                                        type="button"
+                                        onClick={() => handleAnswer(currentQuestion.id, option.value)}
+                                        className={`
+                                            flex flex-row px-3 py-2 rounded-lg text-base font-semibold
+                                            transition-all duration-200 focus:outline-none
+                                            ${data.answers[currentQuestion.id] === option.value
+                                                ? `${option.color} text-white shadow-md`
+                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                            }
+                                        `}
+                                    >
+                                        {option.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Navigasi */}
+                        <div className="flex justify-between mt-6">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                disabled={currentQuestionIndex === 0}
+                                className="px-6 py-2 text-sm font-bold text-slate-600 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Sebelumnya
+                            </button>
+
+                            {currentQuestionIndex < totalQuestions - 1 ? (
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    disabled={!data.answers[currentQuestion.id]}
+                                    className="px-6 py-2 text-white font-bold bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Selanjutnya
+                                </button>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    disabled={processing || !data.answers[currentQuestion.id]}
+                                    className="px-6 py-2 text-white font-bold bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Error Message */}
+                        {errors.answers && (
+                            <p className="text-sm text-red-600 mt-3">{errors.answers}</p>
+                        )}
+                    </form>
+                </div>
+            </div>
+        </>
+    )
+}
+
+RiasecTest.layout = (page: any) => <UserLayout children={page} />
 
 // title: inertia/pages/user/riasec/index.tsx
 import { Head, Link, usePage } from '@inertiajs/react'
@@ -9923,158 +10179,6 @@ export default function RiasecResultPage() {
 }
 
 RiasecResultPage.layout = (page: any) => <UserLayout children={page} />
-
-// title: inertia/pages/user/riasec/.test.tsx
-import { Head, useForm } from '@inertiajs/react'
-import React, { useState } from 'react'
-import UserLayout from '../layouts/main'
-
-interface Question {
-    id: number
-    teksPertanyaan: string
-    tipeRiasec: string
-}
-
-interface RiasecTestProps {
-    questions: Question[]
-}
-
-const answerOptions = [
-    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
-    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
-    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
-    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
-    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
-]
-
-export default function RiasecTest({ questions }: RiasecTestProps) {
-    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
-        answers: {},
-    })
-
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-    const totalQuestions = questions.length
-    const currentQuestion = questions[currentQuestionIndex]
-
-    const handleAnswer = (questionId: number, answerValue: number) => {
-        setData('answers', {
-            ...data.answers,
-            [questionId]: answerValue,
-        })
-    }
-
-    const handleNext = () => {
-        if (currentQuestionIndex < totalQuestions - 1) {
-            setCurrentQuestionIndex((prev) => prev + 1)
-        }
-    }
-
-    const handleBack = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex((prev) => prev - 1)
-        }
-    }
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        post('/riasec/submit')
-    }
-
-    const progressPercentage =
-        totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0
-
-    return (
-        <>
-            <Head title="Tes Minat RIASEC" />
-
-            <div className="bg-slate-100 p-6 sm:p-10 min-h-screen flex items-center justify-center">
-                <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-6 sm:p-10">
-
-                    {/* Progress */}
-                    <div className="mb-6">
-                        <div className="flex justify-between text-sm text-slate-500 font-medium mb-1">
-                            <span>Pertanyaan {currentQuestionIndex + 1} dari {totalQuestions}</span>
-                            <span>{Math.round(progressPercentage)}%</span>
-                        </div>
-                        <div className="w-full bg-slate-200 rounded-full h-2.5">
-                            <div
-                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                style={{ width: `${progressPercentage}%` }}
-                            ></div>
-                        </div>
-                    </div>
-
-                    {/* Pertanyaan */}
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-6">
-                            <p className="text-3xl text-center font-semibold text-slate-800 mb-4">
-                                {currentQuestion.teksPertanyaan}
-                            </p>
-
-                            <div className="flex flex-wrap gap-3 justify-center">
-                                {answerOptions.map((option) => (
-                                    <button
-                                        key={option.value}
-                                        type="button"
-                                        onClick={() => handleAnswer(currentQuestion.id, option.value)}
-                                        className={`
-                                            flex flex-row px-3 py-2 rounded-lg text-base font-semibold
-                                            transition-all duration-200 focus:outline-none
-                                            ${data.answers[currentQuestion.id] === option.value
-                                                ? `${option.color} text-white shadow-md`
-                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                            }
-                                        `}
-                                    >
-                                        {option.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Navigasi */}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                type="button"
-                                onClick={handleBack}
-                                disabled={currentQuestionIndex === 0}
-                                className="px-6 py-2 text-sm font-bold text-slate-600 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Sebelumnya
-                            </button>
-
-                            {currentQuestionIndex < totalQuestions - 1 ? (
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    disabled={!data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    Selanjutnya
-                                </button>
-                            ) : (
-                                <button
-                                    type="submit"
-                                    disabled={processing || !data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Error Message */}
-                        {errors.answers && (
-                            <p className="text-sm text-red-600 mt-3">{errors.answers}</p>
-                        )}
-                    </form>
-                </div>
-            </div>
-        </>
-    )
-}
-
-RiasecTest.layout = (page: any) => <UserLayout children={page} />
 
 // title: inertia/pages/user/riasec/test.tsx
 import { FormEvent, useRef, useState } from 'react'

@@ -38,6 +38,7 @@ interface Siswa {
   namaLengkap: string
   nisn: string | null
   kelas: string | null
+  jenjang: string | null
   user: User
   hasilTes: HasilTes[]
 }
@@ -105,6 +106,10 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       }),
       columnHelper.accessor('kelas', {
         header: 'Kelas',
+        cell: (info) => info.getValue() || '-',
+      }),
+      columnHelper.accessor('jenjang', {
+        header: 'jenjang',
         cell: (info) => info.getValue() || '-',
       }),
       columnHelper.display({

@@ -8,6 +8,7 @@ export default function UserLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Head title="User Dashboard" />
+      <link rel="icon" href="/public/logo.png"></link>
 
       {/* Struktur ini lebih bener. Sidebar dan Main Content itu sibling.
         Sidebar akan ngatur posisinya sendiri (fixed di mobile, static di desktop).

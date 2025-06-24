@@ -27,8 +27,11 @@ export default class SiswaSeeder extends BaseSeeder {
         userId: user.id,
         namaLengkap: user.fullName ?? faker.person.fullName(),
         nisn, // jamin unik
-        kelas: `XII ${faker.helpers.arrayElement(['IPA 1', 'IPS 2', 'Bahasa'])}`,
+        jenjang: `${faker.helpers.arrayElement(['MA', 'MTS'])}`,
+        kelas: `${faker.helpers.arrayElement(['1', '2', '3'])}`,
         tanggalLahir: DateTime.fromJSDate(faker.date.birthdate({ min: 15, max: 18, mode: 'age' })),
+        alamat: faker.location.streetAddress(),
+        telepon: '08' + faker.string.numeric(9),
       }
     })
 

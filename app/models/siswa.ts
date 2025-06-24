@@ -19,7 +19,16 @@ export default class Siswa extends BaseModel {
   declare nisn: string | null
 
   @column()
+  declare jenjang: string | null
+
+  @column()
   declare kelas: string | null
+
+  @column()
+  declare alamat: string | null
+
+  @column()
+  declare telepon: string | null
 
   @column.date()
   declare tanggalLahir: DateTime | null

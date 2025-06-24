@@ -8,6 +8,9 @@ interface SiswaData {
   id: number
   namaLengkap: string
   nisn: string | null
+  alamat: string | null
+  telephone: string | null
+  jenjang: string | null
   kelas: string | null
   tanggalLahir: string | null // Datetime dari Lucid sering datang sebagai string ISO
   user: {
@@ -21,6 +24,9 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
     email: siswa.user.email,
     password: '', // Selalu kosongkan password di awal demi keamanan
     nisn: siswa.nisn || '',
+    jenjang: siswa.jenjang || '',
+    alamat: siswa.alamat || '',
+    telephone: siswa.telephone || '',
     kelas: siswa.kelas || '',
     tanggalLahir: siswa.tanggalLahir ? DateTime.fromISO(siswa.tanggalLahir).toISODate() : '',
   })
@@ -87,6 +93,63 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
                 required
               />
               {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
+            </div>
+
+            {/* alamat */}
+            <div>
+              <label
+                htmlFor="alamat"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                alamat
+              </label>
+              <input
+                id="alamat"
+                type="alamat"
+                value={data.alamat}
+                onChange={(e) => setData('alamat', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+
+              />
+              {errors.alamat && <div className="text-xs text-red-500 mt-1">{errors.alamat}</div>}
+            </div>
+
+            {/* Jenjang */}
+            <div>
+              <label
+                htmlFor="jenjang"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                jenjang
+              </label>
+              <input
+                id="jenjang"
+                type="jenjang"
+                value={data.jenjang}
+                onChange={(e) => setData('jenjang', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+
+              />
+              {errors.jenjang && <div className="text-xs text-red-500 mt-1">{errors.jenjang}</div>}
+            </div>
+
+            {/* telephone */}
+            <div>
+              <label
+                htmlFor="telephone"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                telephone
+              </label>
+              <input
+                id="telephone"
+                type="telephone"
+                value={data.telephone}
+                onChange={(e) => setData('telephone', e.target.value)}
+                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+
+              />
+              {errors.telephone && <div className="text-xs text-red-500 mt-1">{errors.telephone}</div>}
             </div>
 
             {/* Password */}

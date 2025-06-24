@@ -10,10 +10,6 @@ import {
   CalendarDays,
   Users,
   Library,
-  CheckCircle,
-  Wallet,
-  LifeBuoy,
-  Phone,
   Settings,
   LogOut,
 } from 'lucide-react'
@@ -66,15 +62,14 @@ const Sidebar: React.FC = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
+        className={`fixed inset-y-0 left-0 w-64 h-screen px-4 py-8 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:translate-x-0 transition-transform duration-300 ease-in-out z-40 flex flex-col`}
       >
         {/* Logo */}
         <Link href="/dashboard">
           <img
             className="w-auto h-6 sm:h-7"
-            src="https://merakiui.com/images/logo.svg"
+            src="/public/logo.png"
             alt="Logo"
           />
         </Link>
@@ -85,11 +80,10 @@ const Sidebar: React.FC = () => {
             {/* Dashboard */}
             <Link
               href="/dashboard"
-              className={`${linkBaseClass} ${
-                isActive('/dashboard')
-                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
-                  : ''
-              }`}
+              className={`${linkBaseClass} ${isActive('/dashboard')
+                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                : ''
+                }`}
             >
               <LayoutDashboard className="w-5 h-5" />
               <span className="mx-4 font-medium">Dashboard</span>
@@ -115,11 +109,10 @@ const Sidebar: React.FC = () => {
             </a>
             <Link
               href="/riasec"
-              className={`${linkBaseClass} ${
-                isActive('/riasec')
-                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
-                  : ''
-              }`}
+              className={`${linkBaseClass} ${isActive('/riasec')
+                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                : ''
+                }`}
             >
               <svg
                 className="w-5 h-5"
@@ -165,9 +158,8 @@ const Sidebar: React.FC = () => {
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akun</p>
             <Link
               href="/profile"
-              className={`${linkBaseClass} -mx-2 ${
-                isActive('/profile') ? 'bg-gray-100 dark:bg-gray-800' : ''
-              }`}
+              className={`${linkBaseClass} -mx-2 ${isActive('/profile') ? 'bg-gray-100 dark:bg-gray-800' : ''
+                }`}
             >
               <Avatar name={userName} className="h-9 w-9 mx-2" />
               <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">{userName}</span>

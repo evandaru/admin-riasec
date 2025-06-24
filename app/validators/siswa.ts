@@ -15,7 +15,15 @@ export const createSiswaValidator = vine.compile(
       }),
     password: vine.string().minLength(8).confirmed(),
     nisn: vine.string().trim().nullable(), // Use max instead of maxLength
+    jenjang: vine.string().trim().nullable(), // Use max instead of maxLength
     kelas: vine.string().trim().nullable(), // Use max for string length validation
+    alamat: vine.string().trim().maxLength(255).nullable(),
+    telepon: vine
+      .string()
+      .trim()
+      .maxLength(20)
+      .regex(/^(08[0-9]{8,11})$/) // Validasi nomor telepon Indonesia
+      .nullable(),
     tanggalLahir: vine
       .date({ formats: ['YYYY-MM-DD'] })
       .nullable()
@@ -40,6 +48,14 @@ export const updateSiswaValidator = vine.compile(
     password: vine.string().minLength(8).nullable(),
     nisn: vine.string().trim().nullable(),
     kelas: vine.string().trim().nullable(),
+    jenjang: vine.string().trim().nullable(),
+    alamat: vine.string().trim().maxLength(255).nullable(),
+    telepon: vine
+      .string()
+      .trim()
+      .maxLength(20)
+      .regex(/^(08[0-9]{8,11})$/) // Validasi nomor telepon Indonesia
+      .nullable(),
     tanggalLahir: vine
       .date({ formats: ['YYYY-MM-DD'] })
       .nullable()

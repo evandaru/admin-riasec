@@ -71,6 +71,7 @@ export default class SiswaRiasecsController {
           userId: user.id,
           namaLengkap: payload.namaLengkap,
           nisn: payload.nisn,
+          jenjang: payload.jenjang,
           kelas: payload.kelas,
           tanggalLahir: payload.tanggalLahir,
         },
@@ -169,6 +170,7 @@ export default class SiswaRiasecsController {
       siswa.merge({
         namaLengkap: payload.namaLengkap,
         nisn: payload.nisn,
+        jenjang: payload.jenjang,
         kelas: payload.kelas,
         tanggalLahir: payload.tanggalLahir,
       })

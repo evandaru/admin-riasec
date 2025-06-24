@@ -1,11 +1,13 @@
-import { Link } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
+
 
 // Komponen Ikon (ditempatkan di sini agar mudah digunakan)
 
 export default function Home() {
   return (
     <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-
+      <Head title="HomePage" />
+      <link rel="icon" href="/public/logo.png"></link>
       {/* 1. Bagian Hero */}
       <section className="relative flex items-center justify-center min-h-screen px-4 text-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-blue-900/30">
         <div className="z-10">
