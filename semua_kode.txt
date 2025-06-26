@@ -14,6 +14,7 @@ app
 │   ├── auth
 │   │   └── registers_controller.ts
 │   ├── user
+│   │   ├── about_controller.ts
 │   │   ├── dashboard_controller.ts
 │   │   ├── hasil_tes_controller.ts
 │   │   ├── notes_controller.ts
@@ -135,6 +136,8 @@ inertia
 │   │   ├── not_found.tsx
 │   │   └── server_error.tsx
 │   ├── user
+│   │   ├── about
+│   │   │   └── index.tsx
 │   │   ├── dashboard
 │   │   │   └── index.tsx
 │   │   ├── layouts
@@ -933,6 +936,15 @@ export default class SessionController {
   }
 }
 
+// title: app/controllers/user/about_controller.ts
+import type { HttpContext } from '@adonisjs/core/http'
+
+export default class AboutController {
+  async index({ inertia }: HttpContext) {
+    return inertia.render('user/about/index')
+  }
+}
+
 // title: app/controllers/user/dashboard_controller.ts
 // title: app/controllers/user/dashboard_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
@@ -1068,6 +1080,7 @@ export default class ProfilesController {
         nisn: payload.nisn,
         kelas: payload.kelas,
         tanggalLahir: payload.tanggalLahir,
+        telepon: payload.telepon,
       })
       await siswa.save()
 
@@ -2603,10 +2616,11 @@ export const updateUserProfileValidator = vine.compile(
           .first()
         return !user
       }),
-    password: vine.string().minLength(8).confirmed().optional(),
+    password: vine.string().confirmed().optional(),
     // Tambahan field untuk data Siswa
     nisn: vine.string().trim().nullable(),
     kelas: vine.string().trim().nullable(),
+    telepon: vine.string().trim().nullable(),
     tanggalLahir: vine
       .date({ formats: ['YYYY-MM-DD'] })
       .nullable()
@@ -8484,6 +8498,111 @@ export default function Home() {
   )
 }
 
+// title: inertia/pages/user/about/index.tsx
+// inertia/pages/About.tsx
+
+import { Head } from '@inertiajs/react'
+import { FileText, Github, Linkedin, Send } from 'lucide-react'
+import UserLayout from '../layouts/main'
+
+interface AboutProps {
+    title: string
+    description: string
+}
+
+// Komponen kartu kontak (sosmed)
+const ContactCard = ({
+    icon: Icon,
+    title,
+    content,
+    href,
+}: {
+    icon: any
+    title: string
+    content: string
+    href?: string
+}) => (
+    <div className="flex flex-col items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <Icon className="w-12 h-12 text-blue-500 mb-3" />
+        <h4 className="font-semibold text-lg text-gray-800 dark:text-gray-100">{title}</h4>
+        {href ? (
+            <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-500 transition-colors duration-200"
+            >
+                {content}
+            </a>
+        ) : (
+            <p className="text-gray-600 dark:text-gray-300">{content}</p>
+        )}
+    </div>
+)
+
+export default function About({ title, description }: AboutProps) {
+    return (
+        <UserLayout>
+            <Head>
+                <title>{title || 'Skripsi Fauzan'}</title>
+                <meta name="description" content={description} />
+            </Head>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+                {/* Abstrak */}
+                <section className="relative bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg">
+                    <div className="flex items-center mb-6">
+                        <div className="bg-blue-100 dark:bg-blue-950 p-3 rounded-full mr-4">
+                            <FileText className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
+                            Website Sistem Rekomendasi
+                        </h2>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-base lg:text-lg">
+                        Website ini merupakan sistem rekomendasi jurusan kuliah berbasis tes minat bakat RIASEC
+                        yang dirancang untuk membantu siswa SMA dalam menentukan jurusan yang sesuai dengan
+                        minat dan bakat mereka. Sistem ini menggabungkan metode RIASEC dengan teknologi web
+                        untuk memberikan rekomendasi yang akurat dan mudah diakses.
+                    </p>
+                </section>
+
+                {/* Kontak Sosmed */}
+                <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-8 rounded-2xl shadow-lg">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
+                            Kontak Fauzan
+                        </h2>
+                        <p className="mt-3 text-gray-500 dark:text-gray-300 text-base lg:text-lg max-w-xl mx-auto">
+                            Mau diskusi, ngoding bareng, atau cuma ngobrol random? Cus langsung cek sosmed gue di
+                            bawah ini. No basa-basi, langsung DM aja 🚀
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
+                        <ContactCard
+                            icon={Github}
+                            title="GitHub"
+                            content="github.com/evandaru"
+                            href="https://github.com/evandaru"
+                        />
+                        <ContactCard
+                            icon={Send}
+                            title="Telegram"
+                            content="@evndaru"
+                            href="https://t.me/evndaru"
+                        />
+                        <ContactCard
+                            icon={Linkedin}
+                            title="LinkedIn"
+                            content="linkedin.com/in/fauzanhasyim"
+                            href="https://linkedin.com/in/fauzanhasyim"
+                        />
+                    </div>
+                </section>
+            </div>
+        </UserLayout>
+    )
+}
+
 // title: inertia/pages/user/dashboard/index.tsx
 // title: inertia/pages/user/dashboard/index.tsx
 import { Head, Link } from '@inertiajs/react'
@@ -8629,7 +8748,7 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
             <InfoCard
               title="Profil Saya"
               description="Buka Profile Anda untuk melihat dan mengedit informasi pribadi Anda."
-              link="/profilez"
+              link="/profile"
               linkText="Lengkapi Profil"
               icon={User}
             />
@@ -8657,7 +8776,12 @@ import { PropsWithChildren } from 'react'
 import Sidebar from './sidebar' // Sidebar-nya tetap sama
 import { Head } from '@inertiajs/react'
 
-export default function UserLayout({ children }: PropsWithChildren) {
+interface UserLayoutProps extends PropsWithChildren {
+  title?: string
+}
+
+export default function UserLayout({ children, title }: UserLayoutProps) {
+  title = title || ''
   return (
     <>
       <Head title="User Dashboard" />
@@ -8687,14 +8811,12 @@ import {
   Menu,
   X,
   LayoutDashboard,
-  BookOpen,
-  ClipboardList,
-  GraduationCap,
   Bell,
   CalendarDays,
   Users,
   Library,
   Settings,
+  Info,
   LogOut,
 } from 'lucide-react'
 import { Link, usePage } from '@inertiajs/react'
@@ -8775,22 +8897,7 @@ const Sidebar: React.FC = () => {
 
             {/* Kategori: Akademik */}
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akademik</p>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <CalendarDays className="w-5 h-5" />
-              <span className="mx-4 font-medium">Jadwal Kelas</span>
-            </a>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <BookOpen className="w-5 h-5" />
-              <span className="mx-4 font-medium">Materi Belajar</span>
-            </a>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <ClipboardList className="w-5 h-5" />
-              <span className="mx-4 font-medium">Tugas & PR</span>
-            </a>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <GraduationCap className="w-5 h-5" />
-              <span className="mx-4 font-medium">Nilai & Raport</span>
-            </a>
+
             <Link
               href="/riasec"
               className={`${linkBaseClass} ${isActive('/riasec')
@@ -8813,6 +8920,20 @@ const Sidebar: React.FC = () => {
                 />
               </svg>
               <span className="mx-4 font-medium">RIASEC Test</span>
+            </Link>
+
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">
+              Informasi
+            </p>
+            <Link
+              href="/about"
+              className={`${linkBaseClass} ${isActive('/about')
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                  : ''
+                }`}
+            >
+              <Info className="w-5 h-5" />
+              <span className="mx-4 font-medium">Tentang Kami</span>
             </Link>
 
             {/* Kategori: Kehidupan Sekolah */}
@@ -9117,6 +9238,8 @@ interface Siswa {
   nisn: string | null
   kelas: string | null
   tanggalLahir: string | null // string ISO dari backend
+  jenjang: string | null
+  telepon: string | null
 }
 
 interface PageProps {
@@ -9126,6 +9249,7 @@ interface PageProps {
     success?: string
     error?: string
   }
+  [key: string]: unknown
 }
 
 export default function UserProfile() {
@@ -9138,8 +9262,10 @@ export default function UserProfile() {
     kelas: siswa?.kelas || '',
     // Format tanggal untuk input type="date"
     tanggalLahir: siswa?.tanggalLahir ? DateTime.fromISO(siswa.tanggalLahir).toISODate() : '',
+    jenjang: siswa?.jenjang || '',
     password: '',
     password_confirmation: '',
+    telepon: siswa?.telepon || '',
   })
 
   // State untuk notifikasi Toast
@@ -9227,7 +9353,7 @@ export default function UserProfile() {
                   type="text"
                   value={data.fullName}
                   onChange={(e) => setData('fullName', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200 dark:bg-gray-700"
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
                   required
                   disabled
                 />
@@ -9255,6 +9381,28 @@ export default function UserProfile() {
                 {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
               </div>
 
+              {/* jenjang */}
+              <div>
+                <label
+                  htmlFor="jenjang"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  jenjang <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="jenjang"
+                  value={data.jenjang}
+                  onChange={(e) => setData('jenjang', e.target.value)}
+                  disabled
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
+                >
+                  <option value="">Pilih Jenjang</option>
+                  <option value="MA">MA</option>
+                  <option value="MTS">MTS</option>
+                </select>
+                {errors.jenjang && <div className="text-xs text-red-500 mt-1">{errors.jenjang}</div>}
+              </div>
+
               {/* NISN */}
               <div>
                 <label
@@ -9268,10 +9416,29 @@ export default function UserProfile() {
                   type="text"
                   value={data.nisn}
                   onChange={(e) => setData('nisn', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200 dark:bg-gray-700"
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
                   disabled
                 />
                 {errors.nisn && <div className="text-xs text-red-500 mt-1">{errors.nisn}</div>}
+              </div>
+
+              {/* telepon */}
+              <div>
+                <label
+                  htmlFor="telepon"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  telepon
+                </label>
+                <input
+                  id="telepon"
+                  type="text"
+                  value={data.telepon}
+                  onChange={(e) => setData('telepon', e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+
+                />
+                {errors.telepon && <div className="text-xs text-red-500 mt-1">{errors.telepon}</div>}
               </div>
 
               {/* Kelas */}
@@ -9287,7 +9454,7 @@ export default function UserProfile() {
                   type="text"
                   value={data.kelas}
                   onChange={(e) => setData('kelas', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200 dark:bg-gray-700"
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
                   disabled
                 />
                 {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
@@ -9304,7 +9471,7 @@ export default function UserProfile() {
                 <input
                   id="tanggalLahir"
                   type="date"
-                  value={data.tanggalLahir}
+                  value={data.tanggalLahir ?? ''}
                   onChange={(e) => setData('tanggalLahir', e.target.value)}
                   className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
@@ -9371,24 +9538,21 @@ export default function UserProfile() {
 
       {/* Notifikasi Toast */}
       <div
-        className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${
-          toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
-        }`}
+        className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
+          }`}
       >
         <div
-          className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${
-            toast.type === 'success'
-              ? 'ring-green-200 dark:ring-green-700'
-              : 'ring-red-200 dark:ring-red-700'
-          }`}
+          className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${toast.type === 'success'
+            ? 'ring-green-200 dark:ring-green-700'
+            : 'ring-red-200 dark:ring-red-700'
+            }`}
           role="alert"
         >
           <div
-            className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
-              toast.type === 'success'
-                ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
-                : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
-            }`}
+            className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${toast.type === 'success'
+              ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
+              : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
+              }`}
           >
             {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
           </div>
@@ -10756,6 +10920,8 @@ const RecommendationsController = () => import('#controllers/user/recommendation
 
 const UserProfilesController = () => import('#controllers/user/profiles_controller')
 
+const AbortController = () => import('#controllers/user/about_controller')
+
 router.get('/', [HomeController, 'index']).as('home')
 
 router
@@ -10773,6 +10939,8 @@ router
   .group(() => {
     router.get('/dashboard', [UserDashboardController, 'index']).as('dashboard')
     router.resource('notes', NotesController).except(['show'])
+
+    router.get('/about', [AbortController, 'index']).as('about.index')
 
     router.get('/riasec', [TestsController, 'index']).as('riasec.index')
     router.get('/riasec/test', [TestsController, 'start']).as('riasec.start')

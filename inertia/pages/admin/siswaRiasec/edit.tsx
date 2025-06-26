@@ -2,17 +2,17 @@
 import { Link, useForm, Head } from '@inertiajs/react'
 import AdminLayout from '../layouts/main'
 import { DateTime } from 'luxon'
+import { useState, useEffect } from 'react' // Tambahkan useEffect untuk validasi otomatis
 
-// Definisikan tipe data untuk prop `siswa`
 interface SiswaData {
   id: number
   namaLengkap: string
   nisn: string | null
   alamat: string | null
-  telephone: string | null
+  telepon: string | null
   jenjang: string | null
   kelas: string | null
-  tanggalLahir: string | null // Datetime dari Lucid sering datang sebagai string ISO
+  tanggalLahir: string | null
   user: {
     email: string
   }
@@ -22,19 +22,44 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
   const { data, setData, put, processing, errors } = useForm({
     namaLengkap: siswa.namaLengkap,
     email: siswa.user.email,
-    password: '', // Selalu kosongkan password di awal demi keamanan
+    password: '',
+    password_confirmation: '',
     nisn: siswa.nisn || '',
     jenjang: siswa.jenjang || '',
     alamat: siswa.alamat || '',
-    telephone: siswa.telephone || '',
+    telepon: siswa.telepon || '',
     kelas: siswa.kelas || '',
     tanggalLahir: siswa.tanggalLahir ? DateTime.fromISO(siswa.tanggalLahir).toISODate() : '',
   })
 
-  function submit(e: React.FormEvent<HTMLFormElement>) {
+  const [passwordError, setPasswordError] = useState<string | null>(null)
+
+  // Fungsi validasi password
+  const validatePassword = () => {
+    if (data.password || data.password_confirmation) {
+      if (data.password !== data.password_confirmation) {
+        setPasswordError('Konfirmasi password tidak cocok dengan password.')
+        return false
+      }
+      if (data.password.length < 8) {
+        setPasswordError('Password harus minimal 8 karakter.')
+        return false
+      }
+    }
+    setPasswordError(null)
+    return true
+  }
+
+  // Validasi otomatis setiap kali data.password atau data.password_confirmation berubah
+  useEffect(() => {
+    validatePassword()
+  }, [data.password, data.password_confirmation])
+
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Gunakan method PUT untuk update, arahkan ke rute update
-    put(`/admin/siswa-riasec/${siswa.id}`)
+    if (validatePassword()) {
+      put(`/admin/siswa-riasec/${siswa.id}`)
+    }
   }
 
   return (
@@ -52,8 +77,6 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
-          {/* Global form error handling can be added here if needed */}
-
           <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Nama Lengkap */}
             <div className="md:col-span-2">
@@ -95,21 +118,20 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
               {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
             </div>
 
-            {/* alamat */}
+            {/* Alamat */}
             <div>
               <label
                 htmlFor="alamat"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                alamat
+                Alamat
               </label>
               <input
                 id="alamat"
-                type="alamat"
+                type="text"
                 value={data.alamat}
                 onChange={(e) => setData('alamat', e.target.value)}
                 className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-
               />
               {errors.alamat && <div className="text-xs text-red-500 mt-1">{errors.alamat}</div>}
             </div>
@@ -120,62 +142,83 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
                 htmlFor="jenjang"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                jenjang
+                Jenjang
               </label>
-              <input
+              <select
                 id="jenjang"
-                type="jenjang"
                 value={data.jenjang}
                 onChange={(e) => setData('jenjang', e.target.value)}
                 className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-
-              />
+              >
+                <option value="">Pilih Jenjang</option>
+                <option value="MA">MA</option>
+                <option value="MTS">MTS</option>
+              </select>
               {errors.jenjang && <div className="text-xs text-red-500 mt-1">{errors.jenjang}</div>}
             </div>
 
-            {/* telephone */}
+            {/* Telepon */}
             <div>
               <label
-                htmlFor="telephone"
+                htmlFor="telepon"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                telephone
+                Telepon
               </label>
               <input
-                id="telephone"
-                type="telephone"
-                value={data.telephone}
-                onChange={(e) => setData('telephone', e.target.value)}
+                id="telepon"
+                type="number"
+                value={data.telepon}
+                onChange={(e) => setData('telepon', e.target.value)}
                 className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-
               />
-              {errors.telephone && <div className="text-xs text-red-500 mt-1">{errors.telephone}</div>}
+              {errors.telepon && <div className="text-xs text-red-500 mt-1">{errors.telepon}</div>}
             </div>
 
-            {/* Password */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Password Baru
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={data.password}
-                autoComplete="new-password"
-                onChange={(e) => setData('password', e.target.value)}
-                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                placeholder="Kosongkan jika tidak diubah"
-              />
-              {errors.password && (
-                <div className="text-xs text-red-500 mt-1">{errors.password}</div>
-              )}
+            {/* Password dan Konfirmasi Password */}
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Password Baru
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={data.password}
+                  autoComplete="new-password"
+                  onChange={(e) => setData('password', e.target.value)}
+                  className={`mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${passwordError ? 'border-red-500' : ''}`}
+                  placeholder="Kosongkan jika tidak diubah"
+                />
+                {errors.password && (
+                  <div className="text-xs text-red-500 mt-1">{errors.password}</div>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="password_confirmation"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Konfirmasi Password Baru
+                </label>
+                <input
+                  id="password_confirmation"
+                  type="password"
+                  value={data.password_confirmation}
+                  onChange={(e) => setData('password_confirmation', e.target.value)}
+                  className={`mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${passwordError ? 'border-red-500' : ''}`}
+                  placeholder="Ulangi password baru"
+                />
+                {passwordError && (
+                  <div className="text-xs text-red-500 mt-1">{passwordError}</div>
+                )}
+              </div>
             </div>
 
-            {/* NISN, Kelas, Tanggal Lahir (sama seperti di form create) */}
-            {/* ... (copy-paste form input untuk nisn, kelas, tanggalLahir dari create.tsx) ... */}
+            {/* NISN */}
             <div>
               <label
                 htmlFor="nisn"
@@ -185,7 +228,7 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
               </label>
               <input
                 id="nisn"
-                type="text"
+                type="number"
                 value={data.nisn}
                 onChange={(e) => setData('nisn', e.target.value)}
                 className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -193,6 +236,7 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
               {errors.nisn && <div className="text-xs text-red-500 mt-1">{errors.nisn}</div>}
             </div>
 
+            {/* Kelas */}
             <div>
               <label
                 htmlFor="kelas"
@@ -200,17 +244,21 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
               >
                 Kelas (Opsional)
               </label>
-              <input
+              <select
                 id="kelas"
-                type="text"
                 value={data.kelas}
                 onChange={(e) => setData('kelas', e.target.value)}
                 className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                placeholder="Contoh: XII IPA 1"
-              />
+              >
+                <option value="">Pilih Kelas</option>
+                <option value="1">1 (satu)</option>
+                <option value="2">2 (dua)</option>
+                <option value="3">3 (tiga)</option>
+              </select>
               {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
             </div>
 
+            {/* Tanggal Lahir */}
             <div className="md:col-span-2">
               <label
                 htmlFor="tanggalLahir"
@@ -230,10 +278,11 @@ export default function EditSiswa({ siswa }: { siswa: SiswaData }) {
               )}
             </div>
 
+            {/* Tombol Submit */}
             <div className="md:col-span-2 flex justify-end">
               <button
                 type="submit"
-                disabled={processing}
+                disabled={processing || !!passwordError}
                 className="inline-flex justify-center px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 transition-colors"
               >
                 {processing ? 'Menyimpan...' : 'Simpan Perubahan'}

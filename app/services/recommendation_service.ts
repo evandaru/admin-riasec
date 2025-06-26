@@ -270,7 +270,7 @@ async function getRecommendationsByCollaborativeFiltering(
   // 8. Susun ulang & tambahkan skor
   const finalResult = recommendationIds
     .map((id) => {
-      const program = recommendedPrograms.find((p) => p.id === id)
+      const program = recommendedPrograms.find((p) => p.id === BigInt(id))
       if (program) {
         program.$extras.recommendationScore = recommendations.find(
           (r) => r.programId === id

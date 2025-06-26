@@ -70,6 +70,7 @@
     "@vinejs/vine": "^3.0.1",
     "clsx": "^2.1.1",
     "edge.js": "^6.2.1",
+    "framer-motion": "^12.19.1",
     "lucide-react": "^0.517.0",
     "luxon": "^3.6.1",
     "mathjs": "^14.5.2",

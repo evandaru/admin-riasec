@@ -12,7 +12,7 @@ export const createUserValidator = vine.compile(
         const user = await db.from('users').where('email', value).first()
         return !user
       }),
-    password: vine.string().minLength(8),
+    password: vine.string(),
     role: vine.enum(['user', 'admin', 'siswa']),
   })
 )
@@ -35,7 +35,7 @@ export const registerUserValidator = vine.compile(
         const user = await db.from('users').where('email', value).first()
         return !user
       }),
-    password: vine.string().minLength(8).confirmed(),
+    password: vine.string().confirmed(),
   })
 )
 
@@ -56,7 +56,7 @@ export const updateAdminProfileValidator = vine.compile(
         return !user
       }),
     // Password bersifat opsional, tapi jika diisi, harus ada konfirmasinya
-    password: vine.string().minLength(8).confirmed().optional(),
+    password: vine.string().confirmed().optional(),
   })
 )
 
@@ -75,10 +75,11 @@ export const updateUserProfileValidator = vine.compile(
           .first()
         return !user
       }),
-    password: vine.string().minLength(8).confirmed().optional(),
+    password: vine.string().confirmed().optional(),
     // Tambahan field untuk data Siswa
     nisn: vine.string().trim().nullable(),
     kelas: vine.string().trim().nullable(),
+    telepon: vine.string().trim().nullable(),
     tanggalLahir: vine
       .date({ formats: ['YYYY-MM-DD'] })
       .nullable()

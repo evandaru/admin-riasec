@@ -1,5 +1,6 @@
 import { Link, useForm, Head } from '@inertiajs/react'
 import AdminLayout from '../layouts/main'
+import { useState, useEffect } from 'react'
 
 export default function CreateSiswa() {
     type SiswaFormData = {
@@ -8,6 +9,9 @@ export default function CreateSiswa() {
         password: string
         password_confirmation: string
         nisn: string
+        jenjang: string
+        alamat: string
+        telepon: string
         kelas: string
         tanggalLahir: string
     }
@@ -16,20 +20,47 @@ export default function CreateSiswa() {
         namaLengkap: '',
         email: '',
         password: '',
-        password_confirmation: '', // Ditambahkan field untuk konfirmasi password
+        password_confirmation: '',
         nisn: '',
+        jenjang: '',
+        alamat: '',
+        telepon: '',
         kelas: '',
-        tanggalLahir: '', // Gunakan string kosong untuk input tanggal
+        tanggalLahir: '',
     })
+
+    const [passwordError, setPasswordError] = useState<string | null>(null)
+
+    // Fungsi validasi password
+    const validatePassword = () => {
+        if (data.password || data.password_confirmation) {
+            if (data.password !== data.password_confirmation) {
+                setPasswordError('Konfirmasi password tidak cocok dengan password.')
+                return false
+            }
+            if (data.password.length < 0) {
+                setPasswordError('Password harus minimal 8 karakter.')
+                return false
+            }
+        }
+        setPasswordError(null)
+        return true
+    }
+
+    // Validasi otomatis setiap kali data.password atau data.password_confirmation berubah
+    useEffect(() => {
+        validatePassword()
+    }, [data.password, data.password_confirmation])
 
     function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        // Kirim data ke rute yang telah kita buat
-        post('/admin/siswa-riasec', {
-            onSuccess: () => {
-                // Optional: Lakukan sesuatu setelah berhasil, misalnya reset form
-            },
-        })
+        if (validatePassword()) {
+            post('/admin/siswa-riasec', {
+                onSuccess: () => {
+                    // Optional: Lakukan sesuatu setelah berhasil
+                },
+            })
+        }
     }
 
     return (
@@ -47,15 +78,7 @@ export default function CreateSiswa() {
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
-                    {/* Menampilkan error global dari backend (misal: kegagalan transaksi) */}
-                    {errors.form && (
-                        <div
-                            className="mb-4 p-4 text-sm text-red-800 rounded-lg bg-red-100 dark:bg-gray-700 dark:text-red-400"
-                            role="alert"
-                        >
-                            {errors.form}
-                        </div>
-                    )}
+                    {/* You can display a general error here if needed */}
 
                     <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Nama Lengkap */}
@@ -98,45 +121,104 @@ export default function CreateSiswa() {
                             {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
                         </div>
 
-                        {/* Password */}
+                        {/* Alamat -->
                         <div>
                             <label
-                                htmlFor="password"
+                                htmlFor="alamat"
                                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
-                                Password <span className="text-red-500">*</span>
+                                Alamat
                             </label>
                             <input
-                                id="password"
-                                type="password"
-                                value={data.password}
-                                autoComplete="new-password"
-                                onChange={(e) => setData('password', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                required
+                                id="alamat"
+                                type="text"
+                                value={data.alamat}
+                                onChange={(e) => setData('alamat', e.target.value)}
+                                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
-                            {errors.password && <div className="text-xs text-red-500 mt-1">{errors.password}</div>}
+                            {errors.alamat && <div className="text-xs text-red-500 mt-1">{errors.alamat}</div>}
                         </div>
 
-                        {/* Konfirmasi Password */}
+                        {/* Jenjang */}
                         <div>
                             <label
-                                htmlFor="password_confirmation"
+                                htmlFor="jenjang"
                                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                             >
-                                Konfirmasi Password <span className="text-red-500">*</span>
+                                Jenjang
+                            </label>
+                            <select
+                                id="jenjang"
+                                value={data.jenjang}
+                                onChange={(e) => setData('jenjang', e.target.value)}
+                                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            >
+                                <option value="">Pilih Jenjang</option>
+                                <option value="MA">MA</option>
+                                <option value="MTS">MTS</option>
+                            </select>
+                            {errors.jenjang && <div className="text-xs text-red-500 mt-1">{errors.jenjang}</div>}
+                        </div>
+
+                        {/* Telepon */}
+                        <div>
+                            <label
+                                htmlFor="telepon"
+                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >
+                                Telepon
                             </label>
                             <input
-                                id="password_confirmation"
-                                type="password"
-                                value={data.password_confirmation}
-                                onChange={(e) => setData('password_confirmation', e.target.value)}
-                                className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                required
+                                id="telepon"
+                                type="tel"
+                                value={data.telepon}
+                                onChange={(e) => setData('telepon', e.target.value)}
+                                className="mt-1 block px-3 py-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
-                            {errors.password_confirmation && (
-                                <div className="text-xs text-red-500 mt-1">{errors.password_confirmation}</div>
-                            )}
+                            {errors.telepon && <div className="text-xs text-red-500 mt-1">{errors.telepon}</div>}
+                        </div>
+
+                        {/* Password dan Konfirmasi Password */}
+                        <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label
+                                    htmlFor="password"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                >
+                                    Password <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    value={data.password}
+                                    autoComplete="new-password"
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    className={`mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${passwordError ? 'border-red-500' : ''}`}
+                                    required
+                                />
+                                {errors.password && (
+                                    <div className="text-xs text-red-500 mt-1">{errors.password}</div>
+                                )}
+                            </div>
+                            <div>
+                                <label
+                                    htmlFor="password_confirmation"
+                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                >
+                                    Konfirmasi Password <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="password_confirmation"
+                                    type="password"
+                                    value={data.password_confirmation}
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    className={`mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${passwordError ? 'border-red-500' : ''}`}
+                                    required
+                                />
+                                {passwordError && (
+                                    <div className="text-xs text-red-500 mt-1">{passwordError}</div>
+                                )}
+                            </div>
                         </div>
 
                         {/* NISN */}
@@ -165,14 +247,17 @@ export default function CreateSiswa() {
                             >
                                 Kelas (Opsional)
                             </label>
-                            <input
+                            <select
                                 id="kelas"
-                                type="text"
                                 value={data.kelas}
                                 onChange={(e) => setData('kelas', e.target.value)}
                                 className="mt-1 px-3 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                placeholder="Contoh: XII IPA 1"
-                            />
+                            >
+                                <option value="">Pilih Kelas</option>
+                                <option value="1">1 (satu)</option>
+                                <option value="2">2 (dua)</option>
+                                <option value="3">3 (tiga)</option>
+                            </select>
                             {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
                         </div>
 
@@ -199,7 +284,7 @@ export default function CreateSiswa() {
                         <div className="md:col-span-2 flex justify-end">
                             <button
                                 type="submit"
-                                disabled={processing}
+                                disabled={processing || !!passwordError}
                                 className="inline-flex justify-center px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 transition-colors"
                             >
                                 {processing ? 'Menyimpan...' : 'Simpan Siswa'}
@@ -212,5 +297,4 @@ export default function CreateSiswa() {
     )
 }
 
-// Menggunakan layout admin yang sama dengan halaman index
 CreateSiswa.layout = (page: any) => <AdminLayout children={page} title="Tambah Siswa" />

@@ -47,6 +47,7 @@ export default class ProfilesController {
         nisn: payload.nisn,
         kelas: payload.kelas,
         tanggalLahir: payload.tanggalLahir,
+        telepon: payload.telepon,
       })
       await siswa.save()
 

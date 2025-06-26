@@ -142,7 +142,7 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
             <InfoCard
               title="Profil Saya"
               description="Buka Profile Anda untuk melihat dan mengedit informasi pribadi Anda."
-              link="/profilez"
+              link="/profile"
               linkText="Lengkapi Profil"
               icon={User}
             />

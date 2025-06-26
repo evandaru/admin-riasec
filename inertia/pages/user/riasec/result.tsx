@@ -187,9 +187,8 @@ export default function RiasecResultPage() {
                           style={{ width: `${percentage}%` }}
                         />
                         <span
-                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${
-                            percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
-                          }`}
+                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
+                            }`}
                         >
                           {score}
                         </span>
@@ -316,7 +315,7 @@ export default function RiasecResultPage() {
           </section>
 
           {/* Section: Rekomendasi Program */}
-          <section className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-lg animate-slide-up">
+          {/* <section className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-lg animate-slide-up">
             <div className="text-center mb-8">
               <Award className="mx-auto h-12 w-12 text-yellow-500" />
               <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-4">
@@ -357,12 +356,12 @@ export default function RiasecResultPage() {
                 </p>
               </div>
             )}
-          </section>
+          </section> */}
         </div>
       </div>
 
       {/* Animasi CSS */}
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from {
             opacity: 0;

@@ -3,14 +3,12 @@ import {
   Menu,
   X,
   LayoutDashboard,
-  BookOpen,
-  ClipboardList,
-  GraduationCap,
   Bell,
   CalendarDays,
   Users,
   Library,
   Settings,
+  Info,
   LogOut,
 } from 'lucide-react'
 import { Link, usePage } from '@inertiajs/react'
@@ -91,22 +89,7 @@ const Sidebar: React.FC = () => {
 
             {/* Kategori: Akademik */}
             <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">Akademik</p>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <CalendarDays className="w-5 h-5" />
-              <span className="mx-4 font-medium">Jadwal Kelas</span>
-            </a>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <BookOpen className="w-5 h-5" />
-              <span className="mx-4 font-medium">Materi Belajar</span>
-            </a>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <ClipboardList className="w-5 h-5" />
-              <span className="mx-4 font-medium">Tugas & PR</span>
-            </a>
-            <a href="#" className={`${linkBaseClass} ${disabledLinkClass}`}>
-              <GraduationCap className="w-5 h-5" />
-              <span className="mx-4 font-medium">Nilai & Raport</span>
-            </a>
+
             <Link
               href="/riasec"
               className={`${linkBaseClass} ${isActive('/riasec')
@@ -129,6 +112,20 @@ const Sidebar: React.FC = () => {
                 />
               </svg>
               <span className="mx-4 font-medium">RIASEC Test</span>
+            </Link>
+
+            <p className="text-xs font-semibold text-gray-400 uppercase mt-6 mb-2 px-4">
+              Informasi
+            </p>
+            <Link
+              href="/about"
+              className={`${linkBaseClass} ${isActive('/about')
+                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'
+                  : ''
+                }`}
+            >
+              <Info className="w-5 h-5" />
+              <span className="mx-4 font-medium">Tentang Kami</span>
             </Link>
 
             {/* Kategori: Kehidupan Sekolah */}

@@ -8,7 +8,7 @@ import { createSiswaValidator, updateSiswaValidator } from '#validators/siswa'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { Exception } from '@adonisjs/core/exceptions'
-import { re } from 'mathjs'
+// import { re } from 'mathjs'
 
 /**
  * Controller for managing RIASEC students
@@ -173,6 +173,8 @@ export default class SiswaRiasecsController {
         jenjang: payload.jenjang,
         kelas: payload.kelas,
         tanggalLahir: payload.tanggalLahir,
+        telepon: payload.telepon,
+        alamat: payload.alamat,
       })
       await siswa.useTransaction(trx).save()
 

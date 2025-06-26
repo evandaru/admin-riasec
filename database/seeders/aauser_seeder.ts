@@ -20,7 +20,7 @@ export default class extends BaseSeeder {
     })
 
     // Membuat 100 user dengan role siswa
-    const students = Array.from({ length: 10 }, () => ({
+    const students = Array.from({ length: 3 }, () => ({
       fullName: faker.person.fullName(),
       email: faker.internet.email(),
       password: '12qwaszx',

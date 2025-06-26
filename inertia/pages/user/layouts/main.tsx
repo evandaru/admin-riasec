@@ -4,7 +4,12 @@ import { PropsWithChildren } from 'react'
 import Sidebar from './sidebar' // Sidebar-nya tetap sama
 import { Head } from '@inertiajs/react'
 
-export default function UserLayout({ children }: PropsWithChildren) {
+interface UserLayoutProps extends PropsWithChildren {
+  title?: string
+}
+
+export default function UserLayout({ children, title }: UserLayoutProps) {
+  title = title || ''
   return (
     <>
       <Head title="User Dashboard" />

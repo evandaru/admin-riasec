@@ -93,12 +93,12 @@ export default function Login() {
           </div>
         </form>
         <div className="text-center text-sm">
-          <Link
+          {/* <Link
             href="/register"
             className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
           >
             Don't have an account? Register
-          </Link>
+          </Link> */}
         </div>
       </div>
 

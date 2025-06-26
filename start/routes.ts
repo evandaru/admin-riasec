@@ -23,6 +23,8 @@ const RecommendationsController = () => import('#controllers/user/recommendation
 
 const UserProfilesController = () => import('#controllers/user/profiles_controller')
 
+const AbortController = () => import('#controllers/user/about_controller')
+
 router.get('/', [HomeController, 'index']).as('home')
 
 router
@@ -40,6 +42,8 @@ router
   .group(() => {
     router.get('/dashboard', [UserDashboardController, 'index']).as('dashboard')
     router.resource('notes', NotesController).except(['show'])
+
+    router.get('/about', [AbortController, 'index']).as('about.index')
 
     router.get('/riasec', [TestsController, 'index']).as('riasec.index')
     router.get('/riasec/test', [TestsController, 'start']).as('riasec.start')

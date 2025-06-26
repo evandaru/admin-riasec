@@ -2,10 +2,9 @@ import { Link, useForm, Head, usePage } from '@inertiajs/react'
 import UserLayout from '../layouts/main'
 import { DateTime } from 'luxon'
 import { useEffect, useState } from 'react'
-import { CheckCircle, X, XCircle, Camera } from 'lucide-react' // Ditambahkan: Camera
-import Avatar from '~/components/avatar' // Ditambahkan: Impor Avatar
+import { CheckCircle, X, XCircle, Camera } from 'lucide-react'
+import Avatar from '~/components/avatar'
 
-// Tipe data untuk props halaman
 interface User {
   id: number
   fullName: string | null
@@ -15,7 +14,9 @@ interface User {
 interface Siswa {
   nisn: string | null
   kelas: string | null
-  tanggalLahir: string | null // string ISO dari backend
+  tanggalLahir: string | null
+  jenjang: string | null
+  telepon: string | null
 }
 
 interface PageProps {
@@ -25,6 +26,7 @@ interface PageProps {
     success?: string
     error?: string
   }
+  [key: string]: unknown
 }
 
 export default function UserProfile() {
@@ -35,11 +37,15 @@ export default function UserProfile() {
     email: user.email,
     nisn: siswa?.nisn || '',
     kelas: siswa?.kelas || '',
-    // Format tanggal untuk input type="date"
     tanggalLahir: siswa?.tanggalLahir ? DateTime.fromISO(siswa.tanggalLahir).toISODate() : '',
+    jenjang: siswa?.jenjang || '',
     password: '',
     password_confirmation: '',
+    telepon: siswa?.telepon || '',
   })
+
+  // State untuk validasi password
+  const [passwordError, setPasswordError] = useState<string | null>(null)
 
   // State untuk notifikasi Toast
   const [toast, setToast] = useState({
@@ -47,6 +53,23 @@ export default function UserProfile() {
     message: '',
     type: 'success' as 'success' | 'error',
   })
+
+  // Fungsi validasi password
+  const validatePassword = () => {
+    if (data.password || data.password_confirmation) {
+      if (data.password !== data.password_confirmation) {
+        setPasswordError('Konfirmasi password tidak sama dengan password.')
+        return false
+      }
+    }
+    setPasswordError(null)
+    return true
+  }
+
+  // Validasi otomatis saat password berubah
+  useEffect(() => {
+    validatePassword()
+  }, [data.password, data.password_confirmation])
 
   useEffect(() => {
     if (flash?.success) {
@@ -62,19 +85,20 @@ export default function UserProfile() {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    put('/profile', {
-      preserveScroll: true,
-      onSuccess: () => {
-        setData((currentData) => ({
-          ...currentData,
-          password: '',
-          password_confirmation: '',
-        }))
-      },
-    })
+    if (validatePassword()) {
+      put('/profile', {
+        preserveScroll: true,
+        onSuccess: () => {
+          setData((currentData) => ({
+            ...currentData,
+            password: '',
+            password_confirmation: '',
+          }))
+        },
+      })
+    }
   }
 
-  // Ditambahkan: Fungsi untuk menangani klik pada foto profil
   function handlePhotoClick() {
     alert('Fitur ganti foto masih dalam pengembangan.')
   }
@@ -97,7 +121,6 @@ export default function UserProfile() {
 
         <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-md">
           <form onSubmit={submit} className="space-y-6">
-            {/* --- BAGIAN FOTO PROFIL (DITAMBAHKAN) --- */}
             <div className="flex justify-center mb-6">
               <div
                 className="relative group cursor-pointer"
@@ -110,10 +133,8 @@ export default function UserProfile() {
                 </div>
               </div>
             </div>
-            {/* --- AKHIR BAGIAN FOTO PROFIL --- */}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Nama Lengkap */}
               <div>
                 <label
                   htmlFor="fullName"
@@ -126,7 +147,7 @@ export default function UserProfile() {
                   type="text"
                   value={data.fullName}
                   onChange={(e) => setData('fullName', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200 dark:bg-gray-700"
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
                   required
                   disabled
                 />
@@ -135,7 +156,6 @@ export default function UserProfile() {
                 )}
               </div>
 
-              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -154,7 +174,27 @@ export default function UserProfile() {
                 {errors.email && <div className="text-xs text-red-500 mt-1">{errors.email}</div>}
               </div>
 
-              {/* NISN */}
+              <div>
+                <label
+                  htmlFor="jenjang"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  jenjang <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="jenjang"
+                  value={data.jenjang}
+                  onChange={(e) => setData('jenjang', e.target.value)}
+                  disabled
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
+                >
+                  <option value="">Pilih Jenjang</option>
+                  <option value="MA">MA</option>
+                  <option value="MTS">MTS</option>
+                </select>
+                {errors.jenjang && <div className="text-xs text-red-500 mt-1">{errors.jenjang}</div>}
+              </div>
+
               <div>
                 <label
                   htmlFor="nisn"
@@ -167,13 +207,29 @@ export default function UserProfile() {
                   type="text"
                   value={data.nisn}
                   onChange={(e) => setData('nisn', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200 dark:bg-gray-700"
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
                   disabled
                 />
                 {errors.nisn && <div className="text-xs text-red-500 mt-1">{errors.nisn}</div>}
               </div>
 
-              {/* Kelas */}
+              <div>
+                <label
+                  htmlFor="telepon"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  telepon
+                </label>
+                <input
+                  id="telepon"
+                  type="text"
+                  value={data.telepon}
+                  onChange={(e) => setData('telepon', e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                />
+                {errors.telepon && <div className="text-xs text-red-500 mt-1">{errors.telepon}</div>}
+              </div>
+
               <div>
                 <label
                   htmlFor="kelas"
@@ -186,13 +242,12 @@ export default function UserProfile() {
                   type="text"
                   value={data.kelas}
                   onChange={(e) => setData('kelas', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200 dark:bg-gray-700"
+                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 cursor-not-allowed bg-gray-200"
                   disabled
                 />
                 {errors.kelas && <div className="text-xs text-red-500 mt-1">{errors.kelas}</div>}
               </div>
 
-              {/* Tanggal Lahir */}
               <div className="md:col-span-2">
                 <label
                   htmlFor="tanggalLahir"
@@ -203,7 +258,7 @@ export default function UserProfile() {
                 <input
                   id="tanggalLahir"
                   type="date"
-                  value={data.tanggalLahir}
+                  value={data.tanggalLahir ?? ''}
                   onChange={(e) => setData('tanggalLahir', e.target.value)}
                   className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
@@ -215,7 +270,6 @@ export default function UserProfile() {
 
             <hr className="border-gray-200 dark:border-gray-700" />
 
-            {/* Bagian Password */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label
@@ -230,7 +284,7 @@ export default function UserProfile() {
                   value={data.password}
                   autoComplete="new-password"
                   onChange={(e) => setData('password', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className={`mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${passwordError ? 'border-red-500' : ''}`}
                   placeholder="Kosongkan jika tidak diubah"
                 />
                 {errors.password && (
@@ -249,16 +303,19 @@ export default function UserProfile() {
                   type="password"
                   value={data.password_confirmation}
                   onChange={(e) => setData('password_confirmation', e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className={`mt-1 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${passwordError ? 'border-red-500' : ''}`}
+                  placeholder="Ulangi password baru"
                 />
+                {passwordError && (
+                  <div className="text-xs text-red-500 mt-1">{passwordError}</div>
+                )}
               </div>
             </div>
 
-            {/* Tombol Simpan */}
             <div className="flex justify-end pt-2">
               <button
                 type="submit"
-                disabled={processing || !isDirty}
+                disabled={processing || !isDirty || !!passwordError}
                 className="inline-flex justify-center px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"
               >
                 {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
@@ -268,26 +325,22 @@ export default function UserProfile() {
         </div>
       </div>
 
-      {/* Notifikasi Toast */}
       <div
-        className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${
-          toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
-        }`}
+        className={`fixed bottom-5 right-5 transition-transform duration-300 z-50 ${toast.show ? 'translate-x-0' : 'translate-x-[calc(100%+2rem)]'
+          }`}
       >
         <div
-          className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${
-            toast.type === 'success'
-              ? 'ring-green-200 dark:ring-green-700'
-              : 'ring-red-200 dark:ring-red-700'
-          }`}
+          className={`flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-lg dark:text-gray-400 dark:bg-gray-800 ring-1 ${toast.type === 'success'
+            ? 'ring-green-200 dark:ring-green-700'
+            : 'ring-red-200 dark:ring-red-700'
+            }`}
           role="alert"
         >
           <div
-            className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${
-              toast.type === 'success'
-                ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
-                : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
-            }`}
+            className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${toast.type === 'success'
+              ? 'bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'
+              : 'bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'
+              }`}
           >
             {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
           </div>
