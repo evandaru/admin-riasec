@@ -1,186 +1,185 @@
 === FOLDER STRUCTURE ===
-.
+app
+├── abilities
+│   └── main.ts
+├── controllers
+│   ├── admin
+│   │   ├── riasec
+│   │   │   ├── pertanyaan_riasecs_controller.ts
+│   │   │   └── siswa_riasecs_controller.ts
+│   │   ├── dashboard_controller.ts
+│   │   ├── hasil_tes_controller.ts
+│   │   ├── profiles_controller.ts
+│   │   └── users_controller.ts
+│   ├── auth
+│   │   └── registers_controller.ts
+│   ├── user
+│   │   ├── about_controller.ts
+│   │   ├── dashboard_controller.ts
+│   │   ├── hasil_tes_controller.ts
+│   │   ├── notes_controller.ts
+│   │   ├── profiles_controller.ts
+│   │   ├── recommendations_controller.ts
+│   │   └── tests_controller.ts
+│   ├── homepages_controller.ts
+│   └── session_controller.ts
+├── exceptions
+│   └── handler.ts
+├── middleware
+│   ├── admin_middleware.ts
+│   ├── auth_middleware.ts
+│   ├── container_bindings_middleware.ts
+│   ├── guest_middleware.ts
+│   ├── initialize_bouncer_middleware.ts
+│   ├── is_user_middleware.ts
+│   └── silent_auth_middleware.ts
+├── models
+│   ├── admin.ts
+│   ├── hasil.ts
+│   ├── jawaban.ts
+│   ├── minat_bakat.ts
+│   ├── note.ts
+│   ├── program.ts
+│   ├── program_rating.ts
+│   ├── rekomendasi.ts
+│   ├── riasec_pertanyaan.ts
+│   ├── siswa.ts
+│   └── user.ts
+├── policies
+│   ├── main.ts
+│   ├── note_policy.ts
+│   └── user_policy.ts
+├── services
+│   ├── recommendation_service.ts
+│   └── riasec_service.ts
+└── validators
+    ├── note.ts
+    ├── pertanyaan_riasec.ts
+    ├── siswa.ts
+    └── user.ts
+bin
+├── console.ts
+├── server.ts
+└── test.ts
+config
+├── app.ts
+├── auth.ts
+├── bodyparser.ts
+├── cors.ts
+├── database.ts
+├── hash.ts
+├── inertia.ts
+├── logger.ts
+├── session.ts
+├── shield.ts
+├── static.ts
+└── vite.ts
+database
+├── migrations
+│   ├── 1749892627155_create_users_table.ts
+│   ├── 1749947099577_create_notes_table.ts
+│   ├── 1750237566915_create_admins_table.ts
+│   ├── 1750237567410_create_siswa_table.ts
+│   ├── 1750237567902_create_riasec_pertanyaans_table.ts
+│   ├── 1750237568441_create_hasil_tes_table.ts
+│   ├── 1750237568941_create_jawaban_tes_table.ts
+│   ├── 1750388069955_create_programs_table.ts
+│   ├── 1750389796560_create_user_program_ratings_table.ts
+│   ├── 1750411457716_create_rekomendasis_table.ts
+│   └── 1750425662712_create_minat_bakats_table.ts
+└── seeders
+    ├── aauser_seeder.ts
+    ├── admin_seeder.ts
+    ├── minat_bakat_seeder.ts
+    ├── note_seeder.ts
+    ├── program_seeder.ts
+    ├── rekomendasi_seeder.ts
+    ├── riasec_pertanyaan_seeder.ts
+    ├── siswa_seeder.ts
+    └── 'z rating_seeder.ts'
+inertia
 ├── app
-│   ├── abilities
-│   │   └── main.ts
-│   ├── controllers
-│   │   ├── admin
-│   │   │   ├── riasec
-│   │   │   │   ├── pertanyaan_riasecs_controller.ts
-│   │   │   │   └── siswa_riasecs_controller.ts
-│   │   │   ├── dashboard_controller.ts
-│   │   │   ├── hasil_tes_controller.ts
-│   │   │   ├── profiles_controller.ts
-│   │   │   └── users_controller.ts
-│   │   ├── auth
-│   │   │   └── registers_controller.ts
-│   │   ├── user
-│   │   │   ├── about_controller.ts
-│   │   │   ├── dashboard_controller.ts
-│   │   │   ├── hasil_tes_controller.ts
-│   │   │   ├── notes_controller.ts
-│   │   │   ├── profiles_controller.ts
-│   │   │   ├── recommendations_controller.ts
-│   │   │   └── tests_controller.ts
-│   │   ├── homepages_controller.ts
-│   │   └── session_controller.ts
-│   ├── exceptions
-│   │   └── handler.ts
-│   ├── middleware
-│   │   ├── admin_middleware.ts
-│   │   ├── auth_middleware.ts
-│   │   ├── container_bindings_middleware.ts
-│   │   ├── guest_middleware.ts
-│   │   ├── initialize_bouncer_middleware.ts
-│   │   ├── is_user_middleware.ts
-│   │   └── silent_auth_middleware.ts
-│   ├── models
-│   │   ├── admin.ts
-│   │   ├── hasil.ts
-│   │   ├── jawaban.ts
-│   │   ├── minat_bakat.ts
-│   │   ├── note.ts
-│   │   ├── program.ts
-│   │   ├── program_rating.ts
-│   │   ├── rekomendasi.ts
-│   │   ├── riasec_pertanyaan.ts
-│   │   ├── siswa.ts
-│   │   └── user.ts
-│   ├── policies
-│   │   ├── main.ts
-│   │   ├── note_policy.ts
-│   │   └── user_policy.ts
-│   ├── services
-│   │   ├── recommendation_service.ts
-│   │   └── riasec_service.ts
-│   └── validators
-│       ├── note.ts
-│       ├── pertanyaan_riasec.ts
-│       ├── siswa.ts
-│       └── user.ts
-├── bin
-│   ├── console.ts
-│   ├── server.ts
-│   └── test.ts
-├── config
-│   ├── app.ts
-│   ├── auth.ts
-│   ├── bodyparser.ts
-│   ├── cors.ts
-│   ├── database.ts
-│   ├── hash.ts
-│   ├── inertia.ts
-│   ├── logger.ts
-│   ├── session.ts
-│   ├── shield.ts
-│   ├── static.ts
-│   └── vite.ts
-├── database
-│   ├── migrations
-│   │   ├── 1749892627155_create_users_table.ts
-│   │   ├── 1749947099577_create_notes_table.ts
-│   │   ├── 1750237566915_create_admins_table.ts
-│   │   ├── 1750237567410_create_siswa_table.ts
-│   │   ├── 1750237567902_create_riasec_pertanyaans_table.ts
-│   │   ├── 1750237568441_create_hasil_tes_table.ts
-│   │   ├── 1750237568941_create_jawaban_tes_table.ts
-│   │   ├── 1750388069955_create_programs_table.ts
-│   │   ├── 1750389796560_create_user_program_ratings_table.ts
-│   │   ├── 1750411457716_create_rekomendasis_table.ts
-│   │   └── 1750425662712_create_minat_bakats_table.ts
-│   └── seeders
-│       ├── aauser_seeder.ts
-│       ├── admin_seeder.ts
-│       ├── minat_bakat_seeder.ts
-│       ├── note_seeder.ts
-│       ├── program_seeder.ts
-│       ├── rekomendasi_seeder.ts
-│       ├── riasec_pertanyaan_seeder.ts
-│       ├── siswa_seeder.ts
-│       └── 'z rating_seeder.ts'
-├── inertia
-│   ├── app
-│   │   ├── app.tsx
-│   │   └── ssr.tsx
-│   ├── components
-│   │   ├── avatar.tsx
-│   │   └── button.tsx
-│   ├── css
-│   │   └── app.css
-│   ├── pages
-│   │   ├── admin
-│   │   │   ├── dashboard
-│   │   │   │   └── index.tsx
-│   │   │   ├── layouts
-│   │   │   │   ├── main.tsx
-│   │   │   │   └── sidebar.tsx
-│   │   │   ├── pertanyaan
-│   │   │   │   ├── create.tsx
-│   │   │   │   ├── edit.tsx
-│   │   │   │   └── index.tsx
-│   │   │   ├── profile
-│   │   │   │   └── index.tsx
-│   │   │   ├── siswaRiasec
-│   │   │   │   ├── create.tsx
-│   │   │   │   ├── edit.tsx
-│   │   │   │   ├── index.tsx
-│   │   │   │   └── view.tsx
-│   │   │   └── users
-│   │   │       ├── create.tsx
-│   │   │       ├── edit.tsx
-│   │   │       └── index.tsx
-│   │   ├── auth
-│   │   │   ├── login.tsx
-│   │   │   └── register.tsx
-│   │   ├── errors
-│   │   │   ├── not_found.tsx
-│   │   │   └── server_error.tsx
-│   │   ├── user
-│   │   │   ├── about
-│   │   │   │   └── index.tsx
-│   │   │   ├── dashboard
-│   │   │   │   └── index.tsx
-│   │   │   ├── layouts
-│   │   │   │   ├── main.tsx
-│   │   │   │   └── sidebar.tsx
-│   │   │   ├── notes
-│   │   │   │   ├── edit.tsx
-│   │   │   │   └── index.tsx
-│   │   │   ├── profile
-│   │   │   │   └── index.tsx
-│   │   │   └── riasec
-│   │   │       ├── index.tsx
-│   │   │       ├── result.tsx
-│   │   │       └── test.tsx
-│   │   └── home.tsx
-│   └── tsconfig.json
-├── public
-│   ├── ikn.png
-│   └── logo.png
-├── resources
-│   └── views
-│       └── inertia_layout.edge
-├── start
-│   ├── env.ts
-│   ├── kernel.ts
-│   └── routes.ts
-├── tests
-│   └── bootstrap.ts
-├── uml
-├── ace.js
-├── adonisrc.ts
-├── akwokwao.md
-├── anu.html
-├── anu2.html
-├── eslint.config.js
-├── lore.html
-├── package-lock.json
-├── package.json
-├── semua_kode.txt
-├── tailwind.config.js
-├── tsconfig.json
-├── usecase.md
-└── vite.config.ts
+│   ├── app.tsx
+│   └── ssr.tsx
+├── assets
+├── components
+│   ├── avatar.tsx
+│   └── button.tsx
+├── css
+│   └── app.css
+├── pages
+│   ├── admin
+│   │   ├── dashboard
+│   │   │   └── index.tsx
+│   │   ├── layouts
+│   │   │   ├── main.tsx
+│   │   │   └── sidebar.tsx
+│   │   ├── pertanyaan
+│   │   │   ├── create.tsx
+│   │   │   ├── edit.tsx
+│   │   │   └── index.tsx
+│   │   ├── profile
+│   │   │   └── index.tsx
+│   │   ├── siswaRiasec
+│   │   │   ├── create.tsx
+│   │   │   ├── edit.tsx
+│   │   │   ├── index.tsx
+│   │   │   └── view.tsx
+│   │   └── users
+│   │       ├── create.tsx
+│   │       ├── edit.tsx
+│   │       └── index.tsx
+│   ├── auth
+│   │   ├── login.tsx
+│   │   └── register.tsx
+│   ├── errors
+│   │   ├── not_found.tsx
+│   │   └── server_error.tsx
+│   ├── user
+│   │   ├── about
+│   │   │   └── index.tsx
+│   │   ├── dashboard
+│   │   │   └── index.tsx
+│   │   ├── layouts
+│   │   │   ├── main.tsx
+│   │   │   └── sidebar.tsx
+│   │   ├── notes
+│   │   │   ├── edit.tsx
+│   │   │   └── index.tsx
+│   │   ├── profile
+│   │   │   └── index.tsx
+│   │   └── riasec
+│   │       ├── index.tsx
+│   │       ├── result.tsx
+│   │       └── test.tsx
+│   └── home.tsx
+└── tsconfig.json
+public
+├── ikn.png
+└── logo.png
+resources
+└── views
+    └── inertia_layout.edge
+start
+├── env.ts
+├── kernel.ts
+└── routes.ts
+tests
+└── bootstrap.ts
+ace.js
+adonisrc.ts
+akwokwao.md
+anu.html
+anu2.html
+eslint.config.js
+lore.html
+package-lock.json
+package.json
+semua_kode.txt
+tailwind.config.js
+tsconfig.json
+usecase.md
+vite.config.ts
 
 
 === SOURCE FILES ===
@@ -536,26 +535,51 @@ export default class SiswaRiasecsController {
   /**
    * Display a list of all students for TanStack Table.
    */
-  async index({ inertia, session, request }: HttpContext) {
+  async index({ inertia, session, request, auth }: HttpContext) {
+    // Tambahkan 'auth'
     try {
-      // Fetch all students instead of paginating
+      // Ambil semua siswa dengan relasi yang dibutuhkan
       const allSiswa = await Siswa.query()
         .preload('user')
-        .preload('hasilTes', (query) => query.orderBy('tanggal_tes', 'desc').limit(1))
+        .preload('hasilTes', (query) => {
+          // Pastikan kita hanya mengambil hasil tes terbaru untuk setiap siswa
+          query.orderBy('tanggal_tes', 'desc')
+        })
         .orderBy('nama_lengkap', 'asc')
 
-      // Serialize the data to be sent to the view
+      // --- PERBAIKAN UTAMA DI SINI ---
+      // Serialisasi data secara eksplisit untuk memastikan relasi 'hasilTes' disertakan.
+      const serializedSiswa = allSiswa.map((s) => {
+        // Kita hanya ambil satu hasil tes terbaru dari array yang sudah di-preload
+        const siswaData = s.serialize({
+          relations: {
+            user: {
+              fields: ['email'], // Hanya kirim email dari user
+            },
+          },
+        })
+
+        // Secara manual tambahkan hasil tes terbaru ke objek
+        siswaData.hasilTes = s.hasilTes.length > 0 ? [s.hasilTes[0].serialize()] : []
+
+        return siswaData
+      })
+      // --- AKHIR PERBAIKAN ---
+
+      // Kirim data yang sudah diserialisasi dengan benar ke view
       return inertia.render('admin/siswaRiasec/index', {
-        siswa: allSiswa.map((s) => s.serialize()),
-        url: request.url(), // Tambahin URL
-        user: request.ctx?.auth?.user?.serialize() || null, // Tambahin user
+        siswa: serializedSiswa, // Gunakan data yang sudah diperbaiki
+        url: request.url(),
+        // Ambil user dari auth context jika tersedia
+        user: auth.user ? auth.user.serialize() : null,
       })
     } catch (error) {
-      session.flash('error', 'Gagal memuat daftar siswa')
+      console.error('Error loading student list:', error) // Tambahkan logging error
+      session.flash('error', 'Gagal memuat daftar siswa. Terjadi kesalahan internal.')
       return inertia.render('admin/siswaRiasec/index', {
         siswa: [],
-        url: request.url(), // Tambahin URL di error case juga
-        user: request.ctx?.auth?.user?.serialize() || null, // Tambahin user
+        url: request.url(),
+        user: auth.user ? auth.user.serialize() : null,
       })
     }
   }
@@ -610,7 +634,7 @@ export default class SiswaRiasecsController {
   /**
    * Display a single student's details with test results
    */
-  async show({ inertia, params, session, request }: HttpContext) {
+  async show({ inertia, params, session, request, response }: HttpContext) {
     try {
       const siswa = await Siswa.query()
         .where('id', params.id)
@@ -639,14 +663,14 @@ export default class SiswaRiasecsController {
       })
     } catch (error) {
       session.flash('error', 'Siswa tidak ditemukan')
-      return inertia.redirect().toRoute('admin.siswaRiasec.index')
+      return response.redirect().toRoute('admin.siswaRiasec.index')
     }
   }
 
   /**
    * Show the student edit form
    */
-  async edit({ params, inertia, session, request }: HttpContext) {
+  async edit({ params, inertia, session, request, response }: HttpContext) {
     try {
       const siswa = await Siswa.query().where('id', params.id).preload('user').firstOrFail()
 
@@ -656,7 +680,7 @@ export default class SiswaRiasecsController {
       })
     } catch (error) {
       session.flash('error', 'Siswa tidak ditemukan')
-      return inertia.redirect().toRoute('admin.siswaRiasec.index')
+      return response.redirect().toRoute('admin.siswaRiasec.index')
     }
   }
 
@@ -1624,43 +1648,6 @@ export default class Note extends BaseModel {
   declare user: BelongsTo<typeof User>
 }
 
-// title: app/models/program_rating.ts
-import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import Siswa from '#models/siswa'
-import Program from '#models/program'
-
-export default class ProgramRating extends BaseModel {
-  static table = 'user_program_ratings'
-  @column({ isPrimary: true })
-  declare id: number
-
-  @column()
-  declare siswaId: number
-
-  // Foreign key buat tabel 'program'
-  @column()
-  declare programId: number
-
-  // Kolom 'rating' dengan default 0
-  @column()
-  declare rating: number
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
-  @belongsTo(() => Siswa)
-  declare siswa: BelongsTo<typeof Siswa>
-
-  // Rating ini punya satu program
-  @belongsTo(() => Program)
-  declare program: BelongsTo<typeof Program>
-}
-
 // title: app/models/program.ts
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
@@ -1698,6 +1685,43 @@ export default class Program extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+}
+
+// title: app/models/program_rating.ts
+import { DateTime } from 'luxon'
+import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import Siswa from '#models/siswa'
+import Program from '#models/program'
+
+export default class ProgramRating extends BaseModel {
+  static table = 'user_program_ratings'
+  @column({ isPrimary: true })
+  declare id: number
+
+  @column()
+  declare siswaId: number
+
+  // Foreign key buat tabel 'program'
+  @column()
+  declare programId: number
+
+  // Kolom 'rating' dengan default 0
+  @column()
+  declare rating: number
+
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+
+  @belongsTo(() => Siswa)
+  declare siswa: BelongsTo<typeof Siswa>
+
+  // Rating ini punya satu program
+  @belongsTo(() => Program)
+  declare program: BelongsTo<typeof Program>
 }
 
 // title: app/models/rekomendasi.ts
@@ -1937,7 +1961,7 @@ function calculateCosineSimilarity(vecA: number[], vecB: number[]): number {
   ) as number
 
   if (normA === 0 || normB === 0) {
-    // console.log('[Similarity] Salah satu vektor adalah nol, similaritas = 0.')
+    // // console.log('[Similarity] Salah satu vektor adalah nol, similaritas = 0.')
     return 0
   }
 
@@ -1945,13 +1969,13 @@ function calculateCosineSimilarity(vecA: number[], vecB: number[]): number {
   const similarity = dotProduct / (normA * normB)
 
   // Log untuk pembelajaran:
-  console.log(`[Similarity] Menghitung kemiripan:
-    -> Vektor A: [${vecA.join(', ')}]
-    -> Vektor B: [${vecB.join(', ')}]
-    -> Dot Product: ${dotProduct}
-    -> Norm A: ${normA.toFixed(4)}
-    -> Norm B: ${normB.toFixed(4)}
-    -> Similarity Score: ${dotProduct} / (${normA.toFixed(4)} * ${normB.toFixed(4)}) = ${similarity.toFixed(4)}`)
+  // console.log(`[Similarity] Menghitung kemiripan:
+  //   -> Vektor A: [${vecA.join(', ')}]
+  //   -> Vektor B: [${vecB.join(', ')}]
+  //   -> Dot Product: ${dotProduct}
+  //   -> Norm A: ${normA.toFixed(4)}
+  //   -> Norm B: ${normB.toFixed(4)}
+  //   -> Similarity Score: ${dotProduct} / (${normA.toFixed(4)} * ${normB.toFixed(4)}) = ${similarity.toFixed(4)}`)
 
   return similarity
 }
@@ -1962,7 +1986,7 @@ function calculateCosineSimilarity(vecA: number[], vecB: number[]): number {
  * dengan profil RIASEC setiap program studi (Content-Based).
  */
 async function getRecommendationsByContent(siswaId: number, topN: number = 6): Promise<Program[]> {
-  console.log(`
+  // console.log(`
 --- Memulai Rekomendasi [Content-Based] untuk Siswa ID: ${siswaId} ---`)
 
   // 1. Dapatkan profil RIASEC siswa (vektor target)
@@ -1971,7 +1995,7 @@ async function getRecommendationsByContent(siswaId: number, topN: number = 6): P
     .orderBy('created_at', 'desc')
     .first()
   if (!hasilTes) {
-    console.log('[Content-Based] GAGAL: Siswa belum mengerjakan tes RIASEC.')
+    // console.log('[Content-Based] GAGAL: Siswa belum mengerjakan tes RIASEC.')
     return []
   }
   const siswaVector = [
@@ -1982,25 +2006,25 @@ async function getRecommendationsByContent(siswaId: number, topN: number = 6): P
     hasilTes.skorE,
     hasilTes.skorC,
   ]
-  console.log(
-    `[Content-Based] LANGKAH 1: Vektor RIASEC siswa target ditemukan: [${siswaVector.join(', ')}]`
-  )
+  // console.log(
+  //   `[Content-Based] LANGKAH 1: Vektor RIASEC siswa target ditemukan: [${siswaVector.join(', ')}]`
+  // )
 
   // 2. Dapatkan profil RIASEC dari semua program
   const allPrograms = await Program.all()
   if (allPrograms.length === 0) {
-    console.log('[Content-Based] GAGAL: Tidak ada data program di database.')
+    // console.log('[Content-Based] GAGAL: Tidak ada data program di database.')
     return []
   }
-  console.log(
-    `[Content-Based] LANGKAH 2: Ditemukan ${allPrograms.length} program studi untuk dibandingkan.`
-  )
+  // console.log(
+  //   `[Content-Based] LANGKAH 2: Ditemukan ${allPrograms.length} program studi untuk dibandingkan.`
+  // )
 
   // 3. Hitung similaritas antara siswa dan SETIAP program
-  console.log(
-    `
+  // console.log(
+  //   `
 [Content-Based] LANGKAH 3: Menghitung Cosine Similarity antara siswa dan setiap program...`
-  )
+  // )
   const programSimilarities = allPrograms.map((program) => {
     const programVector = [
       program.realistic,
@@ -2010,39 +2034,39 @@ async function getRecommendationsByContent(siswaId: number, topN: number = 6): P
       program.enterprising,
       program.conventional,
     ]
-    console.log(`
+    // console.log(`
   Membandingkan dengan Program ID: ${program.id} (${program.name})`)
     const similarity = calculateCosineSimilarity(siswaVector, programVector)
     return { program, similarity }
   })
 
   // 4. Urutkan program berdasarkan skor similaritas tertinggi
-  console.log(
-    `
+  // console.log(
+  //   `
 [Content-Based] LANGKAH 4: Mengurutkan program berdasarkan skor similaritas (tertinggi ke terendah).`
-  )
+  // )
   programSimilarities.sort((a, b) => b.similarity - a.similarity)
 
   // Log untuk melihat hasil pengurutan
-  console.log('  -> Hasil setelah diurutkan:')
-  programSimilarities.forEach((p) =>
-    console.log(`    - Prog ID ${p.program.id}: Skor ${p.similarity.toFixed(4)}`)
-  )
+  // console.log('  -> Hasil setelah diurutkan:')
+  // programSimilarities.forEach((p) =>
+  //   console.log(`    - Prog ID ${p.program.id}: Skor ${p.similarity.toFixed(4)}`)
+  // )
 
   // 5. Ambil top N program dan kembalikan hasilnya
-  const topRecommendations = programSimilarities.slice(0, topN)
-  console.log(`
+  // console.log(`
 [Content-Based] LANGKAH 5: Mengambil ${topN} rekomendasi teratas.`)
 
-  console.log(
-    `[Content-Based] HASIL AKHIR (ID & Skor):`,
-    topRecommendations.map((r) => ({
-      programId: r.program.id,
-      similarityScore: r.similarity.toFixed(4),
-    }))
-  )
-  console.log(`--- Rekomendasi [Content-Based] Selesai ---`)
+  // console.log(
+  //   `[Content-Based] HASIL AKHIR (ID & Skor):`,
+  //   topRecommendations.map((r) => ({
+  //     programId: r.program.id,
+  //     similarityScore: r.similarity.toFixed(4),
+  //   }))
+  // )
+  // console.log(`--- Rekomendasi [Content-Based] Selesai ---`)
 
+  const topRecommendations = programSimilarities.slice(0, topN)
   return topRecommendations.map((rec) => {
     rec.program.$extras.recommendationScore = rec.similarity
     return rec.program
@@ -2059,19 +2083,19 @@ async function getRecommendationsByCollaborativeFiltering(
   topSimilarUsers: number = 6,
   topNPrograms: number = 6
 ): Promise<Program[]> {
-  console.log(
-    `
+  // console.log(
+  //   `
 --- Memulai Rekomendasi [Collaborative-Filtering] untuk Siswa ID: ${targetSiswaId} ---`
-  )
+  // )
 
   // 1. Dapatkan data tes untuk target dan siswa lainnya
   const targetHasilTes = await HasilTes.query().where('siswa_id', targetSiswaId).first()
   const allOtherHasilTes = await HasilTes.query().whereNot('siswa_id', targetSiswaId)
 
   if (!targetHasilTes || allOtherHasilTes.length === 0) {
-    console.log(
-      '[CF] GAGAL: Data tes tidak cukup (membutuhkan data target dan minimal 1 siswa lain).'
-    )
+    // console.log(
+    //   '[CF] GAGAL: Data tes tidak cukup (membutuhkan data target dan minimal 1 siswa lain).'
+    // )
     return []
   }
   const targetVector = [
@@ -2082,12 +2106,12 @@ async function getRecommendationsByCollaborativeFiltering(
     targetHasilTes.skorE,
     targetHasilTes.skorC,
   ]
-  console.log(
-    `[CF] LANGKAH 1: Vektor siswa target [${targetVector.join(', ')}] dan ${allOtherHasilTes.length} siswa lain ditemukan.`
-  )
+  // console.log(
+  //   `[CF] LANGKAH 1: Vektor siswa target [${targetVector.join(', ')}] dan ${allOtherHasilTes.length} siswa lain ditemukan.`
+  // )
 
   // 2. Hitung similaritas dengan semua siswa lain
-  console.log(`
+  // console.log(`
 [CF] LANGKAH 2: Menghitung kemiripan siswa target dengan semua siswa lain...`)
   const similarities = allOtherHasilTes
     .map((otherHasil) => {
@@ -2099,14 +2123,14 @@ async function getRecommendationsByCollaborativeFiltering(
         otherHasil.skorE,
         otherHasil.skorC,
       ]
-      console.log(`
+      // console.log(`
   Membandingkan dengan Siswa ID: ${otherHasil.siswaId}`)
       return {
         siswaId: otherHasil.siswaId,
         similarity: calculateCosineSimilarity(targetVector, otherVector),
       }
     })
-    .filter((s) => s.similarity > 0.5) // Filter: hanya pertimbangkan user yang cukup mirip (misal > 0.5)
+    .filter((s) => s.similarity > 0.5)
 
   // 3. Urutkan dan ambil top N "tetangga" (neighbors)
   similarities.sort((a, b) => b.similarity - a.similarity)
@@ -2114,37 +2138,37 @@ async function getRecommendationsByCollaborativeFiltering(
   const similarUserIds = topSimilarities.map((s) => s.siswaId)
 
   if (similarUserIds.length === 0) {
-    console.log('[CF] GAGAL: Tidak ditemukan siswa lain yang cukup mirip.')
+    // console.log('[CF] GAGAL: Tidak ditemukan siswa lain yang cukup mirip.')
     return []
   }
-  console.log(
-    `
+  // console.log(
+  //   `
 [CF] LANGKAH 3: Ditemukan ${similarUserIds.length} "tetangga" terdekat (paling mirip):`
-  )
-  topSimilarities.forEach((s) =>
-    console.log(`  - Siswa ID: ${s.siswaId}, Skor Kemiripan: ${s.similarity.toFixed(4)}`)
-  )
+  // )
+  // topSimilarities.forEach((s) =>
+  //   console.log(`  - Siswa ID: ${s.siswaId}, Skor Kemiripan: ${s.similarity.toFixed(4)}`)
+  // )
 
   // 4. Kumpulkan rating dari para tetangga (hanya yang bagus)
   const similarUsersRatings = await ProgramRating.query()
     .whereIn('siswa_id', similarUserIds)
     .where('rating', '>=', 4)
   if (similarUsersRatings.length === 0) {
-    console.log('[CF] GAGAL: Para tetangga tidak memiliki rating yang cukup tinggi (>= 4).')
+    // console.log('[CF] GAGAL: Para tetangga tidak memiliki rating yang cukup tinggi (>= 4).')
     return []
   }
-  console.log(
-    `
+  // console.log(
+  //   `
 [CF] LANGKAH 4: Ditemukan ${similarUsersRatings.length} rating tinggi dari para tetangga.`
-  )
-  // console.log('  -> Data rating:', similarUsersRatings.map(r => ({user: r.siswaId, program: r.programId, rating: r.rating})));
+  // )
+  // // console.log('  -> Data rating:', similarUsersRatings.map(r => ({user: r.siswaId, program: r.programId, rating: r.rating})));
 
   // 5. Hitung skor prediksi untuk setiap program berdasarkan rating tetangga
-  console.log(`
+  // console.log(`
 [CF] LANGKAH 5: Menghitung skor prediksi untuk setiap program...`)
-  console.log(
-    `  -> RUMUS: Prediksi(Program) = Σ (Kemiripan_Tetangga * Rating_Tetangga) / Σ (Kemiripan_Tetangga)`
-  )
+  // console.log(
+  //   `  -> RUMUS: Prediksi(Program) = Σ (Kemiripan_Tetangga * Rating_Tetangga) / Σ (Kemiripan_Tetangga)`
+  // )
   const programScores = new Map<number, { totalScore: number; similaritySum: number }>()
   similarUsersRatings.forEach((rating) => {
     const similarityInfo = topSimilarities.find((s) => s.siswaId === rating.siswaId)
@@ -2158,21 +2182,21 @@ async function getRecommendationsByCollaborativeFiltering(
       totalScore: current.totalScore + weightedScore,
       similaritySum: current.similaritySum + similarity,
     })
-    console.log(
-      `    - Prog ID ${rating.programId}: Tetangga ID ${rating.siswaId} (kemiripan ${similarity.toFixed(2)}) memberi rating ${rating.rating}. Skor berbobot: ${weightedScore.toFixed(2)}.`
-    )
+    // console.log(
+    //   `    - Prog ID ${rating.programId}: Tetangga ID ${rating.siswaId} (kemiripan ${similarity.toFixed(2)}) memberi rating ${rating.rating}. Skor berbobot: ${weightedScore.toFixed(2)}.`
+    // )
   })
 
   // 6. Buat daftar rekomendasi akhir
-  console.log(`
+  // console.log(`
 [CF] LANGKAH 6: Menghitung skor prediksi final dan mengurutkan...`)
   const recommendations = Array.from(programScores.entries())
     .map(([programId, scores]) => {
       const predictedRating =
         scores.similaritySum > 0 ? scores.totalScore / scores.similaritySum : 0
-      console.log(
-        `  -> Prediksi Prog ID ${programId}: ${scores.totalScore.toFixed(2)} / ${scores.similaritySum.toFixed(2)} = ${predictedRating.toFixed(4)}`
-      )
+      // console.log(
+      //   `  -> Prediksi Prog ID ${programId}: ${scores.totalScore.toFixed(2)} / ${scores.similaritySum.toFixed(2)} = ${predictedRating.toFixed(4)}`
+      // )
       return { programId, predictedRating }
     })
     .sort((a, b) => b.predictedRating - a.predictedRating)
@@ -2180,7 +2204,7 @@ async function getRecommendationsByCollaborativeFiltering(
 
   const recommendationIds = recommendations.map((r) => r.programId)
   if (recommendationIds.length === 0) {
-    console.log('[CF] GAGAL: Tidak ada rekomendasi yang bisa dihasilkan setelah perhitungan.')
+    // console.log('[CF] GAGAL: Tidak ada rekomendasi yang bisa dihasilkan setelah perhitungan.')
     return []
   }
 
@@ -2200,45 +2224,45 @@ async function getRecommendationsByCollaborativeFiltering(
     })
     .filter((p): p is Program => p !== undefined)
 
-  console.log(`
+  // console.log(`
 [CF] HASIL AKHIR (${finalResult.length} rekomendasi):`)
-  finalResult.forEach((p) =>
-    console.log(
-      `  - Prog ID ${p.id} (${p.name}), Skor Prediksi: ${p.$extras.recommendationScore.toFixed(4)}`
-    )
-  )
-  console.log(`--- Rekomendasi [Collaborative-Filtering] Selesai ---`)
+  // finalResult.forEach((p) =>
+  //   console.log(
+  //     `  - Prog ID ${p.id} (${p.name}), Skor Prediksi: ${p.$extras.recommendationScore.toFixed(4)}`
+  //   )
+  // )
+  // console.log(`--- Rekomendasi [Collaborative-Filtering] Selesai ---`)
 
   return finalResult
 }
 
 // --- MAIN EXPORT: HYBRID SYSTEM ---
 export async function getHybridRecommendations(siswaId: number): Promise<Program[]> {
-  console.log(`
+  // console.log(`
 
 ======================================================`)
-  console.log(`[HYBRID] Memulai Proses Rekomendasi Hybrid untuk Siswa ID: ${siswaId}`)
-  console.log(`======================================================`)
+  // console.log(`[HYBRID] Memulai Proses Rekomendasi Hybrid untuk Siswa ID: ${siswaId}`)
+  // console.log(`======================================================`)
 
-  console.log('
+  // console.log('
 [HYBRID] STRATEGI: Mencoba Collaborative Filtering terlebih dahulu.')
   let recommendations = await getRecommendationsByCollaborativeFiltering(siswaId)
 
   if (recommendations.length === 0) {
-    console.log(`
+    // console.log(`
 [HYBRID] STRATEGI: Collaborative Filtering tidak menghasilkan rekomendasi.`)
-    console.log(`[HYBRID] TINDAKAN: Beralih (fallback) ke metode Content-Based Filtering.`)
+    // console.log(`[HYBRID] TINDAKAN: Beralih (fallback) ke metode Content-Based Filtering.`)
     recommendations = await getRecommendationsByContent(siswaId)
   } else {
-    console.log('
+    // console.log('
 [HYBRID] STRATEGI: Collaborative Filtering berhasil menghasilkan rekomendasi.')
-    console.log('[HYBRID] TINDAKAN: Menggunakan hasil dari Collaborative Filtering.')
+    // console.log('[HYBRID] TINDAKAN: Menggunakan hasil dari Collaborative Filtering.')
   }
 
-  console.log(`
+  // console.log(`
 ======================================================`)
-  console.log(`[HYBRID] PROSES SELESAI. Total ${recommendations.length} rekomendasi ditemukan.`)
-  console.log(`======================================================`)
+  // console.log(`[HYBRID] PROSES SELESAI. Total ${recommendations.length} rekomendasi ditemukan.`)
+  // console.log(`======================================================`)
   return recommendations
 }
 
@@ -2418,9 +2442,13 @@ Hasil Agregasi Skor (sebelum diurutkan):',
 
     console.log('
 [LANGKAH 5] Mengurutkan Rekomendasi Berdasarkan Skor Tertinggi')
-    const recommendations = Object.values(scoredInterests)
-      .sort((a, b) => b.matchScore - a.matchScore)
-      .slice(0, limit)
+    const sortedInterests = Object.values(scoredInterests).sort(
+      (a, b) => b.matchScore - a.matchScore
+    )
+    const maxScore = sortedInterests[0]?.matchScore || 0 // Skor tertinggi
+    const scorePercentageThreshold = 0.5 // Ambil yang skornya minimal 50% dari skor maksimum
+    const recommendations = sortedInterests
+      .filter((item) => item.matchScore >= maxScore * scorePercentageThreshold)
       .map((item) => {
         item.data.$extras.matchScore = item.matchScore
         return item.data
@@ -2428,7 +2456,7 @@ Hasil Agregasi Skor (sebelum diurutkan):',
 
     console.log(
       `
-[HASIL AKHIR] ${recommendations.length} Rekomendasi Teratas (dibatasi oleh limit=${limit}):`
+[HASIL AKHIR] ${recommendations.length} Rekomendasi Teratas (dibatasi oleh ${scorePercentageThreshold * 100}% dari skor maksimum=${maxScore}):`
     )
     recommendations.forEach((rec, index) => {
       console.log(`  ${index + 1}. Nama: "${rec.name}", Skor Kecocokan: ${rec.$extras.matchScore}`)
@@ -3057,7 +3085,7 @@ declare module '@adonisjs/core/types' {
 
 // title: config/session.ts
 import env from '#start/env'
-import app from '@adonisjs/core/services/app'
+// import app from '@adonisjs/core/services/app'
 import { defineConfig, stores } from '@adonisjs/session'
 
 const sessionConfig = defineConfig({
@@ -3207,6 +3235,226 @@ const viteBackendConfig = defineConfig({
 })
 
 export default viteBackendConfig
+
+// title: database/.seeders/aauser_seeder.ts
+// database/seeders/user_seeder.ts
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    await User.createMany([
+      {
+        fullName: 'Admin User',
+        email: 'admin@example.com',
+        password: '12qwaszx',
+        role: 'admin',
+      },
+      {
+        fullName: 'Regular User',
+        email: 'user@example.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'lele',
+        email: 'lele@lele.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+      {
+        fullName: 'sapi',
+        email: 'sapi@sapi.com',
+        password: '12qwaszx',
+        role: 'siswa',
+      },
+    ])
+  }
+}
+
+// title: database/.seeders/admin_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/database_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/riasec_pertanyaan_seeder.ts
+// title: database/seeders/riasec_pertanyaan_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import RiasecPertanyaan from '#models/riasec_pertanyaan'
+
+export default class extends BaseSeeder {
+  async run() {
+    await RiasecPertanyaan.createMany([
+      // Realistic
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
+        tipeRiasec: 'R',
+        nomorUrut: 1,
+      },
+      {
+        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
+        tipeRiasec: 'R',
+        nomorUrut: 2,
+      },
+      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
+
+      // Investigative
+      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
+      {
+        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
+        tipeRiasec: 'I',
+        nomorUrut: 5,
+      },
+      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
+
+      // Artistic
+      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
+      {
+        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
+        tipeRiasec: 'A',
+        nomorUrut: 8,
+      },
+      {
+        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
+        tipeRiasec: 'A',
+        nomorUrut: 9,
+      },
+
+      // Social
+      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
+      {
+        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
+        tipeRiasec: 'S',
+        nomorUrut: 11,
+      },
+      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
+
+      // Enterprising
+      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
+      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
+      {
+        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
+        tipeRiasec: 'E',
+        nomorUrut: 15,
+      },
+
+      // Conventional
+      {
+        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
+        tipeRiasec: 'C',
+        nomorUrut: 16,
+      },
+      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
+      {
+        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
+        tipeRiasec: 'C',
+        nomorUrut: 18,
+      },
+    ])
+  }
+}
+
+// title: database/.seeders/siswa_seeder.ts
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+export default class extends BaseSeeder {
+  async run() {
+    // Write your database queries inside the run method
+  }
+}
+
+// title: database/.seeders/z hasil_seeder.ts
+// title: database/seeders/z hasil_tes_seeder.ts (REVISI)
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import HasilTes from '#models/hasil'
+import Siswa from '#models/siswa'
+
+export default class extends BaseSeeder {
+  public async run() {
+    const allSiswa = await Siswa.all()
+    if (allSiswa.length === 0) {
+      console.log('Tidak ada siswa untuk di-seed hasil tesnya.')
+      return
+    }
+
+    // Definisikan Persona/Tipe Minat
+    const personas = [
+      { name: 'Si Praktis', dominant: ['R', 'C'], secondary: ['I', 'E'] }, // Tipe Realistic-Conventional
+      { name: 'Si Peneliti', dominant: ['I', 'C'], secondary: ['R', 'A'] }, // Tipe Investigative-Conventional
+      { name: 'Si Kreatif', dominant: ['A', 'S'], secondary: ['E', 'I'] }, // Tipe Artistic-Social
+      { name: 'Si Sosialita', dominant: ['S', 'E'], secondary: ['A', 'C'] }, // Tipe Social-Enterprising
+      { name: 'Si Pebisnis', dominant: ['E', 'C'], secondary: ['S', 'R'] }, // Tipe Enterprising-Conventional
+      { name: 'Si Campuran Unik', dominant: ['I', 'A', 'S'], secondary: ['R', 'E', 'C'] }, // Tipe I-A-S
+    ]
+
+    const hasilTesData: Partial<HasilTes>[] = []
+
+    for (const [i, siswa] of allSiswa.entries()) {
+      // Pilih persona secara bergiliran untuk memastikan variasi
+      const persona = personas[i % personas.length]
+
+      const scores: { [key: string]: number } = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
+
+      // Beri skor TINGGI untuk tipe dominan
+      persona.dominant.forEach((type) => {
+        scores[type] = Math.floor(Math.random() * 8) + 8 // Skor antara 8-15
+      })
+
+      // Beri skor SEDANG untuk tipe sekunder
+      persona.secondary.forEach((type) => {
+        if (scores[type] === 0) {
+          // Hanya isi jika belum diisi oleh dominan
+          scores[type] = Math.floor(Math.random() * 5) + 3 // Skor antara 3-7
+        }
+      })
+
+      // Beri skor RENDAH untuk sisanya
+      Object.keys(scores).forEach((type) => {
+        if (scores[type] === 0) {
+          scores[type] = Math.floor(Math.random() * 3) + 1 // Skor antara 1-3
+        }
+      })
+
+      // Buat Kode Holland dari 3 skor tertinggi
+      const sortedScores = (Object.entries(scores) as [keyof typeof scores, number][]).sort(
+        ([, a], [, b]) => b - a
+      )
+      const hollandCode = sortedScores
+        .slice(0, 3)
+        .map(([key]) => key)
+        .join('')
+
+      hasilTesData.push({
+        siswaId: siswa.id,
+        skorR: scores.R,
+        skorI: scores.I,
+        skorA: scores.A,
+        skorS: scores.S,
+        skorE: scores.E,
+        skorC: scores.C,
+        kodeHolland: hollandCode,
+      })
+    }
+
+    // Hapus hasil tes lama untuk menghindari duplikat jika seeder dijalankan lagi
+    await HasilTes.truncate()
+    await HasilTes.createMany(hasilTesData)
+    console.log(`Berhasil membuat ${hasilTesData.length} data hasil tes dengan persona.`)
+  }
+}
 
 // title: database/migrations/1749892627155_create_users_table.ts
 import { BaseSchema } from '@adonisjs/lucid/schema'
@@ -3548,42 +3796,6 @@ export default class extends BaseSchema {
   }
 }
 
-// title: database/.seeders/aauser_seeder.ts
-// database/seeders/user_seeder.ts
-import User from '#models/user'
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    await User.createMany([
-      {
-        fullName: 'Admin User',
-        email: 'admin@example.com',
-        password: '12qwaszx',
-        role: 'admin',
-      },
-      {
-        fullName: 'Regular User',
-        email: 'user@example.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-      {
-        fullName: 'lele',
-        email: 'lele@lele.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-      {
-        fullName: 'sapi',
-        email: 'sapi@sapi.com',
-        password: '12qwaszx',
-        role: 'siswa',
-      },
-    ])
-  }
-}
-
 // title: database/seeders/aauser_seeder.ts
 // title: database/seeders/user_seeder.ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -3618,15 +3830,6 @@ export default class extends BaseSeeder {
   }
 }
 
-// title: database/.seeders/admin_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
-  }
-}
-
 // title: database/seeders/admin_seeder.ts
 // title: database/seeders/admin_seeder.ts
 import Admin from '#models/admin'
@@ -3657,15 +3860,6 @@ export default class AdminSeeder extends BaseSeeder {
       this.logger?.error('❌ Gagal insert ke tabel admin:')
       console.error(error)
     }
-  }
-}
-
-// title: database/.seeders/database_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
   }
 }
 
@@ -4544,83 +4738,6 @@ Serta menyukai pekerjaan yang terstruktur dan administratif.',
   }
 }
 
-// title: database/.seeders/riasec_pertanyaan_seeder.ts
-// title: database/seeders/riasec_pertanyaan_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import RiasecPertanyaan from '#models/riasec_pertanyaan'
-
-export default class extends BaseSeeder {
-  async run() {
-    await RiasecPertanyaan.createMany([
-      // Realistic
-      {
-        teksPertanyaan: 'Saya suka bekerja dengan peralatan mesin.',
-        tipeRiasec: 'R',
-        nomorUrut: 1,
-      },
-      {
-        teksPertanyaan: 'Saya bisa memperbaiki barang-barang elektronik.',
-        tipeRiasec: 'R',
-        nomorUrut: 2,
-      },
-      { teksPertanyaan: 'Saya terampil menggunakan perkakas.', tipeRiasec: 'R', nomorUrut: 3 },
-
-      // Investigative
-      { teksPertanyaan: 'Saya suka melakukan penelitian.', tipeRiasec: 'I', nomorUrut: 4 },
-      {
-        teksPertanyaan: 'Saya senang memecahkan masalah matematika atau sains.',
-        tipeRiasec: 'I',
-        nomorUrut: 5,
-      },
-      { teksPertanyaan: 'Saya menikmati membaca artikel ilmiah.', tipeRiasec: 'I', nomorUrut: 6 },
-
-      // Artistic
-      { teksPertanyaan: 'Saya orang yang kreatif.', tipeRiasec: 'A', nomorUrut: 7 },
-      {
-        teksPertanyaan: 'Saya suka memainkan alat musik, melukis, atau menulis.',
-        tipeRiasec: 'A',
-        nomorUrut: 8,
-      },
-      {
-        teksPertanyaan: 'Saya senang pergi ke pertunjukan seni atau teater.',
-        tipeRiasec: 'A',
-        nomorUrut: 9,
-      },
-
-      // Social
-      { teksPertanyaan: 'Saya suka menolong orang lain.', tipeRiasec: 'S', nomorUrut: 10 },
-      {
-        teksPertanyaan: 'Saya pandai mengajar atau melatih orang.',
-        tipeRiasec: 'S',
-        nomorUrut: 11,
-      },
-      { teksPertanyaan: 'Saya menikmati bekerja dalam tim.', tipeRiasec: 'S', nomorUrut: 12 },
-
-      // Enterprising
-      { teksPertanyaan: 'Saya suka memimpin sebuah proyek.', tipeRiasec: 'E', nomorUrut: 13 },
-      { teksPertanyaan: 'Saya pandai meyakinkan orang lain.', tipeRiasec: 'E', nomorUrut: 14 },
-      {
-        teksPertanyaan: 'Saya bercita-cita untuk memulai bisnis sendiri.',
-        tipeRiasec: 'E',
-        nomorUrut: 15,
-      },
-
-      // Conventional
-      {
-        teksPertanyaan: 'Saya suka bekerja dengan data dan angka.',
-        tipeRiasec: 'C',
-        nomorUrut: 16,
-      },
-      { teksPertanyaan: 'Saya orang yang terorganisir dan rapi.', tipeRiasec: 'C', nomorUrut: 17 },
-      {
-        teksPertanyaan: 'Saya suka mengikuti aturan dan prosedur yang jelas.',
-        tipeRiasec: 'C',
-        nomorUrut: 18,
-      },
-    ])
-  }
-}
-
 // title: database/seeders/riasec_pertanyaan_seeder.ts
 // title: database/seeders/riasec_pertanyaan_seeder.ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -5031,15 +5148,6 @@ export default class extends BaseSeeder {
   }
 }
 
-// title: database/.seeders/siswa_seeder.ts
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-
-export default class extends BaseSeeder {
-  async run() {
-    // Write your database queries inside the run method
-  }
-}
-
 // title: database/seeders/siswa_seeder.ts
 // title: database/seeders/siswa_seeder.ts
 import Siswa from '#models/siswa'
@@ -5088,92 +5196,12 @@ export default class SiswaSeeder extends BaseSeeder {
   }
 }
 
-// title: database/.seeders/z hasil_seeder.ts
-// title: database/seeders/z hasil_tes_seeder.ts (REVISI)
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import HasilTes from '#models/hasil'
-import Siswa from '#models/siswa'
-
-export default class extends BaseSeeder {
-  public async run() {
-    const allSiswa = await Siswa.all()
-    if (allSiswa.length === 0) {
-      console.log('Tidak ada siswa untuk di-seed hasil tesnya.')
-      return
-    }
-
-    // Definisikan Persona/Tipe Minat
-    const personas = [
-      { name: 'Si Praktis', dominant: ['R', 'C'], secondary: ['I', 'E'] }, // Tipe Realistic-Conventional
-      { name: 'Si Peneliti', dominant: ['I', 'C'], secondary: ['R', 'A'] }, // Tipe Investigative-Conventional
-      { name: 'Si Kreatif', dominant: ['A', 'S'], secondary: ['E', 'I'] }, // Tipe Artistic-Social
-      { name: 'Si Sosialita', dominant: ['S', 'E'], secondary: ['A', 'C'] }, // Tipe Social-Enterprising
-      { name: 'Si Pebisnis', dominant: ['E', 'C'], secondary: ['S', 'R'] }, // Tipe Enterprising-Conventional
-      { name: 'Si Campuran Unik', dominant: ['I', 'A', 'S'], secondary: ['R', 'E', 'C'] }, // Tipe I-A-S
-    ]
-
-    const hasilTesData: Partial<HasilTes>[] = []
-
-    for (const [i, siswa] of allSiswa.entries()) {
-      // Pilih persona secara bergiliran untuk memastikan variasi
-      const persona = personas[i % personas.length]
-
-      const scores: { [key: string]: number } = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
-
-      // Beri skor TINGGI untuk tipe dominan
-      persona.dominant.forEach((type) => {
-        scores[type] = Math.floor(Math.random() * 8) + 8 // Skor antara 8-15
-      })
-
-      // Beri skor SEDANG untuk tipe sekunder
-      persona.secondary.forEach((type) => {
-        if (scores[type] === 0) {
-          // Hanya isi jika belum diisi oleh dominan
-          scores[type] = Math.floor(Math.random() * 5) + 3 // Skor antara 3-7
-        }
-      })
-
-      // Beri skor RENDAH untuk sisanya
-      Object.keys(scores).forEach((type) => {
-        if (scores[type] === 0) {
-          scores[type] = Math.floor(Math.random() * 3) + 1 // Skor antara 1-3
-        }
-      })
-
-      // Buat Kode Holland dari 3 skor tertinggi
-      const sortedScores = (Object.entries(scores) as [keyof typeof scores, number][]).sort(
-        ([, a], [, b]) => b - a
-      )
-      const hollandCode = sortedScores
-        .slice(0, 3)
-        .map(([key]) => key)
-        .join('')
-
-      hasilTesData.push({
-        siswaId: siswa.id,
-        skorR: scores.R,
-        skorI: scores.I,
-        skorA: scores.A,
-        skorS: scores.S,
-        skorE: scores.E,
-        skorC: scores.C,
-        kodeHolland: hollandCode,
-      })
-    }
-
-    // Hapus hasil tes lama untuk menghindari duplikat jika seeder dijalankan lagi
-    await HasilTes.truncate()
-    await HasilTes.createMany(hasilTesData)
-    console.log(`Berhasil membuat ${hasilTesData.length} data hasil tes dengan persona.`)
-  }
-}
-
 // title: database/seeders/z rating_seeder.ts
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import Siswa from '#models/siswa'
-import Program from '#models/program'
-import ProgramRating from '#models/program_rating'
-import { DateTime } from 'luxon'
+// import Siswa from '#models/siswa'
+// import Program from '#models/program'
+// import ProgramRating from '#models/program_rating'
+// import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
   // public async run() {
@@ -7748,12 +7776,7 @@ export default function SiswaView({ siswa, hasilTes, recommendedPrograms, recomm
                                                 <p className="text-gray-500 mt-2 flex-grow">
                                                     {interest.description || 'Deskripsi belum tersedia.'}
                                                 </p>
-                                                <Link
-                                                    href="#"
-                                                    className="mt-4 inline-block bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300"
-                                                >
-                                                    Coba Jelajahi
-                                                </Link>
+                                               
                                             </motion.div>
                                         ))}
                                     </div>
@@ -8412,7 +8435,7 @@ export default function Register() {
                 type="text"
                 value={data.fullName}
                 onChange={(e) => setData('fullName', e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+                className="mt-1 dark:text-white block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
               />
               {errors.fullName && (
                 <div className="mt-1 text-xs text-red-500">{errors.fullName}</div>
@@ -8432,7 +8455,7 @@ export default function Register() {
                 type="email"
                 value={data.email}
                 onChange={(e) => setData('email', e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+                className="mt-1 block dark:text-white w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
               />
               {errors.email && <div className="mt-1 text-xs text-red-500">{errors.email}</div>}
             </div>
@@ -8451,7 +8474,7 @@ export default function Register() {
                 value={data.password}
                 autoComplete="new-password"
                 onChange={(e) => setData('password', e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+                className="mt-1 block dark:text-white w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
               />
               {errors.password && (
                 <div className="mt-1 text-xs text-red-500">{errors.password}</div>
@@ -8472,7 +8495,7 @@ export default function Register() {
                 value={data.password_confirmation}
                 autoComplete="new-password"
                 onChange={(e) => setData('password_confirmation', e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
+                className="mt-1 block w-full dark:text-white px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm"
               />
             </div>
 
@@ -8547,191 +8570,163 @@ export default function ServerError(props: { error: any }) {
 }
 
 // title: inertia/pages/home.tsx
+import { useState } from 'react'
 import { Head, Link } from '@inertiajs/react'
+import { Users, ClipboardList, BarChart3, Lightbulb, GraduationCap, Menu, X } from 'lucide-react'
+
+const features = [
+  {
+    icon: <Users size={24} />,
+    title: 'Manajemen Siswa & Tes',
+    description: 'Kelola data siswa dan pantau kemajuan tes dengan mudah.',
+  },
+  {
+    icon: <ClipboardList size={24} />,
+    title: 'Bank Soal Dinamis',
+    description: 'Kontrol penuh atas pertanyaan tes RIASEC Anda.',
+  },
+  {
+    icon: <BarChart3 size={24} />,
+    title: 'Laporan Detail & Visual',
+    description: 'Hasil tes komprehensif dengan grafik yang mudah dipahami.',
+  },
+  {
+    icon: <Lightbulb size={24} />,
+    title: 'Rekomendasi Cerdas',
+    description: 'Rekomendasi jurusan dan karier yang dipersonalisasi.',
+  },
+]
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen font-sans">
-      <Head title="HomePage" />
-      <link rel="icon" href="/public/logo.png" />
+    <div className="bg-white text-gray-800 font-sans antialiased">
+      <Head>
+        <title>Platform Tes RIASEC Sekolah</title>
+        <meta name="description" content="Platform tes minat bakat RIASEC untuk sekolah modern." />
+        <link rel="icon" href="/logo.png" />
+      </Head>
 
-      {/* Hero Section */}
-      <section className="relative flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 text-center bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-blue-950 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/subtle-white-feathers.png')] opacity-10 dark:opacity-20" />
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight animate-fade-in-up">
-            Bantu Siswa Temukan
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
-              Jurusan & Karier Impian
-            </span>
-          </h1>
-          <p className="mt-6 text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-200">
-            Platform Tes Minat Bakat RIASEC terintegrasi untuk sekolah modern. Laporan akurat, bimbingan karier yang mudah.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-            <Link
-              href="/login"
-              className="inline-block px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-            >
-              Coba Demo Gratis
+      {/* === HEADER & NAVIGASI TETAP DI ATAS (STICKY) === */}
+      {/* PERBAIKAN 1: Menambahkan kelas untuk membuat header fixed */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
+        <div className="max-w-5xl mx-auto px-6">
+          <nav className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2">
+              <GraduationCap size={24} className="text-blue-600" />
+              <span className="font-bold text-lg">Platform RIASEC</span>
             </Link>
-            <Link
-              href="#features"
-              className="inline-block px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-blue-600 dark:text-blue-400 bg-transparent border border-blue-600 dark:border-blue-400 rounded-full hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors duration-300"
-            >
-              Lihat Fitur →
-            </Link>
-          </div>
+
+            {/* Tombol Hamburger (Hanya terlihat di mobile) */}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-20">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+
+            {/* Menu Links (Desktop) */}
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="#features" className="text-gray-600 hover:text-black">
+                Fitur
+              </Link>
+              <Link href="#kontak" className="text-gray-600 hover:text-black">
+                Kontak
+              </Link>
+              <Link
+                href="/login"
+                className="ml-4 px-5 py-2 text-sm font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+              >
+                Login
+              </Link>
+            </div>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      {/* Features Section */}
-      <section className="py-16 sm:py-24 bg-gray-50 dark:bg-gray-800/50" id="features">
-        <div className="max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto">
+      {/* Menu Overlay untuk Mobile */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center gap-8 md:hidden"
+          onClick={() => setIsMenuOpen(false)} // Klik di luar menu untuk menutup
+        >
+          <Link href="#features" className="text-xl text-gray-800">
+            Fitur
+          </Link>
+          <Link href="#kontak" className="text-xl text-gray-800">
+            Kontak
+          </Link>
+          <Link
+            href="/login"
+            className="mt-4 px-8 py-3 text-lg font-semibold bg-blue-600 text-white rounded-full"
+          >
+            Login
+          </Link>
+        </div>
+      )}
+
+      <main className="space-y-24 md:space-y-32">
+        {/* === HERO SECTION FULL-SCREEN === */}
+        {/* PERBAIKAN 2: Menambahkan kelas untuk membuat section setinggi layar dan konten terpusat */}
+        <section className="min-h-screen flex flex-col justify-center items-center text-center px-6">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-3xl mx-auto">
+            Bantu Siswa Temukan Jurusan & Karier Impian
+          </h1>
+          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+            Platform Tes Minat Bakat RIASEC terintegrasi untuk sekolah. Laporan akurat, manajemen
+            mudah, dan bimbingan yang terarah.
+          </p>
+          <Link
+            href="/login"
+            className="inline-block mt-8 px-8 py-3 font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-transform hover:scale-105"
+          >
+            Login Sekarang Juga
+          </Link>
+        </section>
+
+        {/* === FEATURES SECTION === */}
+        <section id="features" className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold animate-fade-in">Solusi Cerdas untuk Sekolah Anda</h2>
-            <p className="mt-4 text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-fade-in animation-delay-200">
-              Ubah kebingungan menjadi kejelasan dengan Tes RIASEC dalam 3 langkah sederhana.
+            <h2 className="text-3xl md:text-4xl font-bold">Solusi Lengkap untuk Sekolah</h2>
+            <p className="text-gray-600 mt-2">
+              Fitur yang dirancang untuk bimbingan karier modern.
             </p>
           </div>
-          <div className="relative grid gap-6 sm:gap-8 md:grid-cols-3">
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-700 hidden md:block transform -translate-y-1/2 z-0" />
-            {[
-              {
-                step: 1,
-                title: "Buat Sesi Tes",
-                desc: "Admin membuat jadwal dan membagikan kode akses unik kepada siswa hanya dalam beberapa klik.",
-              },
-              {
-                step: 2,
-                title: "Siswa Mengerjakan",
-                desc: "Siswa mengerjakan tes online di mana saja melalui komputer atau smartphone dengan antarmuka ramah.",
-              },
-              {
-                step: 3,
-                title: "Analisis Hasil",
-                desc: "Dapatkan laporan individual yang detail dan rekapitulasi sekolah secara real-time untuk konseling.",
-              },
-            ].map((item, index) => (
-              <div
-                key={item.step}
-                className="relative z-10 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in-up"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="flex items-center justify-center mx-auto mb-4 font-bold text-white bg-blue-600 rounded-full w-12 h-12 sm:w-14 sm:h-14">
-                  {item.step}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-start gap-4">
+                <div className="flex-shrink-0 bg-blue-100 text-blue-600 p-3 rounded-full">
+                  {feature.icon}
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold">{item.title}</h3>
-                <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400">{item.desc}</p>
+                <div>
+                  <h3 className="text-lg font-bold">{feature.title}</h3>
+                  <p className="text-gray-600 mt-1">{feature.description}</p>
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Testimonial Section */}
-      <section className="py-16 sm:py-24 bg-white dark:bg-gray-900">
-        <div className="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold animate-fade-in">Dipercaya oleh Para Pendidik</h2>
-          <figure className="mt-10 animate-fade-in-up animation-delay-200">
-            <blockquote className="text-base sm:text-lg md:text-xl italic text-gray-700 dark:text-gray-300">
-              <p>"Laporan hasil tes RIASEC sangat membantu. Sesi konseling menjadi lebih terarah dan produktif. Siswa dan orang tua merasa lebih tercerahkan."</p>
-            </blockquote>
-            <figcaption className="mt-6">
-              <img
-                className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full border-2 border-blue-600 dark:border-blue-400"
-                src="https://i.pravatar.cc/150?u=anisa"
-                alt="Foto Ibu Anisa"
-              />
-              <div className="mt-4">
-                <cite className="font-semibold not-italic text-gray-800 dark:text-gray-200">Ibu Anisa Wulandari, S.Pd.</cite>
-                <br />
-                <cite className="text-gray-500 dark:text-gray-400 not-italic text-sm">Guru Bimbingan & Konseling, SMAN 2 Maju Jaya</cite>
-              </div>
-            </figcaption>
-          </figure>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-teal-500 dark:from-blue-700 dark:to-teal-600 text-white">
-        <div className="max-w-4xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold animate-fade-in">
-            Optimalkan Bimbingan Karier Sekolah Anda
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-blue-100 animate-fade-in animation-delay-200">
-            Rasakan dampak positif platform kami bagi siswa dan sekolah Anda.
-          </p>
-          <Link
-            href="/register"
-            className="inline-block px-8 py-3 sm:px-10 sm:py-4 mt-8 text-sm sm:text-base font-bold text-blue-600 bg-white rounded-full shadow-lg hover:scale-105 transition-transform duration-300"
-          >
-            Daftar & Minta Akses Demo
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer Section */}
-      <footer className="bg-gray-800 dark:bg-black text-gray-400">
-        <div className="max-w-7xl px-4 sm:px-6 lg:px-8 py-12 mx-auto">
-          <div className="grid gap-8 sm:gap-12 md:grid-cols-4">
-            <div className="md:col-span-2">
-              <h3 className="text-lg font-bold text-white">Platform RIASEC Sekolah</h3>
-              <p className="mt-2 text-sm">Membantu generasi muda Indonesia menemukan potensi terbaiknya melalui teknologi.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white">Navigasi</h4>
-              <ul className="mt-4 space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Tentang Kami</a></li>
-                <li><a href="#features" className="hover:text-white transition-colors duration-200">Fitur</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Harga</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white">Kontak</h4>
-              <ul className="mt-4 space-y-2 text-sm">
-                <li><a href="mailto:info@sekolah.app" className="hover:text-white transition-colors duration-200">info@sekolah.app</a></li>
-                <li><a href="tel:+6221123456" className="hover:text-white transition-colors duration-200">(021) 123-456</a></li>
-              </ul>
-            </div>
+        {/* === FOOTER & FINAL CTA === */}
+        <footer id="kontak" className="text-center py-16 border-t mt-24">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Siap Mengoptimalkan Bimbingan Karier?
+            </h2>
+            <p className="text-gray-600 mt-2">
+              Daftar sekarang dan rasakan dampaknya bagi sekolah Anda.
+            </p>
+            <a
+              href="https://wa.me/6289678001670?text=Halo%20Saya%20ingin%20mendaftar%20dan%20minta%20demo%20Platform%20RIASEC"
+              className="inline-block mt-6 px-8 py-3 font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-transform hover:scale-105"
+            >
+              Daftar & Minta Demo
+            </a>
+            <p className="text-sm text-gray-500 mt-12">
+              © {new Date().getFullYear()} Platform RIASEC Anda. Hak Cipta Dilindungi.
+            </p>
           </div>
-          <div className="pt-8 mt-8 text-sm text-center border-t border-gray-700">
-            <p>© {new Date().getFullYear()} Platform RIASEC Anda. Hak Cipta Dilindungi.</p>
-          </div>
-        </div>
-      </footer>
-
-      {/* Tailwind Animation Styles */}
-      <style jsx>{`
-        .animate-fade-in {
-          animation: fadeIn 0.8s ease-out forwards;
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .animation-delay-200 {
-          animation-delay: 200ms;
-        }
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        </footer>
+      </main>
     </div>
   )
 }
@@ -8808,11 +8803,10 @@ export default function About({ title, description }: AboutProps) {
                 <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-8 rounded-2xl shadow-lg">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
-                            Kontak Fauzan
+                            Kontak dan Sosial Media
                         </h2>
                         <p className="mt-3 text-gray-500 dark:text-gray-300 text-base lg:text-lg max-w-xl mx-auto">
-                            Mau diskusi, ngoding bareng, atau cuma ngobrol random? Cus langsung cek sosmed gue di
-                            bawah ini. No basa-basi, langsung DM aja 🚀
+                            
                         </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
@@ -9822,6 +9816,158 @@ export default function UserProfile() {
 
 UserProfile.layout = (page: any) => <UserLayout children={page} />
 
+// title: inertia/pages/user/riasec/.test.tsx
+import { Head, useForm } from '@inertiajs/react'
+import React, { useState } from 'react'
+import UserLayout from '../layouts/main'
+
+interface Question {
+    id: number
+    teksPertanyaan: string
+    tipeRiasec: string
+}
+
+interface RiasecTestProps {
+    questions: Question[]
+}
+
+const answerOptions = [
+    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
+    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
+    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
+    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
+    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
+]
+
+export default function RiasecTest({ questions }: RiasecTestProps) {
+    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
+        answers: {},
+    })
+
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+    const totalQuestions = questions.length
+    const currentQuestion = questions[currentQuestionIndex]
+
+    const handleAnswer = (questionId: number, answerValue: number) => {
+        setData('answers', {
+            ...data.answers,
+            [questionId]: answerValue,
+        })
+    }
+
+    const handleNext = () => {
+        if (currentQuestionIndex < totalQuestions - 1) {
+            setCurrentQuestionIndex((prev) => prev + 1)
+        }
+    }
+
+    const handleBack = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex((prev) => prev - 1)
+        }
+    }
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        post('/riasec/submit')
+    }
+
+    const progressPercentage =
+        totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0
+
+    return (
+        <>
+            <Head title="Tes Minat RIASEC" />
+
+            <div className="bg-slate-100 p-6 sm:p-10 min-h-screen flex items-center justify-center">
+                <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-6 sm:p-10">
+
+                    {/* Progress */}
+                    <div className="mb-6">
+                        <div className="flex justify-between text-sm text-slate-500 font-medium mb-1">
+                            <span>Pertanyaan {currentQuestionIndex + 1} dari {totalQuestions}</span>
+                            <span>{Math.round(progressPercentage)}%</span>
+                        </div>
+                        <div className="w-full bg-slate-200 rounded-full h-2.5">
+                            <div
+                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                style={{ width: `${progressPercentage}%` }}
+                            ></div>
+                        </div>
+                    </div>
+
+                    {/* Pertanyaan */}
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-6">
+                            <p className="text-3xl text-center font-semibold text-slate-800 mb-4">
+                                {currentQuestion.teksPertanyaan}
+                            </p>
+
+                            <div className="flex flex-wrap gap-3 justify-center">
+                                {answerOptions.map((option) => (
+                                    <button
+                                        key={option.value}
+                                        type="button"
+                                        onClick={() => handleAnswer(currentQuestion.id, option.value)}
+                                        className={`
+                                            flex flex-row px-3 py-2 rounded-lg text-base font-semibold
+                                            transition-all duration-200 focus:outline-none
+                                            ${data.answers[currentQuestion.id] === option.value
+                                                ? `${option.color} text-white shadow-md`
+                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                            }
+                                        `}
+                                    >
+                                        {option.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Navigasi */}
+                        <div className="flex justify-between mt-6">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                disabled={currentQuestionIndex === 0}
+                                className="px-6 py-2 text-sm font-bold text-slate-600 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Sebelumnya
+                            </button>
+
+                            {currentQuestionIndex < totalQuestions - 1 ? (
+                                <button
+                                    type="button"
+                                    onClick={handleNext}
+                                    disabled={!data.answers[currentQuestion.id]}
+                                    className="px-6 py-2 text-white font-bold bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Selanjutnya
+                                </button>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    disabled={processing || !data.answers[currentQuestion.id]}
+                                    className="px-6 py-2 text-white font-bold bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Error Message */}
+                        {errors.answers && (
+                            <p className="text-sm text-red-600 mt-3">{errors.answers}</p>
+                        )}
+                    </form>
+                </div>
+            </div>
+        </>
+    )
+}
+
+RiasecTest.layout = (page: any) => <UserLayout children={page} />
+
 // title: inertia/pages/user/riasec/index.tsx
 import { Head, Link, usePage } from '@inertiajs/react'
 import UserLayout from '../layouts/main'
@@ -10033,7 +10179,8 @@ RiasecIndexPage.layout = (page: any) => <UserLayout children={page} />
 // title: inertia/pages/user/riasec/result.tsx
 import { Head, usePage, Link } from '@inertiajs/react'
 import UserLayout from '../layouts/main'
-import { Award, BrainCircuit, Lightbulb } from 'lucide-react'
+import { Lightbulb } from 'lucide-react'
+import { useState } from 'react' // Pastikan useState diimpor
 
 // --- DATA DESKRIPSI RIASEC ---
 const descriptions = {
@@ -10140,7 +10287,10 @@ interface ResultPageProps {
 
 // --- Komponen Utama ---
 export default function RiasecResultPage() {
-  const { hasilTes, recommendedPrograms, recommendedInterests } = usePage<ResultPageProps>().props
+  const { hasilTes, recommendedInterests } = usePage<ResultPageProps>().props
+
+  // State untuk mengontrol visibilitas rekomendasi minat
+  const [showAllInterests, setShowAllInterests] = useState(false)
 
   // Kumpulkan skor mentah
   const rawScores = [
@@ -10161,11 +10311,15 @@ export default function RiasecResultPage() {
   // Ambil 3 tipe teratas dari kode Holland
   const topThreeTypes = hasilTes.kodeHolland.split('') as (keyof typeof descriptions)[]
 
+  // Logika untuk menentukan item minat yang akan ditampilkan
+  const interestsToDisplay = showAllInterests
+    ? recommendedInterests
+    : recommendedInterests.slice(0, 3)
+
   return (
     <>
       <Head title={`Hasil Tes RIASEC - ${hasilTes.kodeHolland}`} />
 
-      {/* Gradient Background */}
       <div className="">
         <div className="max-w-4xl mx-auto">
           {/* Section: Apa Arti Kode Holland? */}
@@ -10220,8 +10374,9 @@ export default function RiasecResultPage() {
                           style={{ width: `${percentage}%` }}
                         />
                         <span
-                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
-                            }`}
+                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${
+                            percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
+                          }`}
                         >
                           {score}
                         </span>
@@ -10317,26 +10472,46 @@ export default function RiasecResultPage() {
               </p>
             </div>
             {recommendedInterests && recommendedInterests.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recommendedInterests.map((interest) => (
-                  <div
-                    key={interest.id}
-                    className="border border-gray-200 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center text-center transform hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gray-50 dark:bg-gray-700"
-                  >
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {interest.name}
-                    </h3>
-                    <p className="text-gray-500 dark:text-gray-400 mt-2 flex-grow">
-                      {interest.description || 'Deskripsi belum tersedia.'}
-                    </p>
-                    <Link
-                      href="#"
-                      className="mt-4 inline-block bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all"
+              <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {interestsToDisplay.map((interest) => (
+                    <div
+                      key={interest.id}
+                      className="group border border-gray-200 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center text-center transform hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gray-50 dark:bg-gray-700"
                     >
-                      Coba Jelajahi
-                    </Link>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        {interest.name}
+                      </h3>
+                      <p className="text-gray-500 dark:text-gray-400 mt-2 flex-grow line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
+                        {interest.description || 'Deskripsi belum tersedia.'}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tombol "Lihat Semua" (muncul saat item disembunyikan) */}
+                {recommendedInterests.length > 3 && !showAllInterests && (
+                  <div className="text-center mt-8">
+                    <button
+                      onClick={() => setShowAllInterests(true)}
+                      className="bg-indigo-100 text-indigo-700 font-semibold py-2 px-6 rounded-lg hover:bg-indigo-200 transition-all"
+                    >
+                      Lihat Semua Rekomendasi
+                    </button>
                   </div>
-                ))}
+                )}
+
+                {/* Tombol "Lihat Lebih Sedikit" (muncul saat semua item ditampilkan) */}
+                {recommendedInterests.length > 3 && showAllInterests && (
+                  <div className="text-center mt-8">
+                    <button
+                      onClick={() => setShowAllInterests(false)}
+                      className="bg-gray-100 text-gray-700 font-semibold py-2 px-6 rounded-lg hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-all"
+                    >
+                      Lihat Lebih Sedikit
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center py-10">
@@ -10347,249 +10522,33 @@ export default function RiasecResultPage() {
             )}
           </section>
 
-          {/* Section: Rekomendasi Program */}
-          {/* <section className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-lg animate-slide-up">
-            <div className="text-center mb-8">
-              <Award className="mx-auto h-12 w-12 text-yellow-500" />
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-4">
-                Program yang Cocok Buat Lo 🏆
-              </h2>
-              <p className="mt-2 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Berdasarkan kode Holland lo, ini program yang bisa bikin lo *level up*! Cek di
-                bawah!
-              </p>
-            </div>
-            {recommendedPrograms && recommendedPrograms.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recommendedPrograms.map((program) => (
-                  <div
-                    key={program.id}
-                    className="border border-gray-200 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center text-center transform hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gray-50 dark:bg-gray-700"
-                  >
-                    <BrainCircuit className="h-10 w-10 text-blue-500 mb-4" />
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {program.name}
-                    </h3>
-                    <p className="text-gray-500 dark:text-gray-400 mt-2 flex-grow">
-                      {program.description || 'Deskripsi program belum tersedia.'}
-                    </p>
-                    <Link
-                      href="#"
-                      className="mt-4 inline-block bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:from-blue-600 hover:to-teal-600 transition-all"
-                    >
-                      Pelajari Lebih Lanjut
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-10">
-                <p className="text-gray-500 dark:text-gray-400">
-                  Belum ada program yang cocok buat lo. Stay tuned, bro! 😎
-                </p>
-              </div>
-            )}
-          </section> */}
+          {/* Section: Rekomendasi Program (Bisa ditambahkan di sini jika perlu) */}
         </div>
       </div>
 
       {/* Animasi CSS */}
       <style>{`
         @keyframes fade-in {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         @keyframes slide-up {
-          from {
-            transform: translateY(20px);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
+          from { transform: translateY(20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
         }
         @keyframes pop-up {
-          0% {
-            transform: scale(0.8);
-            opacity: 0;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
+          0% { transform: scale(0.8); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
         }
-        .animate-fade-in {
-          animation: fade-in 0.6s ease-out;
-        }
-        .animate-slide-up {
-          animation: slide-up 0.8s ease-out;
-        }
-        .animate-pop-up {
-          animation: pop-up 0.5s ease-out;
-        }
+        .animate-fade-in { animation: fade-in 0.6s ease-out; }
+        .animate-slide-up { animation: slide-up 0.8s ease-out; }
+        .animate-pop-up { animation: pop-up 0.5s ease-out; }
       `}</style>
     </>
   )
 }
 
 RiasecResultPage.layout = (page: any) => <UserLayout children={page} />
-
-// title: inertia/pages/user/riasec/.test.tsx
-import { Head, useForm } from '@inertiajs/react'
-import React, { useState } from 'react'
-import UserLayout from '../layouts/main'
-
-interface Question {
-    id: number
-    teksPertanyaan: string
-    tipeRiasec: string
-}
-
-interface RiasecTestProps {
-    questions: Question[]
-}
-
-const answerOptions = [
-    { label: 'Sangat Tidak Suka', value: 1, color: 'bg-red-600', hover: 'hover:bg-red-700' },
-    { label: 'Tidak Suka', value: 2, color: 'bg-orange-500', hover: 'hover:bg-orange-600' },
-    { label: 'Netral', value: 3, color: 'bg-yellow-500', hover: 'hover:bg-yellow-600' },
-    { label: 'Suka', value: 4, color: 'bg-lime-500', hover: 'hover:bg-lime-600' },
-    { label: 'Sangat Suka', value: 5, color: 'bg-green-600', hover: 'hover:bg-green-700' },
-]
-
-export default function RiasecTest({ questions }: RiasecTestProps) {
-    const { data, setData, post, processing, errors } = useForm<{ answers: Record<number, number> }>({
-        answers: {},
-    })
-
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-    const totalQuestions = questions.length
-    const currentQuestion = questions[currentQuestionIndex]
-
-    const handleAnswer = (questionId: number, answerValue: number) => {
-        setData('answers', {
-            ...data.answers,
-            [questionId]: answerValue,
-        })
-    }
-
-    const handleNext = () => {
-        if (currentQuestionIndex < totalQuestions - 1) {
-            setCurrentQuestionIndex((prev) => prev + 1)
-        }
-    }
-
-    const handleBack = () => {
-        if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex((prev) => prev - 1)
-        }
-    }
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        post('/riasec/submit')
-    }
-
-    const progressPercentage =
-        totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0
-
-    return (
-        <>
-            <Head title="Tes Minat RIASEC" />
-
-            <div className="bg-slate-100 p-6 sm:p-10 min-h-screen flex items-center justify-center">
-                <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-6 sm:p-10">
-
-                    {/* Progress */}
-                    <div className="mb-6">
-                        <div className="flex justify-between text-sm text-slate-500 font-medium mb-1">
-                            <span>Pertanyaan {currentQuestionIndex + 1} dari {totalQuestions}</span>
-                            <span>{Math.round(progressPercentage)}%</span>
-                        </div>
-                        <div className="w-full bg-slate-200 rounded-full h-2.5">
-                            <div
-                                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                style={{ width: `${progressPercentage}%` }}
-                            ></div>
-                        </div>
-                    </div>
-
-                    {/* Pertanyaan */}
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-6">
-                            <p className="text-3xl text-center font-semibold text-slate-800 mb-4">
-                                {currentQuestion.teksPertanyaan}
-                            </p>
-
-                            <div className="flex flex-wrap gap-3 justify-center">
-                                {answerOptions.map((option) => (
-                                    <button
-                                        key={option.value}
-                                        type="button"
-                                        onClick={() => handleAnswer(currentQuestion.id, option.value)}
-                                        className={`
-                                            flex flex-row px-3 py-2 rounded-lg text-base font-semibold
-                                            transition-all duration-200 focus:outline-none
-                                            ${data.answers[currentQuestion.id] === option.value
-                                                ? `${option.color} text-white shadow-md`
-                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                                            }
-                                        `}
-                                    >
-                                        {option.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Navigasi */}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                type="button"
-                                onClick={handleBack}
-                                disabled={currentQuestionIndex === 0}
-                                className="px-6 py-2 text-sm font-bold text-slate-600 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Sebelumnya
-                            </button>
-
-                            {currentQuestionIndex < totalQuestions - 1 ? (
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    disabled={!data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    Selanjutnya
-                                </button>
-                            ) : (
-                                <button
-                                    type="submit"
-                                    disabled={processing || !data.answers[currentQuestion.id]}
-                                    className="px-6 py-2 text-white font-bold bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    {processing ? 'Memproses...' : 'Lihat Hasil Tes'}
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Error Message */}
-                        {errors.answers && (
-                            <p className="text-sm text-red-600 mt-3">{errors.answers}</p>
-                        )}
-                    </form>
-                </div>
-            </div>
-        </>
-    )
-}
-
-RiasecTest.layout = (page: any) => <UserLayout children={page} />
 
 // title: inertia/pages/user/riasec/test.tsx
 import { FormEvent, useRef, useState } from 'react'
@@ -11082,7 +11041,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_PORT: Env.schema.number(),
   DB_USER: Env.schema.string(),
   DB_PASSWORD: Env.schema.string.optional(),
-  DB_DATABASE: Env.schema.string()
+  DB_DATABASE: Env.schema.string(),
 })
 
 // title: start/kernel.ts

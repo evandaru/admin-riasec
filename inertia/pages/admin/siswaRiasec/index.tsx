@@ -8,6 +8,9 @@ import {
   ChevronUp,
   ChevronDown,
   ChevronsUpDown,
+  Printer,
+  ChevronLeft, // <-- Impor ikon baru
+  ChevronRight, // <-- Impor ikon baru
 } from 'lucide-react'
 import AdminLayout from '../layouts/main'
 import { useMemo, useState, useEffect } from 'react'
@@ -21,10 +24,11 @@ import {
   flexRender,
   SortingState,
   ColumnDef,
-  SortingFn, // <-- TAMBAHKAN INI
+  SortingFn,
+  Table, // <-- Impor tipe Table
 } from '@tanstack/react-table'
 
-// --- Data Interfaces ---
+// --- Tipe Data (tidak ada perubahan) ---
 interface User {
   id: number
   email: string
@@ -43,7 +47,7 @@ interface Siswa {
   hasilTes: HasilTes[]
 }
 
-// --- Debounced Input for Search ---
+// --- Komponen & Fungsi Helper (tidak ada perubahan) ---
 function DebouncedInput({
   value: initialValue,
   onChange,
@@ -63,24 +67,107 @@ function DebouncedInput({
   return <input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
 }
 
-// --- Fungsi Sorting Kustom ---
 const statusTesSortingFn: SortingFn<Siswa> = (rowA, rowB) => {
   const statusA = rowA.original.hasilTes.length > 0
   const statusB = rowB.original.hasilTes.length > 0
-  // Mengurutkan boolean, `true` (sudah tes) akan muncul sebelum `false` (belum tes) saat ascending
   return statusA === statusB ? 0 : statusA ? -1 : 1
 }
 
 const kodeHollandSortingFn: SortingFn<Siswa> = (rowA, rowB) => {
   const kodeA = rowA.original.hasilTes[0]?.kodeHolland
   const kodeB = rowB.original.hasilTes[0]?.kodeHolland
-
   if (kodeA && !kodeB) return -1
   if (!kodeA && kodeB) return 1
   if (!kodeA && !kodeB) return 0
   return (kodeA || '').localeCompare(kodeB || '')
 }
 
+// --- KOMPONEN PAGINATION BARU ---
+function Pagination({ table }: { table: Table<Siswa> }) {
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
+
+  const getPaginationButtons = () => {
+    const buttons = []
+    const context = 1 // Jumlah halaman di sekitar halaman saat ini
+
+    // Selalu tampilkan halaman pertama
+    buttons.push(1)
+
+    // Elipsis kiri
+    if (currentPage > context + 2) {
+      buttons.push('...')
+    }
+
+    // Halaman di sekitar halaman saat ini
+    for (let i = currentPage - context; i <= currentPage + context; i++) {
+      if (i > 1 && i < totalPages) {
+        buttons.push(i)
+      }
+    }
+
+    // Elipsis kanan
+    if (currentPage < totalPages - context - 1) {
+      buttons.push('...')
+    }
+
+    // Selalu tampilkan halaman terakhir
+    if (totalPages > 1) {
+      buttons.push(totalPages)
+    }
+
+    return [...new Set(buttons)] // Hapus duplikat
+  }
+
+  const paginationButtons = getPaginationButtons()
+  if (totalPages <= 1) return null // Jangan tampilkan pagination jika hanya ada 1 halaman
+
+  return (
+    <nav aria-label="Pagination">
+      <ul className="inline-flex items-center -space-x-px text-sm">
+        <li>
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+        </li>
+        {paginationButtons.map((page, index) => (
+          <li key={index}>
+            {page === '...' ? (
+              <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                ...
+              </span>
+            ) : (
+              <button
+                onClick={() => table.setPageIndex((page as number) - 1)}
+                className={`flex items-center justify-center px-3 h-8 leading-tight border ${currentPage === page
+                  ? 'z-10 text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
+                  : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                  }`}
+              >
+                {page}
+              </button>
+            )}
+          </li>
+        ))}
+        <li>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </li>
+      </ul>
+    </nav>
+  )
+}
+
+// --- KOMPONEN UTAMA ---
 export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
   const data = useMemo(() => siswa, [siswa])
   const [sorting, setSorting] = useState<SortingState>([])
@@ -88,13 +175,17 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
 
   const columnHelper = createColumnHelper<Siswa>()
 
-  const columns = useMemo<ColumnDef<Siswa, any>[]>(
-    () => [
-      columnHelper.accessor((row, index) => index + 1, {
+  const columns = useMemo<ColumnDef<Siswa, any>[]>(() => [
+    columnHelper.accessor(
+      (_row: Siswa, index: number): number =>
+        table.getState().pagination.pageIndex * table.getState().pagination.pageSize + index + 1,
+      {
         id: 'no',
         header: '#',
         size: 50,
-      }),
+        enableSorting: false,
+      }
+    ),
       columnHelper.accessor('namaLengkap', {
         header: 'Nama Lengkap',
         cell: (info) => info.getValue(),
@@ -107,16 +198,18 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.accessor('kelas', {
         header: 'Kelas',
         cell: (info) => info.getValue() || '-',
+        size: 80,
       }),
       columnHelper.accessor('jenjang', {
-        header: 'jenjang',
+        header: 'Jenjang',
         cell: (info) => info.getValue() || '-',
+        size: 90,
       }),
       columnHelper.display({
         id: 'statusTes',
         header: 'Status Tes',
-        enableSorting: true, // Aktifkan sorting
-        sortingFn: statusTesSortingFn, // Gunakan fungsi kustom
+        enableSorting: true,
+        sortingFn: statusTesSortingFn,
         cell: ({ row }) => {
           const sudahTes = row.original.hasilTes && row.original.hasilTes.length > 0
           return sudahTes ? (
@@ -133,8 +226,8 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.display({
         id: 'kodeHolland',
         header: 'Hasil (Kode)',
-        enableSorting: true, // Aktifkan sorting
-        sortingFn: kodeHollandSortingFn, // Gunakan fungsi kustom
+        enableSorting: true,
+        sortingFn: kodeHollandSortingFn,
         cell: ({ row }) => {
           const hasilTerbaru =
             row.original.hasilTes && row.original.hasilTes.length > 0
@@ -146,6 +239,7 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.display({
         id: 'actions',
         header: 'Aksi',
+        size: 140,
         cell: ({ row }) => {
           const item = row.original
           const sudahTes = item.hasilTes && item.hasilTes.length > 0
@@ -170,7 +264,7 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
                 method="post"
                 as="button"
                 title="Reset Tes"
-                className={`p-2 rounded-full transition-colors ${!sudahTes ? 'text-gray-300 dark:text-gray-600' : 'text-gray-500 hover:text-orange-600 hover:bg-orange-100 dark:hover:bg-gray-700'}`}
+                className={`p-2 rounded-full transition-colors ${!sudahTes ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-orange-600 hover:bg-orange-100 dark:hover:bg-gray-700'}`}
                 disabled={!sudahTes}
                 onBefore={() => confirm('Yakin ingin mereset tes siswa ini?')}
               >
@@ -211,12 +305,22 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
     <div className="p-8 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Siswa</h1>
-        <Link
-          href="/admin/siswa-riasec/create"
-          className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Tambah Siswa Baru
-        </Link>
+        <div className="flex items-center space-x-2">
+          <Link
+            href="/admin/print/all-students"
+            target="_blank"
+            className="inline-flex items-center px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            <Printer className="w-4 h-4 mr-2" />
+            Cetak Semua
+          </Link>
+          <Link
+            href="/admin/siswa-riasec/create"
+            className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Tambah Siswa Baru
+          </Link>
+        </div>
       </div>
 
       <div className="mb-4">
@@ -278,53 +382,19 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
         </table>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="mt-6 flex items-center justify-between">
-        <div className="text-sm text-gray-900 dark:text-white">
-          Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
+      {/* --- PAGINATION SECTION (TELAH DIPERBARUI) --- */}
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="text-sm text-gray-700 dark:text-gray-300">
+          Halaman{' '}
+          <strong className="font-medium text-gray-900 dark:text-white">
+            {table.getState().pagination.pageIndex + 1}
+          </strong>{' '}
+          dari{' '}
+          <strong className="font-medium text-gray-900 dark:text-white">
+            {table.getPageCount()}
+          </strong>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'<<'}
-          </button>
-          <button
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'<'}
-          </button>
-          <button
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'>'}
-          </button>
-          <button
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'>>'}
-          </button>
-          <span className="flex items-center gap-1 text-sm text-gray-900 dark:text-white">
-            | Ke halaman:
-            <input
-              type="number"
-              defaultValue={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0
-                table.setPageIndex(page)
-              }}
-              className="border p-1 rounded w-16 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-            />
-          </span>
-        </div>
+        <Pagination table={table} />
       </div>
     </div>
   )

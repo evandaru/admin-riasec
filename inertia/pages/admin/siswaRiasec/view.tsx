@@ -1,7 +1,7 @@
 // title: inertia/pages/admin/siswaRiasec/view.tsx
 import { Head, Link } from '@inertiajs/react'
 import AdminLayout from '../layouts/main'
-import { Award, BrainCircuit, Lightbulb, RefreshCw } from 'lucide-react'
+import { Award, BrainCircuit, Printer, Lightbulb, RefreshCw } from 'lucide-react'
 import { motion } from 'framer-motion' // 1. Impor Framer Motion untuk animasi
 
 // --- DATA DESKRIPSI RIASEC ---
@@ -134,6 +134,16 @@ export default function SiswaView({ siswa, hasilTes, recommendedPrograms, recomm
                             Detail Siswa
                         </h1>
                         <div className="flex items-center space-x-3">
+                            {hasilTes && (
+                                <Link
+                                    href={`/admin/print/student/${siswa.id}`}
+                                    target="_blank"
+                                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
+                                >
+                                    <Printer className="w-4 h-4 mr-2" />
+                                    Cetak Hasil
+                                </Link>
+                            )}
                             {hasilTes && (
                                 <Link
                                     href={`/admin/siswa-riasec/${siswa.id}/reset`}
@@ -286,7 +296,7 @@ export default function SiswaView({ siswa, hasilTes, recommendedPrograms, recomm
                                                 <p className="text-gray-500 mt-2 flex-grow">
                                                     {interest.description || 'Deskripsi belum tersedia.'}
                                                 </p>
-                                               
+
                                             </motion.div>
                                         ))}
                                     </div>

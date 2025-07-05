@@ -15,6 +15,8 @@ const AdminUsersController = () => import('#controllers/admin/users_controller')
 
 const ProfilesController = () => import('#controllers/admin/profiles_controller')
 
+const PrintController = () => import('#controllers/admin/prints_controller')
+
 const SiswaRiasecsController = () => import('#controllers/admin/riasec/siswa_riasecs_controller')
 const PertanyaanRiasecsController = () =>
   import('#controllers/admin/riasec/pertanyaan_riasecs_controller')
@@ -105,6 +107,13 @@ router
 
     router.get('/profile', [ProfilesController, 'show']).as('admin.profile.show')
     router.put('/profile', [ProfilesController, 'update']).as('admin.profile.update')
+
+    router
+      .get('/print/all-students', [PrintController, 'printAllSiswa'])
+      .as('admin.print.all_students')
+    router
+      .get('/print/student/:id', [PrintController, 'printStudentDetail'])
+      .as('admin.print.student_detail')
   })
   .prefix('admin')
   .use([middleware.auth(), middleware.admin()])

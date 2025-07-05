@@ -1,5 +1,13 @@
 import { Link } from '@inertiajs/react'
-import { Pencil, Trash2, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
+import {
+  Pencil,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
 import AdminLayout from '../layouts/main'
 import { useMemo, useState, useEffect } from 'react'
 import {
@@ -12,10 +20,11 @@ import {
   flexRender,
   SortingState,
   ColumnDef,
-  ColumnFiltersState, // BARU: Impor tipe untuk filter kolom
+  ColumnFiltersState,
+  Table,
 } from '@tanstack/react-table'
 
-// --- Data Interface (tidak berubah) ---
+// --- Tipe Data (tidak berubah) ---
 interface Pertanyaan {
   id: number
   teksPertanyaan: string
@@ -43,14 +52,85 @@ function DebouncedInput({
   return <input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
 }
 
+// --- KOMPONEN PAGINATION BARU ---
+function Pagination({ table }: { table: Table<Pertanyaan> }) {
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
+
+  const getPaginationButtons = () => {
+    const buttons: (string | number)[] = []
+    const context = 1
+
+    buttons.push(1)
+    if (currentPage > context + 2) {
+      buttons.push('...')
+    }
+    for (let i = Math.max(2, currentPage - context); i <= Math.min(totalPages - 1, currentPage + context); i++) {
+      buttons.push(i)
+    }
+    if (currentPage < totalPages - context - 1) {
+      buttons.push('...')
+    }
+    if (totalPages > 1) {
+      buttons.push(totalPages)
+    }
+    return [...new Set(buttons)]
+  }
+
+  const paginationButtons = getPaginationButtons()
+  if (totalPages <= 1) return null
+
+  return (
+    <nav aria-label="Pagination">
+      <ul className="inline-flex items-center -space-x-px text-sm">
+        <li>
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+        </li>
+        {paginationButtons.map((page, index) => (
+          <li key={index}>
+            {page === '...' ? (
+              <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                ...
+              </span>
+            ) : (
+              <button
+                onClick={() => table.setPageIndex((page as number) - 1)}
+                className={`flex items-center justify-center px-3 h-8 leading-tight border ${currentPage === page
+                    ? 'z-10 text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
+                    : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700'
+                  }`}
+              >
+                {page}
+              </button>
+            )}
+          </li>
+        ))}
+        <li>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </li>
+      </ul>
+    </nav>
+  )
+}
+
+
 // --- Komponen Utama ---
 export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan[] }) {
   const data = useMemo(() => pertanyaan, [pertanyaan])
-
-  // --- State untuk tabel ---
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
-  // BARU: State untuk menyimpan filter per kolom
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const riasecColors: Record<string, string> = {
@@ -66,12 +146,13 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
 
   const columns = useMemo<ColumnDef<Pertanyaan, any>[]>(
     () => [
-      // ... Definisi kolom lainnya tidak berubah ...
-      columnHelper.accessor((row, index) => index + 1, {
+      columnHelper.accessor((row, index) => index, { // Gunakan index sebagai basis
         id: 'no',
         header: '#',
         size: 50,
         enableSorting: false,
+        cell: (info) => // Kalkulasi nomor baris di dalam cell render
+          info.row.index + 1 + info.table.getState().pagination.pageIndex * info.table.getState().pagination.pageSize,
       }),
       columnHelper.accessor('tipeRiasec', {
         header: 'Tipe',
@@ -126,15 +207,13 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
   const table = useReactTable({
     data,
     columns,
-    // DIUBAH: Tambahkan state filter kolom
     state: { sorting, globalFilter, columnFilters },
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
-    // BARU: Tambahkan handler untuk perubahan filter kolom
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(), // Ini yang akan memproses filter
+    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 10 } },
   })
@@ -153,9 +232,7 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
         </Link>
       </div>
 
-      {/* DIUBAH: Kelompokkan kontrol filter */}
       <div className="flex items-center gap-4 mb-4">
-        {/* Global Search */}
         <DebouncedInput
           value={globalFilter ?? ''}
           onChange={(value) => setGlobalFilter(String(value))}
@@ -163,7 +240,6 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
           placeholder="Cari semua kolom..."
         />
 
-        {/* BARU: Filter Dropdown untuk Tipe RIASEC */}
         <div>
           <select
             value={(table.getColumn('tipeRiasec')?.getFilterValue() as string) ?? ''}
@@ -171,17 +247,15 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
             className="p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           >
             <option value="">Semua Tipe</option>
-            {/* Opsi untuk setiap tipe RIASEC */}
             {['R', 'I', 'A', 'S', 'E', 'C'].map((tipe) => (
               <option key={tipe} value={tipe}>
-                 {tipe}
+                Tipe {tipe}
               </option>
             ))}
           </select>
         </div>
       </div>
 
-      {/* --- Bagian Tabel dan Paginasi (TIDAK BERUBAH) --- */}
       <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-gray-700">
@@ -227,56 +301,50 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
         </table>
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
-        {/* ... Kontrol Paginasi ... */}
-        <div className="mt-6 flex items-center justify-between">
-          <div className="text-sm text-gray-900 dark:text-white">
-            Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'<<'}
-            </button>
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'<'}
-            </button>
-            <button
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'>'}
-            </button>
-            <button
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'>>'}
-            </button>
-            <span className="flex items-center gap-1 text-sm text-gray-900 dark:text-white">
-              | Ke halaman:
-              <input
-                type="number"
-                defaultValue={table.getState().pagination.pageIndex + 1}
-                onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0
-                  table.setPageIndex(page)
-                }}
-                className="border p-1 rounded w-16 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              />
-            </span>
-          </div>
+      {/* --- PAGINATION SECTION (TELAH DIPERBARUI) --- */}
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <span>
+            Halaman{' '}
+            <strong className="font-medium text-gray-900 dark:text-white">
+              {table.getState().pagination.pageIndex + 1}
+            </strong>{' '}
+            dari{' '}
+            <strong className="font-medium text-gray-900 dark:text-white">
+              {table.getPageCount()}
+            </strong>
+          </span>
+          <span className="hidden sm:inline">|</span>
+          <span className="flex items-center gap-1">
+            Ke Halaman:
+            <input
+              type="number"
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              className="border p-1 rounded w-16 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </span>
         </div>
-        {/* ... */}
+
+        <Pagination table={table} />
+
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700 dark:text-gray-300">Baris per halaman:</span>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value))
+            }}
+            className="p-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            {[10, 20, 50, 100].map(size => (
+              <option key={size} value={size}>{size}</option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   )
