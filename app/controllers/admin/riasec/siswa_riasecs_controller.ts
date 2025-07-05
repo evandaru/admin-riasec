@@ -17,26 +17,51 @@ export default class SiswaRiasecsController {
   /**
    * Display a list of all students for TanStack Table.
    */
-  async index({ inertia, session, request }: HttpContext) {
+  async index({ inertia, session, request, auth }: HttpContext) {
+    // Tambahkan 'auth'
     try {
-      // Fetch all students instead of paginating
+      // Ambil semua siswa dengan relasi yang dibutuhkan
       const allSiswa = await Siswa.query()
         .preload('user')
-        .preload('hasilTes', (query) => query.orderBy('tanggal_tes', 'desc').limit(1))
+        .preload('hasilTes', (query) => {
+          // Pastikan kita hanya mengambil hasil tes terbaru untuk setiap siswa
+          query.orderBy('tanggal_tes', 'desc')
+        })
         .orderBy('nama_lengkap', 'asc')
 
-      // Serialize the data to be sent to the view
+      // --- PERBAIKAN UTAMA DI SINI ---
+      // Serialisasi data secara eksplisit untuk memastikan relasi 'hasilTes' disertakan.
+      const serializedSiswa = allSiswa.map((s) => {
+        // Kita hanya ambil satu hasil tes terbaru dari array yang sudah di-preload
+        const siswaData = s.serialize({
+          relations: {
+            user: {
+              fields: ['email'], // Hanya kirim email dari user
+            },
+          },
+        })
+
+        // Secara manual tambahkan hasil tes terbaru ke objek
+        siswaData.hasilTes = s.hasilTes.length > 0 ? [s.hasilTes[0].serialize()] : []
+
+        return siswaData
+      })
+      // --- AKHIR PERBAIKAN ---
+
+      // Kirim data yang sudah diserialisasi dengan benar ke view
       return inertia.render('admin/siswaRiasec/index', {
-        siswa: allSiswa.map((s) => s.serialize()),
-        url: request.url(), // Tambahin URL
-        user: request.ctx?.auth?.user?.serialize() || null, // Tambahin user
+        siswa: serializedSiswa, // Gunakan data yang sudah diperbaiki
+        url: request.url(),
+        // Ambil user dari auth context jika tersedia
+        user: auth.user ? auth.user.serialize() : null,
       })
     } catch (error) {
-      session.flash('error', 'Gagal memuat daftar siswa')
+      console.error('Error loading student list:', error) // Tambahkan logging error
+      session.flash('error', 'Gagal memuat daftar siswa. Terjadi kesalahan internal.')
       return inertia.render('admin/siswaRiasec/index', {
         siswa: [],
-        url: request.url(), // Tambahin URL di error case juga
-        user: request.ctx?.auth?.user?.serialize() || null, // Tambahin user
+        url: request.url(),
+        user: auth.user ? auth.user.serialize() : null,
       })
     }
   }
@@ -91,7 +116,7 @@ export default class SiswaRiasecsController {
   /**
    * Display a single student's details with test results
    */
-  async show({ inertia, params, session, request }: HttpContext) {
+  async show({ inertia, params, session, request, response }: HttpContext) {
     try {
       const siswa = await Siswa.query()
         .where('id', params.id)
@@ -120,14 +145,14 @@ export default class SiswaRiasecsController {
       })
     } catch (error) {
       session.flash('error', 'Siswa tidak ditemukan')
-      return inertia.redirect().toRoute('admin.siswaRiasec.index')
+      return response.redirect().toRoute('admin.siswaRiasec.index')
     }
   }
 
   /**
    * Show the student edit form
    */
-  async edit({ params, inertia, session, request }: HttpContext) {
+  async edit({ params, inertia, session, request, response }: HttpContext) {
     try {
       const siswa = await Siswa.query().where('id', params.id).preload('user').firstOrFail()
 
@@ -137,7 +162,7 @@ export default class SiswaRiasecsController {
       })
     } catch (error) {
       session.flash('error', 'Siswa tidak ditemukan')
-      return inertia.redirect().toRoute('admin.siswaRiasec.index')
+      return response.redirect().toRoute('admin.siswaRiasec.index')
     }
   }
 

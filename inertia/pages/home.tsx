@@ -1,188 +1,160 @@
+import { useState } from 'react'
 import { Head, Link } from '@inertiajs/react'
+import { Users, ClipboardList, BarChart3, Lightbulb, GraduationCap, Menu, X } from 'lucide-react'
+
+const features = [
+  {
+    icon: <Users size={24} />,
+    title: 'Manajemen Siswa & Tes',
+    description: 'Kelola data siswa dan pantau kemajuan tes dengan mudah.',
+  },
+  {
+    icon: <ClipboardList size={24} />,
+    title: 'Bank Soal Dinamis',
+    description: 'Kontrol penuh atas pertanyaan tes RIASEC Anda.',
+  },
+  {
+    icon: <BarChart3 size={24} />,
+    title: 'Laporan Detail & Visual',
+    description: 'Hasil tes komprehensif dengan grafik yang mudah dipahami.',
+  },
+  {
+    icon: <Lightbulb size={24} />,
+    title: 'Rekomendasi Cerdas',
+    description: 'Rekomendasi jurusan dan karier yang dipersonalisasi.',
+  },
+]
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen font-sans">
-      <Head title="HomePage" />
-      <link rel="icon" href="/public/logo.png" />
+    <div className="bg-white text-gray-800 font-sans antialiased">
+      <Head>
+        <title>Platform Tes RIASEC Sekolah</title>
+        <meta name="description" content="Platform tes minat bakat RIASEC untuk sekolah modern." />
+        <link rel="icon" href="/logo.png" />
+      </Head>
 
-      {/* Hero Section */}
-      <section className="relative flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 text-center bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-blue-950 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/subtle-white-feathers.png')] opacity-10 dark:opacity-20" />
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight animate-fade-in-up">
-            Bantu Siswa Temukan
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
-              Jurusan & Karier Impian
-            </span>
-          </h1>
-          <p className="mt-6 text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-200">
-            Platform Tes Minat Bakat RIASEC terintegrasi untuk sekolah modern. Laporan akurat, bimbingan karier yang mudah.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-            <Link
-              href="/login"
-              className="inline-block px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-            >
-              Coba Demo Gratis
+      {/* === HEADER & NAVIGASI TETAP DI ATAS (STICKY) === */}
+      {/* PERBAIKAN 1: Menambahkan kelas untuk membuat header fixed */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
+        <div className="max-w-5xl mx-auto px-6">
+          <nav className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2">
+              <GraduationCap size={24} className="text-blue-600" />
+              <span className="font-bold text-lg">Platform RIASEC</span>
             </Link>
-            <Link
-              href="#features"
-              className="inline-block px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-blue-600 dark:text-blue-400 bg-transparent border border-blue-600 dark:border-blue-400 rounded-full hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors duration-300"
-            >
-              Lihat Fitur →
-            </Link>
-          </div>
+
+            {/* Tombol Hamburger (Hanya terlihat di mobile) */}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-20">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+
+            {/* Menu Links (Desktop) */}
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="#features" className="text-gray-600 hover:text-black">
+                Fitur
+              </Link>
+              <Link href="#kontak" className="text-gray-600 hover:text-black">
+                Kontak
+              </Link>
+              <Link
+                href="/login"
+                className="ml-4 px-5 py-2 text-sm font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+              >
+                Login
+              </Link>
+            </div>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      {/* Features Section */}
-      <section className="py-16 sm:py-24 bg-gray-50 dark:bg-gray-800/50" id="features">
-        <div className="max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto">
+      {/* Menu Overlay untuk Mobile */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center gap-8 md:hidden"
+          onClick={() => setIsMenuOpen(false)} // Klik di luar menu untuk menutup
+        >
+          <Link href="#features" className="text-xl text-gray-800">
+            Fitur
+          </Link>
+          <Link href="#kontak" className="text-xl text-gray-800">
+            Kontak
+          </Link>
+          <Link
+            href="/login"
+            className="mt-4 px-8 py-3 text-lg font-semibold bg-blue-600 text-white rounded-full"
+          >
+            Login
+          </Link>
+        </div>
+      )}
+
+      <main className="space-y-24 md:space-y-32">
+        {/* === HERO SECTION FULL-SCREEN === */}
+        {/* PERBAIKAN 2: Menambahkan kelas untuk membuat section setinggi layar dan konten terpusat */}
+        <section className="min-h-screen flex flex-col justify-center items-center text-center px-6">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-3xl mx-auto">
+            Bantu Siswa Temukan Jurusan & Karier Impian
+          </h1>
+          <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
+            Platform Tes Minat Bakat RIASEC terintegrasi untuk sekolah. Laporan akurat, manajemen
+            mudah, dan bimbingan yang terarah.
+          </p>
+          <Link
+            href="/login"
+            className="inline-block mt-8 px-8 py-3 font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-transform hover:scale-105"
+          >
+            Login Sekarang Juga
+          </Link>
+        </section>
+
+        {/* === FEATURES SECTION === */}
+        <section id="features" className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold animate-fade-in">Solusi Cerdas untuk Sekolah Anda</h2>
-            <p className="mt-4 text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-fade-in animation-delay-200">
-              Ubah kebingungan menjadi kejelasan dengan Tes RIASEC dalam 3 langkah sederhana.
+            <h2 className="text-3xl md:text-4xl font-bold">Solusi Lengkap untuk Sekolah</h2>
+            <p className="text-gray-600 mt-2">
+              Fitur yang dirancang untuk bimbingan karier modern.
             </p>
           </div>
-          <div className="relative grid gap-6 sm:gap-8 md:grid-cols-3">
-            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-700 hidden md:block transform -translate-y-1/2 z-0" />
-            {[
-              {
-                step: 1,
-                title: "Buat Sesi Tes",
-                desc: "Admin membuat jadwal dan membagikan kode akses unik kepada siswa hanya dalam beberapa klik.",
-              },
-              {
-                step: 2,
-                title: "Siswa Mengerjakan",
-                desc: "Siswa mengerjakan tes online di mana saja melalui komputer atau smartphone dengan antarmuka ramah.",
-              },
-              {
-                step: 3,
-                title: "Analisis Hasil",
-                desc: "Dapatkan laporan individual yang detail dan rekapitulasi sekolah secara real-time untuk konseling.",
-              },
-            ].map((item, index) => (
-              <div
-                key={item.step}
-                className="relative z-10 p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in-up"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="flex items-center justify-center mx-auto mb-4 font-bold text-white bg-blue-600 rounded-full w-12 h-12 sm:w-14 sm:h-14">
-                  {item.step}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-start gap-4">
+                <div className="flex-shrink-0 bg-blue-100 text-blue-600 p-3 rounded-full">
+                  {feature.icon}
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold">{item.title}</h3>
-                <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400">{item.desc}</p>
+                <div>
+                  <h3 className="text-lg font-bold">{feature.title}</h3>
+                  <p className="text-gray-600 mt-1">{feature.description}</p>
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Testimonial Section */}
-      <section className="py-16 sm:py-24 bg-white dark:bg-gray-900">
-        <div className="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold animate-fade-in">Dipercaya oleh Para Pendidik</h2>
-          <figure className="mt-10 animate-fade-in-up animation-delay-200">
-            <blockquote className="text-base sm:text-lg md:text-xl italic text-gray-700 dark:text-gray-300">
-              <p>"Laporan hasil tes RIASEC sangat membantu. Sesi konseling menjadi lebih terarah dan produktif. Siswa dan orang tua merasa lebih tercerahkan."</p>
-            </blockquote>
-            <figcaption className="mt-6">
-              <img
-                className="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full border-2 border-blue-600 dark:border-blue-400"
-                src="https://i.pravatar.cc/150?u=anisa"
-                alt="Foto Ibu Anisa"
-              />
-              <div className="mt-4">
-                <cite className="font-semibold not-italic text-gray-800 dark:text-gray-200">Ibu Anisa Wulandari, S.Pd.</cite>
-                <br />
-                <cite className="text-gray-500 dark:text-gray-400 not-italic text-sm">Guru Bimbingan & Konseling, SMAN 2 Maju Jaya</cite>
-              </div>
-            </figcaption>
-          </figure>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-teal-500 dark:from-blue-700 dark:to-teal-600 text-white">
-        <div className="max-w-4xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold animate-fade-in">
-            Optimalkan Bimbingan Karier Sekolah Anda
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-blue-100 animate-fade-in animation-delay-200">
-            Rasakan dampak positif platform kami bagi siswa dan sekolah Anda.
-          </p>
-          <Link
-            href="/register"
-            className="inline-block px-8 py-3 sm:px-10 sm:py-4 mt-8 text-sm sm:text-base font-bold text-blue-600 bg-white rounded-full shadow-lg hover:scale-105 transition-transform duration-300"
-          >
-            Daftar & Minta Akses Demo
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer Section */}
-      <footer className="bg-gray-800 dark:bg-black text-gray-400">
-        <div className="max-w-7xl px-4 sm:px-6 lg:px-8 py-12 mx-auto">
-          <div className="grid gap-8 sm:gap-12 md:grid-cols-4">
-            <div className="md:col-span-2">
-              <h3 className="text-lg font-bold text-white">Platform RIASEC Sekolah</h3>
-              <p className="mt-2 text-sm">Membantu generasi muda Indonesia menemukan potensi terbaiknya melalui teknologi.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white">Navigasi</h4>
-              <ul className="mt-4 space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Tentang Kami</a></li>
-                <li><a href="#features" className="hover:text-white transition-colors duration-200">Fitur</a></li>
-                <li><a href="#" className="hover:text-white transition-colors duration-200">Harga</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white">Kontak</h4>
-              <ul className="mt-4 space-y-2 text-sm">
-                <li><a href="mailto:info@sekolah.app" className="hover:text-white transition-colors duration-200">info@sekolah.app</a></li>
-                <li><a href="tel:+6221123456" className="hover:text-white transition-colors duration-200">(021) 123-456</a></li>
-              </ul>
-            </div>
+        {/* === FOOTER & FINAL CTA === */}
+        <footer id="kontak" className="text-center py-16 border-t mt-24">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Siap Mengoptimalkan Bimbingan Karier?
+            </h2>
+            <p className="text-gray-600 mt-2">
+              Daftar sekarang dan rasakan dampaknya bagi sekolah Anda.
+            </p>
+            <a
+              href="https://wa.me/6289678001670?text=Halo%20Saya%20ingin%20mendaftar%20dan%20minta%20demo%20Platform%20RIASEC"
+              className="inline-block mt-6 px-8 py-3 font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-transform hover:scale-105"
+            >
+              Daftar & Minta Demo
+            </a>
+            <p className="text-sm text-gray-500 mt-12">
+              © {new Date().getFullYear()} Platform RIASEC Anda. Hak Cipta Dilindungi.
+            </p>
           </div>
-          <div className="pt-8 mt-8 text-sm text-center border-t border-gray-700">
-            <p>© {new Date().getFullYear()} Platform RIASEC Anda. Hak Cipta Dilindungi.</p>
-          </div>
-        </div>
-      </footer>
-
-      {/* Tailwind Animation Styles */}
-      <style jsx>{`
-        .animate-fade-in {
-          animation: fadeIn 0.8s ease-out forwards;
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .animation-delay-200 {
-          animation-delay: 200ms;
-        }
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        </footer>
+      </main>
     </div>
   )
 }

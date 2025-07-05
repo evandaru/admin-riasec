@@ -286,12 +286,7 @@ export default function SiswaView({ siswa, hasilTes, recommendedPrograms, recomm
                                                 <p className="text-gray-500 mt-2 flex-grow">
                                                     {interest.description || 'Deskripsi belum tersedia.'}
                                                 </p>
-                                                <Link
-                                                    href="#"
-                                                    className="mt-4 inline-block bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300"
-                                                >
-                                                    Coba Jelajahi
-                                                </Link>
+                                               
                                             </motion.div>
                                         ))}
                                     </div>

@@ -159,16 +159,20 @@ export default class RiasecService {
     )
 
     console.log('\n[LANGKAH 5] Mengurutkan Rekomendasi Berdasarkan Skor Tertinggi')
-    const recommendations = Object.values(scoredInterests)
-      .sort((a, b) => b.matchScore - a.matchScore)
-      .slice(0, limit)
+    const sortedInterests = Object.values(scoredInterests).sort(
+      (a, b) => b.matchScore - a.matchScore
+    )
+    const maxScore = sortedInterests[0]?.matchScore || 0 // Skor tertinggi
+    const scorePercentageThreshold = 0.5 // Ambil yang skornya minimal 50% dari skor maksimum
+    const recommendations = sortedInterests
+      .filter((item) => item.matchScore >= maxScore * scorePercentageThreshold)
       .map((item) => {
         item.data.$extras.matchScore = item.matchScore
         return item.data
       })
 
     console.log(
-      `\n[HASIL AKHIR] ${recommendations.length} Rekomendasi Teratas (dibatasi oleh limit=${limit}):`
+      `\n[HASIL AKHIR] ${recommendations.length} Rekomendasi Teratas (dibatasi oleh ${scorePercentageThreshold * 100}% dari skor maksimum=${maxScore}):`
     )
     recommendations.forEach((rec, index) => {
       console.log(`  ${index + 1}. Nama: "${rec.name}", Skor Kecocokan: ${rec.$extras.matchScore}`)

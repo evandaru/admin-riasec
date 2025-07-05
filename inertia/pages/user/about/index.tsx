@@ -69,11 +69,10 @@ export default function About({ title, description }: AboutProps) {
                 <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-8 rounded-2xl shadow-lg">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
-                            Kontak Fauzan
+                            Kontak dan Sosial Media
                         </h2>
                         <p className="mt-3 text-gray-500 dark:text-gray-300 text-base lg:text-lg max-w-xl mx-auto">
-                            Mau diskusi, ngoding bareng, atau cuma ngobrol random? Cus langsung cek sosmed gue di
-                            bawah ini. No basa-basi, langsung DM aja 🚀
+                            
                         </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">

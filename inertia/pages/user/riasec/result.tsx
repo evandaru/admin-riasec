@@ -1,6 +1,7 @@
 import { Head, usePage, Link } from '@inertiajs/react'
 import UserLayout from '../layouts/main'
-import { Award, BrainCircuit, Lightbulb } from 'lucide-react'
+import { Lightbulb } from 'lucide-react'
+import { useState } from 'react' // Pastikan useState diimpor
 
 // --- DATA DESKRIPSI RIASEC ---
 const descriptions = {
@@ -107,7 +108,10 @@ interface ResultPageProps {
 
 // --- Komponen Utama ---
 export default function RiasecResultPage() {
-  const { hasilTes, recommendedPrograms, recommendedInterests } = usePage<ResultPageProps>().props
+  const { hasilTes, recommendedInterests } = usePage<ResultPageProps>().props
+
+  // State untuk mengontrol visibilitas rekomendasi minat
+  const [showAllInterests, setShowAllInterests] = useState(false)
 
   // Kumpulkan skor mentah
   const rawScores = [
@@ -128,11 +132,15 @@ export default function RiasecResultPage() {
   // Ambil 3 tipe teratas dari kode Holland
   const topThreeTypes = hasilTes.kodeHolland.split('') as (keyof typeof descriptions)[]
 
+  // Logika untuk menentukan item minat yang akan ditampilkan
+  const interestsToDisplay = showAllInterests
+    ? recommendedInterests
+    : recommendedInterests.slice(0, 3)
+
   return (
     <>
       <Head title={`Hasil Tes RIASEC - ${hasilTes.kodeHolland}`} />
 
-      {/* Gradient Background */}
       <div className="">
         <div className="max-w-4xl mx-auto">
           {/* Section: Apa Arti Kode Holland? */}
@@ -187,8 +195,9 @@ export default function RiasecResultPage() {
                           style={{ width: `${percentage}%` }}
                         />
                         <span
-                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
-                            }`}
+                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${
+                            percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
+                          }`}
                         >
                           {score}
                         </span>
@@ -284,26 +293,46 @@ export default function RiasecResultPage() {
               </p>
             </div>
             {recommendedInterests && recommendedInterests.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recommendedInterests.map((interest) => (
-                  <div
-                    key={interest.id}
-                    className="border border-gray-200 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center text-center transform hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gray-50 dark:bg-gray-700"
-                  >
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {interest.name}
-                    </h3>
-                    <p className="text-gray-500 dark:text-gray-400 mt-2 flex-grow">
-                      {interest.description || 'Deskripsi belum tersedia.'}
-                    </p>
-                    <Link
-                      href="#"
-                      className="mt-4 inline-block bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold py-2 px-4 rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all"
+              <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {interestsToDisplay.map((interest) => (
+                    <div
+                      key={interest.id}
+                      className="group border border-gray-200 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center text-center transform hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gray-50 dark:bg-gray-700"
                     >
-                      Coba Jelajahi
-                    </Link>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        {interest.name}
+                      </h3>
+                      <p className="text-gray-500 dark:text-gray-400 mt-2 flex-grow line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
+                        {interest.description || 'Deskripsi belum tersedia.'}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tombol "Lihat Semua" (muncul saat item disembunyikan) */}
+                {recommendedInterests.length > 3 && !showAllInterests && (
+                  <div className="text-center mt-8">
+                    <button
+                      onClick={() => setShowAllInterests(true)}
+                      className="bg-indigo-100 text-indigo-700 font-semibold py-2 px-6 rounded-lg hover:bg-indigo-200 transition-all"
+                    >
+                      Lihat Semua Rekomendasi
+                    </button>
                   </div>
-                ))}
+                )}
+
+                {/* Tombol "Lihat Lebih Sedikit" (muncul saat semua item ditampilkan) */}
+                {recommendedInterests.length > 3 && showAllInterests && (
+                  <div className="text-center mt-8">
+                    <button
+                      onClick={() => setShowAllInterests(false)}
+                      className="bg-gray-100 text-gray-700 font-semibold py-2 px-6 rounded-lg hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-all"
+                    >
+                      Lihat Lebih Sedikit
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center py-10">
@@ -314,91 +343,27 @@ export default function RiasecResultPage() {
             )}
           </section>
 
-          {/* Section: Rekomendasi Program */}
-          {/* <section className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-xl shadow-lg animate-slide-up">
-            <div className="text-center mb-8">
-              <Award className="mx-auto h-12 w-12 text-yellow-500" />
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-4">
-                Program yang Cocok Buat Lo 🏆
-              </h2>
-              <p className="mt-2 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Berdasarkan kode Holland lo, ini program yang bisa bikin lo *level up*! Cek di
-                bawah!
-              </p>
-            </div>
-            {recommendedPrograms && recommendedPrograms.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recommendedPrograms.map((program) => (
-                  <div
-                    key={program.id}
-                    className="border border-gray-200 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center text-center transform hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gray-50 dark:bg-gray-700"
-                  >
-                    <BrainCircuit className="h-10 w-10 text-blue-500 mb-4" />
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {program.name}
-                    </h3>
-                    <p className="text-gray-500 dark:text-gray-400 mt-2 flex-grow">
-                      {program.description || 'Deskripsi program belum tersedia.'}
-                    </p>
-                    <Link
-                      href="#"
-                      className="mt-4 inline-block bg-gradient-to-r from-blue-500 to-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:from-blue-600 hover:to-teal-600 transition-all"
-                    >
-                      Pelajari Lebih Lanjut
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-10">
-                <p className="text-gray-500 dark:text-gray-400">
-                  Belum ada program yang cocok buat lo. Stay tuned, bro! 😎
-                </p>
-              </div>
-            )}
-          </section> */}
+          {/* Section: Rekomendasi Program (Bisa ditambahkan di sini jika perlu) */}
         </div>
       </div>
 
       {/* Animasi CSS */}
       <style>{`
         @keyframes fade-in {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         @keyframes slide-up {
-          from {
-            transform: translateY(20px);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
+          from { transform: translateY(20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
         }
         @keyframes pop-up {
-          0% {
-            transform: scale(0.8);
-            opacity: 0;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
+          0% { transform: scale(0.8); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
         }
-        .animate-fade-in {
-          animation: fade-in 0.6s ease-out;
-        }
-        .animate-slide-up {
-          animation: slide-up 0.8s ease-out;
-        }
-        .animate-pop-up {
-          animation: pop-up 0.5s ease-out;
-        }
+        .animate-fade-in { animation: fade-in 0.6s ease-out; }
+        .animate-slide-up { animation: slide-up 0.8s ease-out; }
+        .animate-pop-up { animation: pop-up 0.5s ease-out; }
       `}</style>
     </>
   )

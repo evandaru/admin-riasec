@@ -1,8 +1,8 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import Siswa from '#models/siswa'
-import Program from '#models/program'
-import ProgramRating from '#models/program_rating'
-import { DateTime } from 'luxon'
+// import Siswa from '#models/siswa'
+// import Program from '#models/program'
+// import ProgramRating from '#models/program_rating'
+// import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
   // public async run() {
