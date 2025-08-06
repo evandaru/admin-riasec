@@ -1,31 +1,21 @@
-// title: inertia/pages/admin/dashboard/index.tsx
 import AdminLayout from '../layouts/main'
 import { Award, Users, UserCheck, UserX } from 'lucide-react'
 import { DateTime } from 'luxon'
 import { useState, useEffect } from 'react'
 
-// --- Tipe Data ---
 interface HasilTes {
   id: number
   kodeHolland: string
   tanggalTes: string
   siswa: { namaLengkap: string }
 }
-// ... interface lainnya
-
-// --- Komponen yang Diubah ---
-// Komponen kecil khusus untuk setiap item list.
 const ActivityItem = ({ hasil }: { hasil: HasilTes }) => {
-  // State untuk menyimpan tanggal yang sudah diformat.
   const [formattedDate, setFormattedDate] = useState<string | null>(null)
 
   useEffect(() => {
-    // useEffect HANYA berjalan di browser.
-    // Menggunakan toLocaleString dengan DATE_MED untuk format "14 Sep 2024".
-    // Ganti ke DATE_FULL untuk "14 September 2024" atau DATE_SHORT untuk "14/9/2024".
     const localDate = DateTime.fromISO(hasil.tanggalTes).toLocaleString(DateTime.DATE_MED)
     setFormattedDate(localDate)
-  }, [hasil.tanggalTes]) // Dependency array
+  }, [hasil.tanggalTes]) 
 
   return (
     <li className="py-3 flex justify-between items-center">
@@ -34,7 +24,6 @@ const ActivityItem = ({ hasil }: { hasil: HasilTes }) => {
           {hasil.siswa.namaLengkap}
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {/* Tampilkan 'Memuat...' atau tanggal yang sudah diformat */}
           Selesai: {formattedDate || 'Memuat...'}
         </p>
       </div>
@@ -45,7 +34,6 @@ const ActivityItem = ({ hasil }: { hasil: HasilTes }) => {
   )
 }
 
-// Komponen RecentActivity sekarang menjadi lebih sederhana.
 const RecentActivity = ({ recentTestTakers }: { recentTestTakers: HasilTes[] }) => (
   <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -63,7 +51,6 @@ const RecentActivity = ({ recentTestTakers }: { recentTestTakers: HasilTes[] }) 
   </div>
 )
 
-// --- Komponen Lainnya (Tidak Ada Perubahan) ---
 export default function AdminDashboard({ user, stats }: any) {
   const StatCard = ({ title, value, icon: Icon, color }: any) => (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex items-center space-x-4">
@@ -85,7 +72,7 @@ export default function AdminDashboard({ user, stats }: any) {
       E: { name: 'Enterprising', color: 'bg-purple-500' },
       C: { name: 'Conventional', color: 'bg-indigo-500' },
     }
-    const maxValue = Math.max(...Object.values(data), 1)
+    const maxValue = Math.max(...(Object.values(data) as number[]), 1)
     return (
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">

@@ -1,4 +1,3 @@
-// title: app/controllers/user/dashboard_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import Siswa from '#models/siswa'
 import Hasil from '#models/hasil'

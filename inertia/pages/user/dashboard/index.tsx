@@ -72,7 +72,8 @@ const InfoCard = ({
   )
 }
 
-// Komponen utama Dasbor
+
+
 export default function Dashboard({ user, latestResult }: DashboardProps) {
   const hasTakenTest = !!latestResult
 
@@ -90,9 +91,7 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
           </p>
         </div>
 
-        {/* Grid Konten Utama */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Kartu Utama Tes RIASEC (col-span-2) */}
           <div className="lg:col-span-2 bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-8 rounded-xl shadow-lg flex flex-col justify-center">
             {hasTakenTest ? (
               <>
@@ -137,7 +136,6 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
             )}
           </div>
 
-          {/* Kartu Samping */}
           <div className="space-y-8">
             <InfoCard
               title="Profil Saya"
@@ -152,7 +150,7 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
               link="/riasec/result/#rekomendasi"
               linkText={hasTakenTest ? 'Lihat Rekomendasi' : 'Selesaikan tes dahulu'}
               icon={Lightbulb}
-              enabled={hasTakenTest} // Kartu ini hanya aktif jika sudah tes
+              enabled={hasTakenTest} 
             />
           </div>
         </div>

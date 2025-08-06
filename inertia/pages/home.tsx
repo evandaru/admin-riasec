@@ -36,8 +36,6 @@ export default function Home() {
         <link rel="icon" href="/logo.png" />
       </Head>
 
-      {/* === HEADER & NAVIGASI TETAP DI ATAS (STICKY) === */}
-      {/* PERBAIKAN 1: Menambahkan kelas untuk membuat header fixed */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-6">
           <nav className="flex justify-between items-center h-16">
@@ -47,12 +45,10 @@ export default function Home() {
               <span className="font-bold text-lg">Platform RIASEC</span>
             </Link>
 
-            {/* Tombol Hamburger (Hanya terlihat di mobile) */}
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-20">
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            {/* Menu Links (Desktop) */}
             <div className="hidden md:flex items-center gap-6">
               <Link href="#features" className="text-gray-600 hover:text-black">
                 Fitur
@@ -71,11 +67,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Menu Overlay untuk Mobile */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center gap-8 md:hidden"
-          onClick={() => setIsMenuOpen(false)} // Klik di luar menu untuk menutup
+          onClick={() => setIsMenuOpen(false)}
         >
           <Link href="#features" className="text-xl text-gray-800">
             Fitur
@@ -93,8 +88,6 @@ export default function Home() {
       )}
 
       <main className="space-y-24 md:space-y-32">
-        {/* === HERO SECTION FULL-SCREEN === */}
-        {/* PERBAIKAN 2: Menambahkan kelas untuk membuat section setinggi layar dan konten terpusat */}
         <section className="min-h-screen flex flex-col justify-center items-center text-center px-6">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-3xl mx-auto">
             Bantu Siswa Temukan Jurusan & Karier Impian
@@ -111,7 +104,6 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* === FEATURES SECTION === */}
         <section id="features" className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">Solusi Lengkap untuk Sekolah</h2>
@@ -134,7 +126,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* === FOOTER & FINAL CTA === */}
         <footer id="kontak" className="text-center py-16 border-t mt-24">
           <div className="max-w-5xl mx-auto px-6">
             <h2 className="text-2xl md:text-3xl font-bold">

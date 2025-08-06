@@ -143,7 +143,7 @@ const Sidebar: React.FC = () => {
             {/* Settingan (DISABLED) */}
             <a href="#" className={`${linkBaseClass} mt-2 ${disabledLinkClass}`}>
               <Settings className="w-5 h-5" />
-              <span className="mx-4 font-medium">Settingan</span>
+              <span className="mx-4 font-medium">Setting</span>
             </a>
 
             {/* Logout */}
@@ -155,7 +155,7 @@ const Sidebar: React.FC = () => {
               className="w-full flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
             >
               <LogOut className="w-5 h-5" />
-              <span className="mx-4 font-medium">Cabut Dulu</span>
+              <span className="mx-4 font-medium">Log Out</span>
             </Link>
           </div>
         </div>

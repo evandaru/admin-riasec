@@ -9,6 +9,7 @@ app
 │   │   │   └── siswa_riasecs_controller.ts
 │   │   ├── dashboard_controller.ts
 │   │   ├── hasil_tes_controller.ts
+│   │   ├── prints_controller.ts
 │   │   ├── profiles_controller.ts
 │   │   └── users_controller.ts
 │   ├── auth
@@ -55,6 +56,7 @@ app
 └── validators
     ├── note.ts
     ├── pertanyaan_riasec.ts
+    ├── semua_kode.txt
     ├── siswa.ts
     └── user.ts
 bin
@@ -118,6 +120,9 @@ inertia
 │   │   │   ├── create.tsx
 │   │   │   ├── edit.tsx
 │   │   │   └── index.tsx
+│   │   ├── print
+│   │   │   ├── all_students.tsx
+│   │   │   └── student_detail.tsx
 │   │   ├── profile
 │   │   │   └── index.tsx
 │   │   ├── siswaRiasec
@@ -170,6 +175,7 @@ ace.js
 adonisrc.ts
 akwokwao.md
 anu.html
+anu.js
 anu2.html
 eslint.config.js
 lore.html
@@ -334,7 +340,6 @@ export const editUser = Bouncer.ability(() => {
 })
 
 // title: app/controllers/admin/dashboard_controller.ts
-// title: app/controllers/admin/dashboard_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import Siswa from '#models/siswa'
@@ -345,13 +350,10 @@ export default class AdminDashboardController {
   async index({ auth, inertia, request }: HttpContext) {
     const admin = auth.user!
 
-    // 1. Hitung total siswa
     const totalSiswa = await Siswa.query().count('* as total')
 
-    // 2. Hitung siswa yang sudah tes
     const siswaSudahTes = await Hasil.query().countDistinct('siswa_id as total')
 
-    // 3. Hitung distribusi tipe dominan RIASEC
     const riasecCounts = await db
       .from('hasil_tes')
       .select(db.raw('SUBSTRING(kode_holland, 1, 1) as type'))
@@ -359,23 +361,18 @@ export default class AdminDashboardController {
       .whereNotNull('kode_holland')
       .groupBy('type')
 
-    // Siapkan struktur data untuk memastikan semua tipe ada
     const riasecDistribution = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 }
     riasecCounts.forEach((item: { type: keyof typeof riasecDistribution; count: number }) => {
       if (item.type in riasecDistribution) {
-        riasecDistribution[item.type] = Number(item.count) // Pastikan count adalah number
+        riasecDistribution[item.type] = Number(item.count)
       }
     })
 
-    // 4. Ambil 5 siswa yang baru saja menyelesaikan tes
-    // --- PERUBAHAN DI SINI ---
-    // Mengurutkan berdasarkan `tanggal_tes` untuk akurasi waktu penyelesaian tes.
     const recentTestTakers = await Hasil.query()
       .preload('siswa')
-      .orderBy('tanggal_tes', 'desc') // DIUBAH DARI 'created_at'
+      .orderBy('tanggal_tes', 'desc')
       .limit(5)
 
-    // 5. Kirim semua statistik ke view
     const stats = {
       totalSiswa: totalSiswa[0].$extras.total,
       siswaSudahTes: siswaSudahTes[0].$extras.total,
@@ -398,6 +395,65 @@ export default class AdminDashboardController {
 // import type { HttpContext } from '@adonisjs/core/http'
 
 export default class HasilTesController {}
+
+// title: app/controllers/admin/prints_controller.ts
+import type { HttpContext } from '@adonisjs/core/http'
+import Siswa from '#models/siswa'
+import Hasil from '#models/hasil'
+import RiasecService from '#services/riasec_service'
+
+export default class PrintController {
+  /**
+   * Mengambil semua data siswa dan merender tabel yang bisa dicetak.
+   */
+  public async printAllSiswa({ inertia }: HttpContext) {
+    const allSiswa = await Siswa.query()
+      .preload('user', (query) => query.select('email'))
+      .preload('hasilTes', (query) => query.orderBy('tanggal_tes', 'desc'))
+      .orderBy('nama_lengkap', 'asc')
+
+    // Serialisasi sederhana untuk tampilan cetak
+    const serializedSiswa = allSiswa.map((s) => {
+      const siswaData = s.serialize({
+        relations: {
+          user: {
+            fields: ['email'],
+          },
+        },
+      })
+      // Tambahkan hasil tes terbaru secara manual
+      siswaData.hasilTes = s.hasilTes.length > 0 ? [s.hasilTes[0].serialize()] : []
+      return siswaData
+    })
+
+    return inertia.render('admin/print/all_students', {
+      siswa: serializedSiswa,
+    })
+  }
+
+  /**
+   * Mengambil detail tes satu siswa dan merender laporan yang bisa dicetak.
+   */
+  public async printStudentDetail({ inertia, params }: HttpContext) {
+    const siswa = await Siswa.query().where('id', params.id).preload('user').firstOrFail()
+
+    const hasilTes = await Hasil.query()
+      .where('siswa_id', siswa.id)
+      .orderBy('tanggal_tes', 'desc')
+      .first()
+
+    const riasecService = new RiasecService()
+    const recommendedInterests = hasilTes
+      ? await riasecService.getInterestRecommendations(hasilTes, 10) // Ambil lebih banyak untuk laporan
+      : []
+
+    return inertia.render('admin/print/student_detail', {
+      siswa: siswa.serialize(),
+      hasilTes: hasilTes ? hasilTes.serialize() : null,
+      recommendedInterests,
+    })
+  }
+}
 
 // title: app/controllers/admin/profiles_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
@@ -973,7 +1029,6 @@ export default class AboutController {
 }
 
 // title: app/controllers/user/dashboard_controller.ts
-// title: app/controllers/user/dashboard_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import Siswa from '#models/siswa'
 import Hasil from '#models/hasil'
@@ -1153,21 +1208,14 @@ export default class RecommendationsController {
 }
 
 // title: app/controllers/user/tests_controller.ts
-// title: app/controllers/user/tests_controller.ts
-
 import type { HttpContext } from '@adonisjs/core/http'
 import Siswa from '#models/siswa'
 import Hasil from '#models/hasil'
 import RiasecPertanyaan from '#models/riasec_pertanyaan'
 import RiasecService from '#services/riasec_service'
 import { getHybridRecommendations } from '#services/recommendation_service'
-// Import model MinatBakat tidak lagi diperlukan di sini
-// import Interest from '#models/minat_bakat'
 
 export default class TestsController {
-  /**
-   * Menampilkan halaman utama: hasil terakhir jika ada, atau halaman untuk memulai tes.
-   */
   async index({ auth, inertia }: HttpContext) {
     const user = auth.user!
     const siswa = await Siswa.findBy('user_id', user.id)
@@ -1186,25 +1234,19 @@ export default class TestsController {
     return inertia.render('user/riasec/index', { user: user.serialize() })
   }
 
-  /**
-   * Memulai sesi tes baru.
-   */
   async start({ auth, inertia, response }: HttpContext) {
     const user = auth.user!
     const siswa = await Siswa.findByOrFail('user_id', user.id)
 
     const lastResult = await Hasil.query().where('siswa_id', siswa.id).first()
     if (lastResult) {
-      return response.redirect().toRoute('riasec.result') // Langsung ke hasil jika sudah ada
+      return response.redirect().toRoute('riasec.result')
     }
 
     const questions = await RiasecPertanyaan.query().orderBy('nomor_urut', 'asc')
     return inertia.render('user/riasec/test', { questions })
   }
 
-  /**
-   * Menyimpan jawaban tes dan memproses hasilnya melalui service.
-   */
   async store({ request, auth, response }: HttpContext) {
     const user = auth.user!
     const answers: Record<string, number> = request.input('answers')
@@ -1216,9 +1258,6 @@ export default class TestsController {
     return response.redirect().toRoute('riasec.result')
   }
 
-  /**
-   * Menampilkan halaman hasil tes milik pengguna yang sedang login.
-   */
   async showMyResult({ auth, inertia, response }: HttpContext) {
     const user = auth.user!
     const siswa = await Siswa.findByOrFail('user_id', user.id)
@@ -1236,26 +1275,16 @@ export default class TestsController {
     return this._renderResultPage(inertia, siswa, hasilTes)
   }
 
-  /**
-   * [REFAKTOR] Private helper method untuk mengambil data dan merender halaman hasil.
-   */
   private async _renderResultPage(inertia: HttpContext['inertia'], siswa: Siswa, hasilTes: Hasil) {
-    // Inisialisasi service yang akan kita gunakan
     const riasecService = new RiasecService()
 
-    // 1. Ambil rekomendasi minat & bakat dari service.
-    // Metode baru ini sudah memiliki logika pembobotan dan pembatasan (default 6).
-    const recommendedInterests = await riasecService.getInterestRecommendations(hasilTes, 6) // <-- DIUBAH MENJADI 5 SESUAI PERMINTAAN
-
-    // 2. Ambil rekomendasi program menggunakan sistem hybrid.
-    // Logika ini tetap sama dan sudah benar.
+    const recommendedInterests = await riasecService.getInterestRecommendations(hasilTes, 6)
     const recommendedPrograms = await getHybridRecommendations(siswa.id)
 
-    // 3. Render halaman dengan data yang sudah bersih dan terstruktur.
     return inertia.render('user/riasec/result', {
       hasilTes,
       recommendedPrograms,
-      recommendedInterests, // <- Data ini sekarang sudah dibatasi menjadi 5 item paling relevan.
+      recommendedInterests,
     })
   }
 }
@@ -5410,34 +5439,24 @@ export default function Button({ children, onClick, className = '' }: ButtonProp
 }
 
 // title: inertia/pages/admin/dashboard/index.tsx
-// title: inertia/pages/admin/dashboard/index.tsx
 import AdminLayout from '../layouts/main'
 import { Award, Users, UserCheck, UserX } from 'lucide-react'
 import { DateTime } from 'luxon'
 import { useState, useEffect } from 'react'
 
-// --- Tipe Data ---
 interface HasilTes {
   id: number
   kodeHolland: string
   tanggalTes: string
   siswa: { namaLengkap: string }
 }
-// ... interface lainnya
-
-// --- Komponen yang Diubah ---
-// Komponen kecil khusus untuk setiap item list.
 const ActivityItem = ({ hasil }: { hasil: HasilTes }) => {
-  // State untuk menyimpan tanggal yang sudah diformat.
   const [formattedDate, setFormattedDate] = useState<string | null>(null)
 
   useEffect(() => {
-    // useEffect HANYA berjalan di browser.
-    // Menggunakan toLocaleString dengan DATE_MED untuk format "14 Sep 2024".
-    // Ganti ke DATE_FULL untuk "14 September 2024" atau DATE_SHORT untuk "14/9/2024".
     const localDate = DateTime.fromISO(hasil.tanggalTes).toLocaleString(DateTime.DATE_MED)
     setFormattedDate(localDate)
-  }, [hasil.tanggalTes]) // Dependency array
+  }, [hasil.tanggalTes]) 
 
   return (
     <li className="py-3 flex justify-between items-center">
@@ -5446,7 +5465,6 @@ const ActivityItem = ({ hasil }: { hasil: HasilTes }) => {
           {hasil.siswa.namaLengkap}
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {/* Tampilkan 'Memuat...' atau tanggal yang sudah diformat */}
           Selesai: {formattedDate || 'Memuat...'}
         </p>
       </div>
@@ -5457,7 +5475,6 @@ const ActivityItem = ({ hasil }: { hasil: HasilTes }) => {
   )
 }
 
-// Komponen RecentActivity sekarang menjadi lebih sederhana.
 const RecentActivity = ({ recentTestTakers }: { recentTestTakers: HasilTes[] }) => (
   <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -5475,7 +5492,6 @@ const RecentActivity = ({ recentTestTakers }: { recentTestTakers: HasilTes[] }) 
   </div>
 )
 
-// --- Komponen Lainnya (Tidak Ada Perubahan) ---
 export default function AdminDashboard({ user, stats }: any) {
   const StatCard = ({ title, value, icon: Icon, color }: any) => (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex items-center space-x-4">
@@ -5497,7 +5513,7 @@ export default function AdminDashboard({ user, stats }: any) {
       E: { name: 'Enterprising', color: 'bg-purple-500' },
       C: { name: 'Conventional', color: 'bg-indigo-500' },
     }
-    const maxValue = Math.max(...Object.values(data), 1)
+    const maxValue = Math.max(...(Object.values(data) as number[]), 1)
     return (
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -5800,7 +5816,7 @@ const Sidebar: React.FC = () => {
             {/* Settingan (DISABLED) */}
             <a href="#" className={`${linkBaseClass} mt-2 ${disabledLinkClass}`}>
               <Settings className="w-5 h-5" />
-              <span className="mx-4 font-medium">Settingan</span>
+              <span className="mx-4 font-medium">Setting</span>
             </a>
 
             {/* Logout */}
@@ -5812,7 +5828,7 @@ const Sidebar: React.FC = () => {
               className="w-full flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
             >
               <LogOut className="w-5 h-5" />
-              <span className="mx-4 font-medium">Cabut Dulu</span>
+              <span className="mx-4 font-medium">Log Out</span>
             </Link>
           </div>
         </div>
@@ -6045,7 +6061,15 @@ EditPertanyaan.layout = (page: any) => <AdminLayout children={page} />
 
 // title: inertia/pages/admin/pertanyaan/index.tsx
 import { Link } from '@inertiajs/react'
-import { Pencil, Trash2, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
+import {
+  Pencil,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
 import AdminLayout from '../layouts/main'
 import { useMemo, useState, useEffect } from 'react'
 import {
@@ -6058,10 +6082,11 @@ import {
   flexRender,
   SortingState,
   ColumnDef,
-  ColumnFiltersState, // BARU: Impor tipe untuk filter kolom
+  ColumnFiltersState,
+  Table,
 } from '@tanstack/react-table'
 
-// --- Data Interface (tidak berubah) ---
+// --- Tipe Data (tidak berubah) ---
 interface Pertanyaan {
   id: number
   teksPertanyaan: string
@@ -6089,14 +6114,85 @@ function DebouncedInput({
   return <input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
 }
 
+// --- KOMPONEN PAGINATION BARU ---
+function Pagination({ table }: { table: Table<Pertanyaan> }) {
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
+
+  const getPaginationButtons = () => {
+    const buttons: (string | number)[] = []
+    const context = 1
+
+    buttons.push(1)
+    if (currentPage > context + 2) {
+      buttons.push('...')
+    }
+    for (let i = Math.max(2, currentPage - context); i <= Math.min(totalPages - 1, currentPage + context); i++) {
+      buttons.push(i)
+    }
+    if (currentPage < totalPages - context - 1) {
+      buttons.push('...')
+    }
+    if (totalPages > 1) {
+      buttons.push(totalPages)
+    }
+    return [...new Set(buttons)]
+  }
+
+  const paginationButtons = getPaginationButtons()
+  if (totalPages <= 1) return null
+
+  return (
+    <nav aria-label="Pagination">
+      <ul className="inline-flex items-center -space-x-px text-sm">
+        <li>
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+        </li>
+        {paginationButtons.map((page, index) => (
+          <li key={index}>
+            {page === '...' ? (
+              <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                ...
+              </span>
+            ) : (
+              <button
+                onClick={() => table.setPageIndex((page as number) - 1)}
+                className={`flex items-center justify-center px-3 h-8 leading-tight border ${currentPage === page
+                    ? 'z-10 text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
+                    : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700'
+                  }`}
+              >
+                {page}
+              </button>
+            )}
+          </li>
+        ))}
+        <li>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </li>
+      </ul>
+    </nav>
+  )
+}
+
+
 // --- Komponen Utama ---
 export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan[] }) {
   const data = useMemo(() => pertanyaan, [pertanyaan])
-
-  // --- State untuk tabel ---
   const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
-  // BARU: State untuk menyimpan filter per kolom
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const riasecColors: Record<string, string> = {
@@ -6112,12 +6208,13 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
 
   const columns = useMemo<ColumnDef<Pertanyaan, any>[]>(
     () => [
-      // ... Definisi kolom lainnya tidak berubah ...
-      columnHelper.accessor((row, index) => index + 1, {
+      columnHelper.accessor((row, index) => index, { // Gunakan index sebagai basis
         id: 'no',
         header: '#',
         size: 50,
         enableSorting: false,
+        cell: (info) => // Kalkulasi nomor baris di dalam cell render
+          info.row.index + 1 + info.table.getState().pagination.pageIndex * info.table.getState().pagination.pageSize,
       }),
       columnHelper.accessor('tipeRiasec', {
         header: 'Tipe',
@@ -6172,15 +6269,13 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
   const table = useReactTable({
     data,
     columns,
-    // DIUBAH: Tambahkan state filter kolom
     state: { sorting, globalFilter, columnFilters },
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
-    // BARU: Tambahkan handler untuk perubahan filter kolom
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(), // Ini yang akan memproses filter
+    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { pagination: { pageSize: 10 } },
   })
@@ -6199,9 +6294,7 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
         </Link>
       </div>
 
-      {/* DIUBAH: Kelompokkan kontrol filter */}
       <div className="flex items-center gap-4 mb-4">
-        {/* Global Search */}
         <DebouncedInput
           value={globalFilter ?? ''}
           onChange={(value) => setGlobalFilter(String(value))}
@@ -6209,7 +6302,6 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
           placeholder="Cari semua kolom..."
         />
 
-        {/* BARU: Filter Dropdown untuk Tipe RIASEC */}
         <div>
           <select
             value={(table.getColumn('tipeRiasec')?.getFilterValue() as string) ?? ''}
@@ -6217,17 +6309,15 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
             className="p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           >
             <option value="">Semua Tipe</option>
-            {/* Opsi untuk setiap tipe RIASEC */}
             {['R', 'I', 'A', 'S', 'E', 'C'].map((tipe) => (
               <option key={tipe} value={tipe}>
-                 {tipe}
+                Tipe {tipe}
               </option>
             ))}
           </select>
         </div>
       </div>
 
-      {/* --- Bagian Tabel dan Paginasi (TIDAK BERUBAH) --- */}
       <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-gray-700">
@@ -6273,62 +6363,495 @@ export default function PertanyaanIndex({ pertanyaan }: { pertanyaan: Pertanyaan
         </table>
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
-        {/* ... Kontrol Paginasi ... */}
-        <div className="mt-6 flex items-center justify-between">
-          <div className="text-sm text-gray-900 dark:text-white">
-            Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'<<'}
-            </button>
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'<'}
-            </button>
-            <button
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'>'}
-            </button>
-            <button
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-              className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-            >
-              {'>>'}
-            </button>
-            <span className="flex items-center gap-1 text-sm text-gray-900 dark:text-white">
-              | Ke halaman:
-              <input
-                type="number"
-                defaultValue={table.getState().pagination.pageIndex + 1}
-                onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0
-                  table.setPageIndex(page)
-                }}
-                className="border p-1 rounded w-16 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              />
-            </span>
-          </div>
+      {/* --- PAGINATION SECTION (TELAH DIPERBARUI) --- */}
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <span>
+            Halaman{' '}
+            <strong className="font-medium text-gray-900 dark:text-white">
+              {table.getState().pagination.pageIndex + 1}
+            </strong>{' '}
+            dari{' '}
+            <strong className="font-medium text-gray-900 dark:text-white">
+              {table.getPageCount()}
+            </strong>
+          </span>
+          <span className="hidden sm:inline">|</span>
+          <span className="flex items-center gap-1">
+            Ke Halaman:
+            <input
+              type="number"
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                table.setPageIndex(page)
+              }}
+              className="border p-1 rounded w-16 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </span>
         </div>
-        {/* ... */}
+
+        <Pagination table={table} />
+
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700 dark:text-gray-300">Baris per halaman:</span>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value))
+            }}
+            className="p-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            {[10, 20, 50, 100].map(size => (
+              <option key={size} value={size}>{size}</option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   )
 }
 
 PertanyaanIndex.layout = (page: any) => <AdminLayout children={page} />
+
+// title: inertia/pages/admin/print/all_students.tsx
+import { useEffect } from 'react';
+import { Head } from '@inertiajs/react';
+import { DateTime } from 'luxon';
+
+// --- Tipe Data ---
+interface HasilTes {
+    kodeHolland: string | null;
+}
+
+interface Siswa {
+    id: number;
+    namaLengkap: string;
+    nisn: string | null;
+    kelas: string | null;
+    jenjang: string | null;
+    user: { email: string };
+    hasilTes: HasilTes[];
+}
+
+// --- Komponen ---
+export default function PrintAllStudents({ siswa }: { siswa: Siswa[] }) {
+    useEffect(() => {
+        // Memicu dialog cetak setelah komponen dimuat
+        const timer = setTimeout(() => {
+            window.print();
+        }, 500); // Penundaan kecil untuk memastikan render selesai
+
+        return () => clearTimeout(timer); // Cleanup untuk mencegah memory leak
+    }, []);
+
+    return (
+        <>
+            <Head title="Laporan Daftar Siswa" />
+            <div className="min-h-screen bg-white p-6 md:p-10 font-sans print:p-0">
+                {/* Header */}
+                <header className="text-center mb-8 print:mb-4">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+                        Laporan Daftar Siswa
+                    </h1>
+                    <p className="text-sm text-gray-600 mt-2">
+                        Tanggal Cetak:{' '}
+                        {DateTime.now().toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)}
+                    </p>
+                </header>
+
+                {/* Tabel */}
+                <div className="overflow-x-auto shadow-lg rounded-lg">
+                    <table className="w-full border-collapse text-sm md:text-base">
+                        <thead>
+                            <tr className="bg-gray-100 text-gray-700 uppercase text-xs md:text-sm">
+                                <th className="p-3 border border-gray-300 font-semibold">No</th>
+                                <th className="p-3 border border-gray-300 font-semibold">Nama Lengkap</th>
+                                <th className="p-3 border border-gray-300 font-semibold">Email</th>
+                                <th className="p-3 border border-gray-300 font-semibold">NISN</th>
+                                <th className="p-3 border border-gray-300 font-semibold">Kelas</th>
+                                <th className="p-3 border border-gray-300 font-semibold">Jenjang</th>
+                                <th className="p-3 border border-gray-300 font-semibold">Status Tes</th>
+                                <th className="p-3 border border-gray-300 font-semibold">Kode Holland</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {siswa.length === 0 ? (
+                                <tr>
+                                    <td colSpan={8} className="p-4 text-center text-gray-500 border border-gray-300">
+                                        Tidak ada data siswa yang tersedia.
+                                    </td>
+                                </tr>
+                            ) : (
+                                siswa.map((item, index) => {
+                                    const sudahTes = item.hasilTes && item.hasilTes.length > 0;
+                                    const hasilTerbaru = sudahTes ? item.hasilTes[0] : null;
+
+                                    return (
+                                        <tr
+                                            key={item.id}
+                                            className="hover:bg-gray-50 transition-colors break-inside-avoid"
+                                        >
+                                            <td className="p-3 border border-gray-300 text-center">
+                                                {index + 1}
+                                            </td>
+                                            <td className="p-3 border border-gray-300">
+                                                {item.namaLengkap}
+                                            </td>
+                                            <td className="p-3 border border-gray-300">{item.user.email}</td>
+                                            <td className="p-3 border border-gray-300">
+                                                {item.nisn || <span className="text-gray-400">-</span>}
+                                            </td>
+                                            <td className="p-3 border border-gray-300">
+                                                {item.kelas || <span className="text-gray-400">-</span>}
+                                            </td>
+                                            <td className="p-3 border border-gray-300">
+                                                {item.jenjang || <span className="text-gray-400">-</span>}
+                                            </td>
+                                            <td className="p-3 border border-gray-300 text-center">
+                                                <span
+                                                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${sudahTes
+                                                        ? 'bg-green-100 text-green-700'
+                                                        : 'bg-red-100 text-red-700'
+                                                        }`}
+                                                >
+                                                    {sudahTes ? 'Sudah' : 'Belum'}
+                                                </span>
+                                            </td>
+                                            <td className="p-3 border border-gray-300 text-center font-mono">
+                                                {hasilTerbaru?.kodeHolland || (
+                                                    <span className="text-gray-400">-</span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Footer */}
+                <footer className="mt-8 text-right text-xs text-gray-500 print:mt-4">
+                    Dicetak oleh Sistem Rekomendasi Karir
+                </footer>
+            </div>
+
+            {/* Media Queries untuk Cetak */}
+            <style>{`
+        @media print {
+          .no-print {
+            display: none;
+          }
+          table {
+            font-size: 10pt;
+          }
+          th,
+          td {
+            padding: 6px;
+          }
+        }
+      `}</style>
+        </>
+    );
+}
+
+// title: inertia/pages/admin/print/student_detail.tsx
+import { useEffect } from 'react';
+import { Head } from '@inertiajs/react';
+import { DateTime } from 'luxon';
+
+// --- DATA DESKRIPSI RIASEC ---
+const descriptions: Record<string, { name: string; desc: string }> = {
+    R: {
+        name: 'Realistic (The Doer)',
+        desc: 'Orang dengan tipe Realistis suka bekerja dengan objek, mesin, peralatan, tanaman, atau hewan. Mereka menikmati pekerjaan yang membutuhkan keterampilan praktis dan kekuatan fisik.',
+    },
+    I: {
+        name: 'Investigative (The Thinker)',
+        desc: 'Tipe Investigatif senang mengamati, belajar, menyelidiki, menganalisis, dan memecahkan masalah. Mereka unggul dalam tugas-tugas yang membutuhkan pemikiran abstrak dan analitis.',
+    },
+    A: {
+        name: 'Artistic (The Creator)',
+        desc: 'Tipe Artistik memiliki kemampuan artistik, inovatif, dan intuitif. Mereka suka bekerja dalam situasi yang tidak terstruktur di mana mereka dapat menggunakan imajinasi dan kreativitas mereka.',
+    },
+    S: {
+        name: 'Social (The Helper)',
+        desc: 'Tipe Sosial senang bekerja dengan orang lain untuk mencerahkan, membantu, melatih, atau menyembuhkan. Mereka terampil dalam berkomunikasi dan membangun hubungan.',
+    },
+    E: {
+        name: 'Enterprising (The Persuader)',
+        desc: 'Tipe Enterprising suka bekerja dengan orang lain untuk mempengaruhi, membujuk, atau memimpin. Mereka ambisius, energik, dan menikmati peran kepemimpinan.',
+    },
+    C: {
+        name: 'Conventional (The Organizer)',
+        desc: 'Tipe Konvensional suka bekerja dengan data, memiliki kemampuan klerikal atau numerik, dan mengikuti instruksi. Mereka terorganisir, efisien, dan menghargai ketelitian.',
+    },
+};
+
+// --- Tipe Data ---
+interface User {
+    email: string;
+}
+
+interface Interest {
+    id: number;
+    name: string;
+    description: string;
+}
+
+interface HasilTes {
+    kodeHolland: string | null;
+    tanggalTes: string;
+    skorR: number;
+    skorI: number;
+    skorA: number;
+    skorS: number;
+    skorE: number;
+    skorC: number;
+}
+
+interface Siswa {
+    id: number;
+    namaLengkap: string;
+    nisn: string | null;
+    kelas: string | null;
+    jenjang: string | null;
+    user: User;
+}
+
+interface SiswaDetailPrintProps {
+    siswa: Siswa;
+    hasilTes: HasilTes | null;
+    recommendedInterests: Interest[];
+}
+
+// --- Komponen ---
+export default function PrintStudentDetail({
+    siswa,
+    hasilTes,
+    recommendedInterests,
+}: SiswaDetailPrintProps) {
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            window.print();
+        }, 500); // Penundaan untuk memastikan render selesai
+        return () => clearTimeout(timer); // Cleanup
+    }, []);
+
+    if (!hasilTes) {
+        return (
+            <div className="min-h-screen p-6 text-center bg-white print:p-0">
+                <Head title="Laporan Tidak Tersedia" />
+                <h1 className="text-2xl font-bold text-gray-800">Laporan Tidak Tersedia</h1>
+                <p className="text-gray-600 mt-2">Siswa ini belum menyelesaikan tes.</p>
+            </div>
+        );
+    }
+
+    const scores = [
+        { type: 'R', score: hasilTes.skorR || 0, name: 'Realistic' },
+        { type: 'I', score: hasilTes.skorI || 0, name: 'Investigative' },
+        { type: 'A', score: hasilTes.skorA || 0, name: 'Artistic' },
+        { type: 'S', score: hasilTes.skorS || 0, name: 'Social' },
+        { type: 'E', score: hasilTes.skorE || 0, name: 'Enterprising' },
+        { type: 'C', score: hasilTes.skorC || 0, name: 'Conventional' },
+    ].sort((a, b) => b.score - a.score);
+
+    const topThreeTypes = hasilTes.kodeHolland
+        ? (hasilTes.kodeHolland.split('') as (keyof typeof descriptions)[])
+        : [];
+
+    return (
+        <>
+            <Head title={`Laporan Tes RIASEC - ${siswa.namaLengkap}`} />
+            <div className="min-h-screen bg-white p-6 md:p-10 font-sans text-gray-900 print:p-0">
+                {/* Header */}
+                <header className="text-center mb-8 border-b-2 border-gray-300 pb-4 print:mb-4">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+                        Laporan Hasil Tes Minat Bakat RIASEC
+                    </h1>
+                    <p className="text-sm text-gray-600 mt-2">
+                        Sistem Rekomendasi Karir |{' '}
+                        {DateTime.now().toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)}
+                    </p>
+                </header>
+
+                {/* Informasi Siswa */}
+                <section className="mb-8">
+                    <h2 className="text-xl font-semibold border-b border-gray-300 mb-4 pb-2">
+                        Informasi Siswa
+                    </h2>
+                    <table className="w-full text-sm md:text-base border-collapse">
+                        <tbody>
+                            <tr className="border-b border-gray-200">
+                                <td className="p-3 font-medium w-1/3">Nama Lengkap</td>
+                                <td className="p-3">{siswa.namaLengkap}</td>
+                            </tr>
+                            <tr className="border-b border-gray-200">
+                                <td className="p-3 font-medium">Email</td>
+                                <td className="p-3">{siswa.user?.email || 'N/A'}</td>
+                            </tr>
+                            <tr className="border-b border-gray-200">
+                                <td className="p-3 font-medium">NISN</td>
+                                <td className="p-3">{siswa.nisn || <span className="text-gray-400">-</span>}</td>
+                            </tr>
+                            <tr className="border-b border-gray-200">
+                                <td className="p-3 font-medium">Kelas / Jenjang</td>
+                                <td className="p-3">
+                                    {siswa.kelas || <span className="text-gray-400">-</span>} /{' '}
+                                    {siswa.jenjang || <span className="text-gray-400">-</span>}
+                                </td>
+                            </tr>
+                            <tr className="border-b border-gray-200">
+                                <td className="p-3 font-medium">Tanggal Tes</td>
+                                <td className="p-3">
+                                    {DateTime.fromISO(hasilTes.tanggalTes).toLocaleString(DateTime.DATE_FULL)}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                {/* Kode Holland */}
+                <section className="mb-8 text-center bg-gray-50 p-6 rounded-lg print:bg-white">
+                    <h2 className="text-lg font-semibold text-gray-800">Kode Holland Hasil Tes</h2>
+                    <p className="text-5xl font-extrabold text-blue-600 tracking-widest my-3">
+                        {hasilTes.kodeHolland || 'N/A'}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                        Kode ini merepresentasikan tiga tipe kepribadian teratas Anda.
+                    </p>
+                </section>
+
+                {/* Rincian Skor dan Deskripsi */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+                    <section className="md:col-span-5">
+                        <h2 className="text-xl font-semibold border-b border-gray-300 mb-4 pb-2">
+                            Rincian Skor
+                        </h2>
+                        <table className="w-full text-sm md:text-base border-collapse shadow-md rounded-lg">
+                            <thead>
+                                <tr className="bg-gray-100 text-gray-700 uppercase text-xs md:text-sm">
+                                    <th className="p-3 border border-gray-300 font-semibold">Tipe</th>
+                                    <th className="p-3 border border-gray-300 font-semibold text-right">Skor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {scores.map(({ type, score, name }) => (
+                                    <tr key={type} className="hover:bg-gray-50 border-b border-gray-200">
+                                        <td className="p-3 border border-gray-300">
+                                            {name} ({type})
+                                        </td>
+                                        <td className="p-3 border border-gray-300 text-right font-bold">{score}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
+                    <section className="md:col-span-7">
+                        <h2 className="text-xl font-semibold border-b border-gray-300 mb-4 pb-2">
+                            Deskripsi Tipe Teratas
+                        </h2>
+                        <table className="w-full text-sm md:text-base border-collapse shadow-md rounded-lg">
+                            <thead>
+                                <tr className="bg-gray-100 text-gray-700 uppercase text-xs md:text-sm">
+                                    <th className="p-3 border border-gray-300 font-semibold">Tipe</th>
+                                    <th className="p-3 border border-gray-300 font-semibold">Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {topThreeTypes.length > 0 ? (
+                                    topThreeTypes.map((type) => {
+                                        const typeInfo = descriptions[type];
+                                        return (
+                                            <tr key={type} className="border-b border-gray-200 break-inside-avoid">
+                                                <td className="p-3 border border-gray-300 font-medium">
+                                                    {typeInfo.name} ({type})
+                                                </td>
+                                                <td className="p-3 border border-gray-300 text-gray-700">
+                                                    {typeInfo.desc}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan={2} className="p-3 text-center text-gray-500 border border-gray-300">
+                                            Tidak ada tipe teratas yang tersedia.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                {/* Rekomendasi Minat */}
+                <section className="mb-8 break-before-page">
+                    <h2 className="text-xl font-semibold border-b border-gray-300 mb-4 pb-2">
+                        Rekomendasi Pengembangan Minat dan Bakat
+                    </h2>
+                    <table className="w-full text-sm md:text-base border-collapse shadow-md rounded-lg">
+                        <thead>
+                            <tr className="bg-gray-100 text-gray-700 uppercase text-xs md:text-sm">
+                                <th className="p-3 border border-gray-300 font-semibold">Minat</th>
+                                <th className="p-3 border border-gray-300 font-semibold">Deskripsi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {recommendedInterests.length > 0 ? (
+                                recommendedInterests.map((interest) => (
+                                    <tr key={interest.id} className="border-b border-gray-200 break-inside-avoid">
+                                        <td className="p-3 border border-gray-300 font-medium">{interest.name}</td>
+                                        <td className="p-3 border border-gray-300 text-gray-700">{interest.description}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={2} className="p-3 text-center text-gray-500 border border-gray-300">
+                                        Tidak ada rekomendasi minat dan bakat yang tersedia.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </section>
+
+                {/* Footer */}
+                <footer className="mt-12 text-center text-xs text-gray-500 pt-4 border-t border-gray-300 print:mt-4">
+                    <p>
+                        Laporan ini dihasilkan secara otomatis oleh sistem pada{' '}
+                        {DateTime.now().toLocaleString(DateTime.DATE_FULL)}.
+                    </p>
+                    <p>
+                        Hasil tes ini adalah alat bantu dan sebaiknya digunakan bersamaan dengan konseling karir
+                        lebih lanjut.
+                    </p>
+                </footer>
+
+                {/* Media Queries untuk Cetak */}
+                <style>{`
+          @media print {
+            .no-print {
+              display: none;
+            }
+            table {
+              font-size: 10pt;
+            }
+            th,
+            td {
+              padding: 6px;
+            }
+            .break-before-page {
+              page-break-before: always;
+            }
+          }
+        `}</style>
+            </div>
+        </>
+    );
+}
 
 // title: inertia/pages/admin/profile/index.tsx
 // title: inertia/pages/admin/profile/index.tsx
@@ -7163,6 +7686,9 @@ import {
   ChevronUp,
   ChevronDown,
   ChevronsUpDown,
+  Printer,
+  ChevronLeft, // <-- Impor ikon baru
+  ChevronRight, // <-- Impor ikon baru
 } from 'lucide-react'
 import AdminLayout from '../layouts/main'
 import { useMemo, useState, useEffect } from 'react'
@@ -7176,10 +7702,11 @@ import {
   flexRender,
   SortingState,
   ColumnDef,
-  SortingFn, // <-- TAMBAHKAN INI
+  SortingFn,
+  Table, // <-- Impor tipe Table
 } from '@tanstack/react-table'
 
-// --- Data Interfaces ---
+// --- Tipe Data (tidak ada perubahan) ---
 interface User {
   id: number
   email: string
@@ -7198,7 +7725,7 @@ interface Siswa {
   hasilTes: HasilTes[]
 }
 
-// --- Debounced Input for Search ---
+// --- Komponen & Fungsi Helper (tidak ada perubahan) ---
 function DebouncedInput({
   value: initialValue,
   onChange,
@@ -7218,24 +7745,107 @@ function DebouncedInput({
   return <input {...props} value={value} onChange={(e) => setValue(e.target.value)} />
 }
 
-// --- Fungsi Sorting Kustom ---
 const statusTesSortingFn: SortingFn<Siswa> = (rowA, rowB) => {
   const statusA = rowA.original.hasilTes.length > 0
   const statusB = rowB.original.hasilTes.length > 0
-  // Mengurutkan boolean, `true` (sudah tes) akan muncul sebelum `false` (belum tes) saat ascending
   return statusA === statusB ? 0 : statusA ? -1 : 1
 }
 
 const kodeHollandSortingFn: SortingFn<Siswa> = (rowA, rowB) => {
   const kodeA = rowA.original.hasilTes[0]?.kodeHolland
   const kodeB = rowB.original.hasilTes[0]?.kodeHolland
-
   if (kodeA && !kodeB) return -1
   if (!kodeA && kodeB) return 1
   if (!kodeA && !kodeB) return 0
   return (kodeA || '').localeCompare(kodeB || '')
 }
 
+// --- KOMPONEN PAGINATION BARU ---
+function Pagination({ table }: { table: Table<Siswa> }) {
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
+
+  const getPaginationButtons = () => {
+    const buttons = []
+    const context = 1 // Jumlah halaman di sekitar halaman saat ini
+
+    // Selalu tampilkan halaman pertama
+    buttons.push(1)
+
+    // Elipsis kiri
+    if (currentPage > context + 2) {
+      buttons.push('...')
+    }
+
+    // Halaman di sekitar halaman saat ini
+    for (let i = currentPage - context; i <= currentPage + context; i++) {
+      if (i > 1 && i < totalPages) {
+        buttons.push(i)
+      }
+    }
+
+    // Elipsis kanan
+    if (currentPage < totalPages - context - 1) {
+      buttons.push('...')
+    }
+
+    // Selalu tampilkan halaman terakhir
+    if (totalPages > 1) {
+      buttons.push(totalPages)
+    }
+
+    return [...new Set(buttons)] // Hapus duplikat
+  }
+
+  const paginationButtons = getPaginationButtons()
+  if (totalPages <= 1) return null // Jangan tampilkan pagination jika hanya ada 1 halaman
+
+  return (
+    <nav aria-label="Pagination">
+      <ul className="inline-flex items-center -space-x-px text-sm">
+        <li>
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+        </li>
+        {paginationButtons.map((page, index) => (
+          <li key={index}>
+            {page === '...' ? (
+              <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
+                ...
+              </span>
+            ) : (
+              <button
+                onClick={() => table.setPageIndex((page as number) - 1)}
+                className={`flex items-center justify-center px-3 h-8 leading-tight border ${currentPage === page
+                  ? 'z-10 text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white'
+                  : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+                  }`}
+              >
+                {page}
+              </button>
+            )}
+          </li>
+        ))}
+        <li>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </li>
+      </ul>
+    </nav>
+  )
+}
+
+// --- KOMPONEN UTAMA ---
 export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
   const data = useMemo(() => siswa, [siswa])
   const [sorting, setSorting] = useState<SortingState>([])
@@ -7243,13 +7853,17 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
 
   const columnHelper = createColumnHelper<Siswa>()
 
-  const columns = useMemo<ColumnDef<Siswa, any>[]>(
-    () => [
-      columnHelper.accessor((row, index) => index + 1, {
+  const columns = useMemo<ColumnDef<Siswa, any>[]>(() => [
+    columnHelper.accessor(
+      (_row: Siswa, index: number): number =>
+        table.getState().pagination.pageIndex * table.getState().pagination.pageSize + index + 1,
+      {
         id: 'no',
         header: '#',
         size: 50,
-      }),
+        enableSorting: false,
+      }
+    ),
       columnHelper.accessor('namaLengkap', {
         header: 'Nama Lengkap',
         cell: (info) => info.getValue(),
@@ -7262,16 +7876,18 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.accessor('kelas', {
         header: 'Kelas',
         cell: (info) => info.getValue() || '-',
+        size: 80,
       }),
       columnHelper.accessor('jenjang', {
-        header: 'jenjang',
+        header: 'Jenjang',
         cell: (info) => info.getValue() || '-',
+        size: 90,
       }),
       columnHelper.display({
         id: 'statusTes',
         header: 'Status Tes',
-        enableSorting: true, // Aktifkan sorting
-        sortingFn: statusTesSortingFn, // Gunakan fungsi kustom
+        enableSorting: true,
+        sortingFn: statusTesSortingFn,
         cell: ({ row }) => {
           const sudahTes = row.original.hasilTes && row.original.hasilTes.length > 0
           return sudahTes ? (
@@ -7288,8 +7904,8 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.display({
         id: 'kodeHolland',
         header: 'Hasil (Kode)',
-        enableSorting: true, // Aktifkan sorting
-        sortingFn: kodeHollandSortingFn, // Gunakan fungsi kustom
+        enableSorting: true,
+        sortingFn: kodeHollandSortingFn,
         cell: ({ row }) => {
           const hasilTerbaru =
             row.original.hasilTes && row.original.hasilTes.length > 0
@@ -7301,6 +7917,7 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
       columnHelper.display({
         id: 'actions',
         header: 'Aksi',
+        size: 140,
         cell: ({ row }) => {
           const item = row.original
           const sudahTes = item.hasilTes && item.hasilTes.length > 0
@@ -7325,7 +7942,7 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
                 method="post"
                 as="button"
                 title="Reset Tes"
-                className={`p-2 rounded-full transition-colors ${!sudahTes ? 'text-gray-300 dark:text-gray-600' : 'text-gray-500 hover:text-orange-600 hover:bg-orange-100 dark:hover:bg-gray-700'}`}
+                className={`p-2 rounded-full transition-colors ${!sudahTes ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' : 'text-gray-500 hover:text-orange-600 hover:bg-orange-100 dark:hover:bg-gray-700'}`}
                 disabled={!sudahTes}
                 onBefore={() => confirm('Yakin ingin mereset tes siswa ini?')}
               >
@@ -7366,12 +7983,22 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
     <div className="p-8 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Manajemen Siswa</h1>
-        <Link
-          href="/admin/siswa-riasec/create"
-          className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Tambah Siswa Baru
-        </Link>
+        <div className="flex items-center space-x-2">
+          <Link
+            href="/admin/print/all-students"
+            target="_blank"
+            className="inline-flex items-center px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            <Printer className="w-4 h-4 mr-2" />
+            Cetak Semua
+          </Link>
+          <Link
+            href="/admin/siswa-riasec/create"
+            className="inline-block px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Tambah Siswa Baru
+          </Link>
+        </div>
       </div>
 
       <div className="mb-4">
@@ -7433,53 +8060,19 @@ export default function SiswaIndex({ siswa }: { siswa: Siswa[] }) {
         </table>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="mt-6 flex items-center justify-between">
-        <div className="text-sm text-gray-900 dark:text-white">
-          Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
+      {/* --- PAGINATION SECTION (TELAH DIPERBARUI) --- */}
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="text-sm text-gray-700 dark:text-gray-300">
+          Halaman{' '}
+          <strong className="font-medium text-gray-900 dark:text-white">
+            {table.getState().pagination.pageIndex + 1}
+          </strong>{' '}
+          dari{' '}
+          <strong className="font-medium text-gray-900 dark:text-white">
+            {table.getPageCount()}
+          </strong>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'<<'}
-          </button>
-          <button
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'<'}
-          </button>
-          <button
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'>'}
-          </button>
-          <button
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-            className="px-2 py-1 border rounded-md text-sm disabled:opacity-50 text-gray-900 dark:text-white dark:border-gray-600"
-          >
-            {'>>'}
-          </button>
-          <span className="flex items-center gap-1 text-sm text-gray-900 dark:text-white">
-            | Ke halaman:
-            <input
-              type="number"
-              defaultValue={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0
-                table.setPageIndex(page)
-              }}
-              className="border p-1 rounded w-16 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-            />
-          </span>
-        </div>
+        <Pagination table={table} />
       </div>
     </div>
   )
@@ -7491,7 +8084,7 @@ SiswaIndex.layout = (page: any) => <AdminLayout children={page} />
 // title: inertia/pages/admin/siswaRiasec/view.tsx
 import { Head, Link } from '@inertiajs/react'
 import AdminLayout from '../layouts/main'
-import { Award, BrainCircuit, Lightbulb, RefreshCw } from 'lucide-react'
+import { Award, BrainCircuit, Printer, Lightbulb, RefreshCw } from 'lucide-react'
 import { motion } from 'framer-motion' // 1. Impor Framer Motion untuk animasi
 
 // --- DATA DESKRIPSI RIASEC ---
@@ -7624,6 +8217,16 @@ export default function SiswaView({ siswa, hasilTes, recommendedPrograms, recomm
                             Detail Siswa
                         </h1>
                         <div className="flex items-center space-x-3">
+                            {hasilTes && (
+                                <Link
+                                    href={`/admin/print/student/${siswa.id}`}
+                                    target="_blank"
+                                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
+                                >
+                                    <Printer className="w-4 h-4 mr-2" />
+                                    Cetak Hasil
+                                </Link>
+                            )}
                             {hasilTes && (
                                 <Link
                                     href={`/admin/siswa-riasec/${siswa.id}/reset`}
@@ -7776,7 +8379,7 @@ export default function SiswaView({ siswa, hasilTes, recommendedPrograms, recomm
                                                 <p className="text-gray-500 mt-2 flex-grow">
                                                     {interest.description || 'Deskripsi belum tersedia.'}
                                                 </p>
-                                               
+
                                             </motion.div>
                                         ))}
                                     </div>
@@ -8240,14 +8843,18 @@ export default function UsersIndex({
 UsersIndex.layout = (page: any) => <AdminLayout children={page} />
 
 // title: inertia/pages/auth/login.tsx
-import { useForm, Link } from '@inertiajs/react'
 import { useState } from 'react'
+import { useForm, Link, Head } from '@inertiajs/react'
+import { GraduationCap, Menu, X } from 'lucide-react' // Import ikon yang dibutuhkan
 
 export default function Login() {
   const { data, setData, post, processing, errors } = useForm({
     email: '',
     password: '',
   })
+
+  // State untuk menu mobile, sama seperti di halaman Home
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const [alert, setAlert] = useState({
     show: false,
@@ -8262,96 +8869,148 @@ export default function Login() {
         setAlert({
           show: true,
           type: 'success',
-          message: 'Login successful! Redirecting...',
+          message: 'Login berhasil! Anda akan diarahkan...',
         })
-        setTimeout(() => setAlert({ show: false, type: 'success', message: '' }), 3000)
+        // Redirect akan ditangani oleh Inertia secara otomatis
       },
-      onError: () => {
+      onError: (errors) => {
+        // Menggunakan pesan error dari server jika ada, jika tidak, tampilkan pesan default
+        const errorMessage =
+          errors.email || errors.password || 'Login gagal. Periksa kembali email dan password Anda.'
         setAlert({
           show: true,
           type: 'error',
-          message: 'Login failed. Please check your credentials.',
+          message: errorMessage,
         })
       },
     })
   }
 
-  // Function to close the alert
   const closeAlert = () => {
     setAlert({ ...alert, show: false })
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Form Card */}
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">Login</h1>
-        <form onSubmit={submit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={data.email}
-              onChange={(e) => setData('email', e.target.value)}
-              className="mt-1 text-gray-900 dark:text-white block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="you@example.com"
-            />
-            {errors.email && <div className="mt-1 text-xs text-red-500">{errors.email}</div>}
-          </div>
+    <div className="bg-white text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+      <Head>
+        <title>Login - Platform Tes RIASEC</title>
+        <meta name="description" content="Login ke platform tes minat bakat RIASEC." />
+        <link rel="icon" href="/logo.png" />
+      </Head>
 
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={data.password}
-              onChange={(e) => setData('password', e.target.value)}
-              autoComplete="off"
-              className="mt-1 block text-gray-900 dark:text-white w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="••••••••"
-            />
-            {errors.password && <div className="mt-1 text-xs text-red-500">{errors.password}</div>}
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={processing}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
-            >
-              {processing ? 'Logging in...' : 'Login'}
+      <header className="sticky top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
+        <div className="max-w-5xl mx-auto px-6">
+          <nav className="flex justify-between items-center h-16">
+            <Link href="/" className="flex items-center gap-2">
+              <GraduationCap size={24} className="text-blue-600" />
+              <span className="font-bold text-lg">Platform RIASEC</span>
+            </Link>
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-20">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-          </div>
-        </form>
-        <div className="text-center text-sm">
-          {/* <Link
-            href="/register"
-            className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-          >
-            Don't have an account? Register
-          </Link> */}
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/#features" className="text-gray-600 hover:text-black">
+                Fitur
+              </Link>
+              <Link href="/#kontak" className="text-gray-600 hover:text-black">
+                Kontak
+              </Link>
+              <Link
+                href="/login"
+                className="ml-4 px-5 py-2 text-sm font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+              >
+                Login
+              </Link>
+            </div>
+          </nav>
         </div>
-      </div>
+      </header>
 
-      {/* Floating Alert - Positioned at the bottom of the screen */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center gap-8 md:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <Link href="/#features" className="text-xl text-gray-800">
+            Fitur
+          </Link>
+          <Link href="/#kontak" className="text-xl text-gray-800">
+            Kontak
+          </Link>
+          <Link
+            href="/login"
+            className="mt-4 px-8 py-3 text-lg font-semibold bg-blue-600 text-white rounded-full"
+          >
+            Login
+          </Link>
+        </div>
+      )}
+
+      {/* === KONTEN UTAMA (Form Login) === */}
+      <main className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+          {/* Logo & Judul Form */}
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900">Login ke Akun Anda</h1>
+            <p className="mt-2 text-sm text-gray-600">
+              Selamat datang kembali! Silakan masukkan data Anda.
+            </p>
+          </div>
+
+          <form onSubmit={submit} className="space-y-6">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="anda@email.com"
+                required
+              />
+              {errors.email && <div className="mt-1 text-xs text-red-500">{errors.email}</div>}
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={data.password}
+                onChange={(e) => setData('password', e.target.value)}
+                autoComplete="current-password"
+                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="••••••••"
+                required
+              />
+              {errors.password && <div className="mt-1 text-xs text-red-500">{errors.password}</div>}
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={processing}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+              >
+                {processing ? 'Memproses...' : 'Login'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+
+      {/* Floating Alert */}
       {alert.show && (
         <div
-          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-md p-4 rounded-md flex justify-between items-center shadow-lg transition-opacity duration-300 ${
-            alert.type === 'success'
-              ? 'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200'
-              : 'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200'
-          }`}
+          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-md p-4 rounded-md flex justify-between items-center shadow-lg transition-opacity duration-300 ${alert.type === 'success'
+              ? 'bg-green-100 text-green-800'
+              : 'bg-red-100 text-red-800'
+            }`}
         >
           <span>{alert.message}</span>
           <button
@@ -8608,8 +9267,6 @@ export default function Home() {
         <link rel="icon" href="/logo.png" />
       </Head>
 
-      {/* === HEADER & NAVIGASI TETAP DI ATAS (STICKY) === */}
-      {/* PERBAIKAN 1: Menambahkan kelas untuk membuat header fixed */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-6">
           <nav className="flex justify-between items-center h-16">
@@ -8619,12 +9276,10 @@ export default function Home() {
               <span className="font-bold text-lg">Platform RIASEC</span>
             </Link>
 
-            {/* Tombol Hamburger (Hanya terlihat di mobile) */}
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-20">
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            {/* Menu Links (Desktop) */}
             <div className="hidden md:flex items-center gap-6">
               <Link href="#features" className="text-gray-600 hover:text-black">
                 Fitur
@@ -8643,11 +9298,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Menu Overlay untuk Mobile */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center gap-8 md:hidden"
-          onClick={() => setIsMenuOpen(false)} // Klik di luar menu untuk menutup
+          onClick={() => setIsMenuOpen(false)}
         >
           <Link href="#features" className="text-xl text-gray-800">
             Fitur
@@ -8665,8 +9319,6 @@ export default function Home() {
       )}
 
       <main className="space-y-24 md:space-y-32">
-        {/* === HERO SECTION FULL-SCREEN === */}
-        {/* PERBAIKAN 2: Menambahkan kelas untuk membuat section setinggi layar dan konten terpusat */}
         <section className="min-h-screen flex flex-col justify-center items-center text-center px-6">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-3xl mx-auto">
             Bantu Siswa Temukan Jurusan & Karier Impian
@@ -8683,7 +9335,6 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* === FEATURES SECTION === */}
         <section id="features" className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">Solusi Lengkap untuk Sekolah</h2>
@@ -8706,7 +9357,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* === FOOTER & FINAL CTA === */}
         <footer id="kontak" className="text-center py-16 border-t mt-24">
           <div className="max-w-5xl mx-auto px-6">
             <h2 className="text-2xl md:text-3xl font-bold">
@@ -8910,7 +9560,8 @@ const InfoCard = ({
   )
 }
 
-// Komponen utama Dasbor
+
+
 export default function Dashboard({ user, latestResult }: DashboardProps) {
   const hasTakenTest = !!latestResult
 
@@ -8928,9 +9579,7 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
           </p>
         </div>
 
-        {/* Grid Konten Utama */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Kartu Utama Tes RIASEC (col-span-2) */}
           <div className="lg:col-span-2 bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-8 rounded-xl shadow-lg flex flex-col justify-center">
             {hasTakenTest ? (
               <>
@@ -8975,7 +9624,6 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
             )}
           </div>
 
-          {/* Kartu Samping */}
           <div className="space-y-8">
             <InfoCard
               title="Profil Saya"
@@ -8990,7 +9638,7 @@ export default function Dashboard({ user, latestResult }: DashboardProps) {
               link="/riasec/result/#rekomendasi"
               linkText={hasTakenTest ? 'Lihat Rekomendasi' : 'Selesaikan tes dahulu'}
               icon={Lightbulb}
-              enabled={hasTakenTest} // Kartu ini hanya aktif jika sudah tes
+              enabled={hasTakenTest} 
             />
           </div>
         </div>
@@ -9203,7 +9851,7 @@ const Sidebar: React.FC = () => {
             </Link>
             <a href="#" className={`${linkBaseClass} mt-2 ${disabledLinkClass}`}>
               <Settings className="w-5 h-5" />
-              <span className="mx-4 font-medium">Settingan</span>
+              <span className="mx-4 font-medium">Setting</span>
             </a>
             <Link
               href="/logout"
@@ -9213,7 +9861,7 @@ const Sidebar: React.FC = () => {
               className="w-full flex items-center px-4 py-2 text-gray-600 dark:text-gray-400 transition-colors duration-300 transform rounded-md hover:bg-red-100 dark:hover:bg-red-800 dark:hover:text-red-200 hover:text-red-700 mt-2"
             >
               <LogOut className="w-5 h-5" />
-              <span className="mx-4 font-medium">Cabut Dulu</span>
+              <span className="mx-4 font-medium">Log Out</span>
             </Link>
           </div>
         </div>
@@ -10374,9 +11022,8 @@ export default function RiasecResultPage() {
                           style={{ width: `${percentage}%` }}
                         />
                         <span
-                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${
-                            percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
-                          }`}
+                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
+                            }`}
                         >
                           {score}
                         </span>
@@ -11118,6 +11765,8 @@ const AdminUsersController = () => import('#controllers/admin/users_controller')
 
 const ProfilesController = () => import('#controllers/admin/profiles_controller')
 
+const PrintController = () => import('#controllers/admin/prints_controller')
+
 const SiswaRiasecsController = () => import('#controllers/admin/riasec/siswa_riasecs_controller')
 const PertanyaanRiasecsController = () =>
   import('#controllers/admin/riasec/pertanyaan_riasecs_controller')
@@ -11208,6 +11857,13 @@ router
 
     router.get('/profile', [ProfilesController, 'show']).as('admin.profile.show')
     router.put('/profile', [ProfilesController, 'update']).as('admin.profile.update')
+
+    router
+      .get('/print/all-students', [PrintController, 'printAllSiswa'])
+      .as('admin.print.all_students')
+    router
+      .get('/print/student/:id', [PrintController, 'printStudentDetail'])
+      .as('admin.print.student_detail')
   })
   .prefix('admin')
   .use([middleware.auth(), middleware.admin()])

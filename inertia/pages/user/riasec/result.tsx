@@ -195,9 +195,8 @@ export default function RiasecResultPage() {
                           style={{ width: `${percentage}%` }}
                         />
                         <span
-                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${
-                            percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
-                          }`}
+                          className={`absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold ${percentage > 15 ? 'text-white' : 'text-gray-800 dark:text-gray-200'
+                            }`}
                         >
                           {score}
                         </span>
